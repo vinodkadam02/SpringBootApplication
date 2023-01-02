@@ -1,5 +1,8 @@
 package com.elixr.poc.rest.response;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
+
+
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import java.util.UUID;

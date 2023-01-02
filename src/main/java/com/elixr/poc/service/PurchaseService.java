@@ -13,7 +13,7 @@ import java.util.UUID;
 /* service class for editing response and save or update new purchase to database  */
 @Service
 public class PurchaseService {
-    public ResponseEntity<?> editResponse(PurchaseRequest newPurchase) {
+    public ResponseEntity<?> createPurchase(PurchaseRequest newPurchase) {
         PurchaseResponse newPurchaseResponse;
         Purchase newPurchaseFormat = createUserObjectFromRequest(newPurchase);
         PurchaseErrorResponse newPurchaseErrorResponse;
