@@ -1,35 +1,31 @@
 package com.elixr.poc.service;
 
-import com.elixr.poc.Constant.Constants;
+import com.elixr.poc.Constant.ApplicationConstants;
 import com.elixr.poc.Repository.PurchaseRepository;
-import com.elixr.poc.rest.response.DeleteResponse;
+import com.elixr.poc.exception.NoRecordFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
 public class PurchaseService {
+
     private final PurchaseRepository purchaseRepository;
-    private DeleteResponse deleteResponse;
 
     public PurchaseService(PurchaseRepository purchaseRepository) {
         this.purchaseRepository = purchaseRepository;
     }
 
-    public DeleteResponse deletePurchaseDetails(UUID purchaseId) {
-        deleteResponse = new DeleteResponse();
-        boolean purchaseRecord = purchaseRepository.existsById(purchaseId);
-        if (purchaseRecord) {
+    public boolean  deletePurchaseDetails(UUID purchaseId)throws NoRecordFoundException {
+        boolean success=false;
+        boolean purchaseRecordExists = purchaseRepository.existsById(purchaseId);
+        if (purchaseRecordExists) {
             purchaseRepository.deleteById(purchaseId);
-            deleteResponse.setSuccess(true);
-            Constants.REQUEST_VALUE = 200;
-            deleteResponse.setMessages(Constants.DELETED);
-            return deleteResponse;
+           success=true;
         } else {
-            deleteResponse.setSuccess(false);
-            Constants.REQUEST_VALUE = 404;
-            deleteResponse.setMessages(Constants.ID_MISMATCH);
-            return deleteResponse;
+            throw new NoRecordFoundException(ApplicationConstants.ID_MISMATCH);
         }
+        return success;
     }
 }
+

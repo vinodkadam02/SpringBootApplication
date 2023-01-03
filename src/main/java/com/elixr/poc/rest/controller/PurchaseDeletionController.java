@@ -1,6 +1,8 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.Constant.Constants;
+import com.elixr.poc.Constant.ApplicationConstants;
+import com.elixr.poc.exception.NoRecordFoundException;
+import com.elixr.poc.rest.response.DeleteResponse;
 import com.elixr.poc.service.PurchaseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,19 @@ purchaseDeletionController is invoking the purchaseService.
      */
     @DeleteMapping("/purchase/{purchaseId}")
     public ResponseEntity<?> deletePurchase(@PathVariable("purchaseId") UUID purchaseId) {
-        return new ResponseEntity<>(purchaseService.deletePurchaseDetails(purchaseId), HttpStatus.valueOf(Constants.REQUEST_VALUE));
+        DeleteResponse deleteResponse = new DeleteResponse();
+        HttpStatus httpStatus;
+        try {
+            boolean success = purchaseService.deletePurchaseDetails(purchaseId);
+            deleteResponse.setSuccess(success);
+            deleteResponse.setMessages(ApplicationConstants.DELETED);
+            httpStatus = HttpStatus.OK;
+        } catch (NoRecordFoundException e) {
+            deleteResponse.setSuccess(false);
+            deleteResponse.setMessages(e.getMessage());
+            httpStatus = HttpStatus.BAD_REQUEST;
+        }
+        return new ResponseEntity<>(deleteResponse, httpStatus);
     }
 
 }
