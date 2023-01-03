@@ -4,8 +4,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@Builder
 public class PurchaseErrorResponse {
     private boolean success;
-    private List<String> errorMsg;
+    private List<String> errorMessage;
+
 }

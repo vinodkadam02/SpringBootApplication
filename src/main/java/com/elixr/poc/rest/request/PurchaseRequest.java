@@ -1,7 +1,10 @@
 package com.elixr.poc.rest.request;
+
+import com.elixr.poc.Constant.ErrorConstants;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+
 import java.util.UUID;
 /* This Class holds the request attributes for purchase related end points */
 
@@ -9,12 +12,12 @@ import java.util.UUID;
 public class PurchaseRequest {
     @Id
     private UUID id;
-    @NotBlank
+    @NotBlank(message = ErrorConstants.USER_NAME_MISSING_IN_PURCHASE)
     private String userName;
-    @NotBlank
+    @NotBlank(message = ErrorConstants.PRODUCT_NAME_IS_MISSING_IN_PURCHASE)
     private String product;
-    @NotBlank
+    @NotBlank(message = ErrorConstants.AMOUNT_MISSING_IN_PURCHASE)
     private String amount;
-    @NotBlank
+    @NotBlank(message = ErrorConstants.DATE_MISSING_IN_PURCHASE)
     private String date;
 }
