@@ -14,7 +14,7 @@ Service layer
 public class UserService {
 
     private final UserRepository userRepository;
-    private DeleteResponse deleteResponse;
+    public int REQUEST_VALUE;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -24,19 +24,18 @@ public class UserService {
     Deleting the user by the userId.
      */
     public DeleteResponse deleteUserDetails(UUID userId) {
-        deleteResponse = new DeleteResponse();
-        boolean userRecords = userRepository.existsById(userId);
-        if (userRecords) {
+        DeleteResponse deleteResponse = new DeleteResponse();
+        boolean userRecordExists = userRepository.existsById(userId);
+        if (userRecordExists) {
             userRepository.deleteById(userId);
+            REQUEST_VALUE = 200;
             deleteResponse.setSuccess(true);
-            ApplicationConstants.REQUEST_VALUE = 200;
             deleteResponse.setMessage(ApplicationConstants.SUCCESSFULLY_DELETED);
-            return deleteResponse;
         } else {
+            REQUEST_VALUE = 404;
             deleteResponse.setSuccess(false);
             deleteResponse.setMessage(ApplicationConstants.ID_MISMATCH);
-            ApplicationConstants.REQUEST_VALUE = 404;
-            return deleteResponse;
         }
+        return deleteResponse;
     }
 }
