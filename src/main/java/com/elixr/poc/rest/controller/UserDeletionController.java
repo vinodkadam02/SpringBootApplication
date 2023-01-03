@@ -1,6 +1,6 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.constants.Constants;
+import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +25,7 @@ public class UserDeletionController {
     calling deleteUserDetails method with the parameter userId to delete the user by userId.
      */
     @DeleteMapping("/user/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable("userId") UUID userId) {
-        userService.deleteUserDetails(userId);
-        return new ResponseEntity<>(Constants.SUCCESSFULLY_DELETED, HttpStatus.OK);
+    public ResponseEntity<?> deleteUser(@PathVariable("userId") UUID userId) {
+        return new ResponseEntity<>(userService.deleteUserDetails(userId), HttpStatus.valueOf(ApplicationConstants.REQUEST_VALUE));
     }
 }
