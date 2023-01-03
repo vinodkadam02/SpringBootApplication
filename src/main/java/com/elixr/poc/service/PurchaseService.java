@@ -1,6 +1,8 @@
 package com.elixr.poc.service;
 
+import com.elixr.poc.Constant.Constants;
 import com.elixr.poc.Repository.PurchaseRepository;
+import com.elixr.poc.rest.response.DeleteResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -8,22 +10,26 @@ import java.util.UUID;
 @Service
 public class PurchaseService {
     private final PurchaseRepository purchaseRepository;
+    private DeleteResponse deleteResponse;
 
     public PurchaseService(PurchaseRepository purchaseRepository) {
         this.purchaseRepository = purchaseRepository;
     }
 
-    /*
-    Deleting the purchase from the database
-     */
-    public boolean deletePurchaseDetails(UUID purchaseId) {
-        boolean success = false;
-        try {
+    public DeleteResponse deletePurchaseDetails(UUID purchaseId) {
+        deleteResponse = new DeleteResponse();
+        boolean purchaseRecord = purchaseRepository.existsById(purchaseId);
+        if (purchaseRecord) {
             purchaseRepository.deleteById(purchaseId);
-            success = true;
-        } catch (Exception e) {
-            e.printStackTrace();
+            deleteResponse.setSuccess(true);
+            Constants.REQUEST_VALUE = 200;
+            deleteResponse.setMessages(Constants.DELETED);
+            return deleteResponse;
+        } else {
+            deleteResponse.setSuccess(false);
+            Constants.REQUEST_VALUE = 404;
+            deleteResponse.setMessages(Constants.ID_MISMATCH);
+            return deleteResponse;
         }
-        return success;
     }
 }

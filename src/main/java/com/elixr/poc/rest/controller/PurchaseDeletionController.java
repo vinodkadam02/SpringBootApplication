@@ -28,8 +28,8 @@ purchaseDeletionController is invoking the purchaseService.
     Calling deletePurchaseDetails method with the parameter of the purchaseId to delete purchase
      */
     @DeleteMapping("/purchase/{purchaseId}")
-    public ResponseEntity<String> deletePurchase(@PathVariable("purchaseId") UUID purchaseId) {
-        purchaseService.deletePurchaseDetails(purchaseId);
-        return new ResponseEntity<>(Constants.DELETED, HttpStatus.OK);
+    public ResponseEntity<?> deletePurchase(@PathVariable("purchaseId") UUID purchaseId) {
+        return new ResponseEntity<>(purchaseService.deletePurchaseDetails(purchaseId), HttpStatus.valueOf(Constants.REQUEST_VALUE));
     }
+
 }
