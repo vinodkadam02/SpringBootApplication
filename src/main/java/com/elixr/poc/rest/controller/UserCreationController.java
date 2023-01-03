@@ -20,16 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserCreationController {
 
     private final UserService userService;
-    private UserRequest userRequest;
-    private ExceptionHandler exceptionHandler;
-
     public UserCreationController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/user")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserRequest newUser) {
-        userRequest = newUser;
         return  new ResponseEntity<>(userService.sendResponse(newUser), HttpStatus.OK);
     }
 }

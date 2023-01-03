@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
-Handling the exception
+Handling the exception and sending propper error message
  */
 @ControllerAdvice
 public class ExceptionHandler {
