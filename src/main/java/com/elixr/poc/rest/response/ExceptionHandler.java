@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+Handling the exception
+ */
 @ControllerAdvice
 public class ExceptionHandler {
     private ErrorResponse errorResponse;

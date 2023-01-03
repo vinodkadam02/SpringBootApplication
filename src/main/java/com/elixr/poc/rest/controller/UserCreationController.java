@@ -32,13 +32,4 @@ public class UserCreationController {
         userRequest = newUser;
         return  new ResponseEntity<>(userService.sendResponse(newUser), HttpStatus.OK);
     }
-
-    /*
-    Handling the Exception and sending error message
-     */
-    @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> exceptionHandler(MethodArgumentNotValidException methodArgumentNotValidException) {
-        exceptionHandler = new ExceptionHandler();
-        return exceptionHandler.myMessage(methodArgumentNotValidException);
-    }
 }
