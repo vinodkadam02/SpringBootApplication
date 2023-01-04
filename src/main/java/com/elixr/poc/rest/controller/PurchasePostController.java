@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PurchasePostController {
 
     private final PurchaseService purchaseService;
-    private PurchaseRequest purchaseRequest;
-
     public PurchasePostController(PurchaseService purchaseService) {
         this.purchaseService = purchaseService;
     }
