@@ -1,6 +1,6 @@
 package com.elixr.poc.service;
 
-import com.elixr.poc.constant.ApplicationConstants;
+import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.repository.PurchaseRepository;
 import org.springframework.stereotype.Service;

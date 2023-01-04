@@ -1,6 +1,6 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.constant.ApplicationConstants;
+import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.rest.response.DeleteResponse;
 import com.elixr.poc.service.PurchaseService;
@@ -38,11 +38,11 @@ import java.util.UUID;
         try {
             boolean success = purchaseService.deletePurchaseDetails(purchaseId);
             deleteResponse.setSuccess(success);
-            deleteResponse.setErrormessages(ApplicationConstants.DELETED);
+            deleteResponse.setErrorMessages(ApplicationConstants.DELETED);
             httpStatus = HttpStatus.OK;
         } catch (NoRecordFoundException e) {
             deleteResponse.setSuccess(false);
-            deleteResponse.setErrormessages(e.getMessage());
+            deleteResponse.setErrorMessages(e.getMessage());
             httpStatus = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity<>(deleteResponse, httpStatus);

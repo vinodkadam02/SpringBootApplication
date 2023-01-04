@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class DeleteResponse {
     private boolean success;
-    private String errormessages;
+    private String errorMessages;
 }
