@@ -9,12 +9,10 @@ import java.util.List;
 public class PurchaseRetrievalService {
 
     private PurchaseRepository purchaseRepository;
-    private ConversionService conversionService;
 
-    public PurchaseRetrievalService(PurchaseRepository purchaseRepository,ConversionService conversionService)
+    public PurchaseRetrievalService(PurchaseRepository purchaseRepository)
     {
         this.purchaseRepository = purchaseRepository;
-        this.conversionService = conversionService;
     }
 
     /**
