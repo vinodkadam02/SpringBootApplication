@@ -1,10 +1,14 @@
 package com.elixr.poc.service;
 
+import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.data.User;
+import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.request.UserRequest;
-import com.elixr.poc.rest.response.UserPostResponse;
+import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /**
  * Service class to interact with controller and create new user
@@ -18,6 +22,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    /**
      * Deleting the user by the userId.
      * throwing a NoRecordFoundException to handel if the UserId is not present.
      */
@@ -31,14 +36,17 @@ public class UserService {
             throw new NoRecordFoundException(ApplicationConstants.ID_MISMATCH);
         }
         return success;
+    }
+
+    /**
      * Creating a valid user
      * @param userRequestObject
      * @return
      */
-    public UserPostResponse createValidUser(UserRequest userRequestObject) {
+    public UserResponse createValidUser(UserRequest userRequestObject) {
         User userObject = createUserObjectFromRequest(userRequestObject);
         saveDataToDatabase(userObject);
-        return UserPostResponse.builder().success(true).id(userObject.getId()).userName(userObject.getUserName()).firstName(userObject.getFirstName()).lastName(userObject.getLastName()).build();
+        return UserResponse.builder().success(true).id(userObject.getId()).userName(userObject.getUserName()).firstName(userObject.getFirstName()).lastName(userObject.getLastName()).build();
     }
 
     private User createUserObjectFromRequest(UserRequest userRequest) {
@@ -52,8 +60,10 @@ public class UserService {
      */
     private User saveDataToDatabase(User user) {
 
-        if (user.getId() == null || user.getId().isEmpty()) {
-            user.setId(String.valueOf(UUID.randomUUID()));
+        if (user.getId() == null || user.getId().toString().isEmpty()) {
+            user.setId(UUID.randomUUID());
         }
         user = this.userRepository.save(user);
         return user;
+    }
+}

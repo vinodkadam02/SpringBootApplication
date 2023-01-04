@@ -1,6 +1,6 @@
 package com.elixr.poc.rest.request;
 
-import com.elixr.poc.constant.ApplicationConstants;
+import com.elixr.poc.constants.ApplicationConstants;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 /**
