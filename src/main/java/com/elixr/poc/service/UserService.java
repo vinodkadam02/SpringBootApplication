@@ -43,8 +43,8 @@ public class UserService {
      */
     private User saveDataToDatabase(User user) {
 
-        if (user.getId() == null || user.getId().isEmpty()) {
-            user.setId(String.valueOf(UUID.randomUUID()));
+        if (user.getId() == null || user.getId().toString().isEmpty()) {
+            user.setId(UUID.randomUUID());
         }
         user = this.userRepository.save(user);
         return user;

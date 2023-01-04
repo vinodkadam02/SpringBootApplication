@@ -14,6 +14,7 @@ public class UserRequest {
     private String userName;
     @NotBlank(message = ApplicationConstants.FIRST_NAME_MISSING_IN_USER)
     private String firstName;
-   @NotBlank(message = ApplicationConstants.LAST_NAME_MISSING_IN_USER)
+    @NotBlank(message = ApplicationConstants.LAST_NAME_MISSING_IN_USER)
     private String lastName;
+
 }
