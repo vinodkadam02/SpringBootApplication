@@ -1,9 +1,10 @@
 package com.elixr.poc.constants;
 
-public class ApplicationConstants {
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-    private ApplicationConstants() {
-    }
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class ApplicationConstants {
 
     public static final String SUCCESSFULLY_DELETED = "Successfully Deleted";
     public static final String ID_MISMATCH = "The ID is Not Matching";

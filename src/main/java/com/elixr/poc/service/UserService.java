@@ -5,11 +5,8 @@ import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.UUID;
 
-/*
-Service layer
- */
 @Service
 public class UserService {
 
@@ -19,16 +16,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    /*
-    Deleting the user by the userId.
-    throwing a NoRecordFoundException to handel if the UserId is not present.
+    /**
+     * Deleting the user by the userId.
+     * throwing a NoRecordFoundException to handel if the UserId is not present.
      */
     public boolean deleteUserDetails(UUID userId) throws NoRecordFoundException {
-        boolean success=false;
+        boolean success = false;
         boolean userRecordExists = userRepository.existsById(userId);
         if (userRecordExists) {
             userRepository.deleteById(userId);
-            success=true;
+            success = true;
         } else {
             throw new NoRecordFoundException(ApplicationConstants.ID_MISMATCH);
         }
