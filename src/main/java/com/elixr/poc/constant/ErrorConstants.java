@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
  * this constant file holds all the error messages for all the end points
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ErrorConstants {
+public class ErrorConstants{
 
     public static final String USER_NAME_MISSING_IN_PURCHASE = "User name is mandatory";
     public static final String AMOUNT_MISSING_IN_PURCHASE = "Amount is mandatory";
