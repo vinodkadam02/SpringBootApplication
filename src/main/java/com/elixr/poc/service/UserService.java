@@ -1,9 +1,11 @@
 package com.elixr.poc.service;
 
+import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.data.User;
+import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.request.UserRequest;
-import com.elixr.poc.rest.response.UserPostResponse;
+import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -17,8 +19,23 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
-
         this.userRepository = userRepository;
+    }
+
+    /**
+     * Deleting the user by the userId.
+     * throwing a NoRecordFoundException to handel if the UserId is not present.
+     */
+    public boolean deleteUserDetails(UUID userId) throws NoRecordFoundException {
+        boolean success = false;
+        boolean userRecordExists = userRepository.existsById(userId);
+        if (userRecordExists) {
+            userRepository.deleteById(userId);
+            success = true;
+        } else {
+            throw new NoRecordFoundException(ApplicationConstants.ID_MISMATCH);
+        }
+        return success;
     }
 
     /**
@@ -26,10 +43,10 @@ public class UserService {
      * @param userRequestObject
      * @return
      */
-    public UserPostResponse createValidUser(UserRequest userRequestObject) {
+    public UserResponse createValidUser(UserRequest userRequestObject) {
         User userObject = createUserObjectFromRequest(userRequestObject);
         saveDataToDatabase(userObject);
-        return UserPostResponse.builder().success(true).id(userObject.getId()).userName(userObject.getUserName()).firstName(userObject.getFirstName()).lastName(userObject.getLastName()).build();
+        return UserResponse.builder().success(true).id(userObject.getId()).userName(userObject.getUserName()).firstName(userObject.getFirstName()).lastName(userObject.getLastName()).build();
     }
 
     private User createUserObjectFromRequest(UserRequest userRequest) {
@@ -43,8 +60,8 @@ public class UserService {
      */
     private User saveDataToDatabase(User user) {
 
-        if (user.getId() == null || user.getId().isEmpty()) {
-            user.setId(String.valueOf(UUID.randomUUID()));
+        if (user.getId() == null || user.getId().toString().isEmpty()) {
+            user.setId(UUID.randomUUID());
         }
         user = this.userRepository.save(user);
         return user;
