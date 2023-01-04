@@ -1,4 +1,4 @@
-package com.elixr.poc.Constant;
+package com.elixr.poc.constant;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
