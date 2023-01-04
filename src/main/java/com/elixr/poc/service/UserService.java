@@ -33,8 +33,7 @@ public class UserService {
     }
 
     private User createUserObjectFromRequest(UserRequest userRequest) {
-        User user = User.builder().userName(userRequest.getUserName()).firstName(userRequest.getFirstName()).lastName(userRequest.getLastName()).build();
-        return user;
+        return User.builder().userName(userRequest.getUserName()).firstName(userRequest.getFirstName()).lastName(userRequest.getLastName()).build();
     }
 
     /**
