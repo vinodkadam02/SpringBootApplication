@@ -5,4 +5,3 @@ import java.util.UUID;
 
 public interface PurchaseRepository extends MongoRepository<Purchase, UUID> {
 }
-
