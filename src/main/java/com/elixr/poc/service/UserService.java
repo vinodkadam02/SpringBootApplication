@@ -1,7 +1,7 @@
 package com.elixr.poc.service;
 
 import com.elixr.poc.data.User;
-import com.elixr.poc.repository.UserRepository;
+import com.elixr.poc.repository.GlobalRepository;
 import com.elixr.poc.rest.request.UserRequest;
 import com.elixr.poc.rest.response.UserPostResponse;
 import org.springframework.stereotype.Service;
@@ -14,11 +14,11 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final GlobalRepository globalRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(GlobalRepository globalRepository ) {
 
-        this.userRepository = userRepository;
+        this.globalRepository = globalRepository;
     }
 
     /**
@@ -46,7 +46,7 @@ public class UserService {
         if (user.getId() == null || user.getId().toString().isEmpty()) {
             user.setId(UUID.randomUUID());
         }
-        user = this.userRepository.save(user);
+        user = this.globalRepository.save(user);
         return user;
     }
 }
