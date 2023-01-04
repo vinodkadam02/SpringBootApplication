@@ -27,7 +27,4 @@ public class GlobalExceptionHandler {
         errorResponse.setSuccess(false);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
-
 }
-

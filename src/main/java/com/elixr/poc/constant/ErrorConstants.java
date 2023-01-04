@@ -12,5 +12,4 @@ public class ErrorConstants {
     public static final String USER_NAME_MISSING_IN_USER = "User name is mandatory";
     public static final String LAST_NAME_MISSING_IN_USER = "Last name is mandatory";
 
-
 }
