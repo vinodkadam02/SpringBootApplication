@@ -3,7 +3,9 @@ package com.elixr.poc.rest.request;
 import com.elixr.poc.constant.ErrorConstants;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-/* This Class holds the request attributes for user related end points */
+/**
+ *  This Class holds the request attributes for user related end points
+ */
 
 @Data
 public class UserRequest {

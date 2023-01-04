@@ -1,14 +1,11 @@
 package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.rest.request.UserRequest;
-import com.elixr.poc.rest.response.ExceptionHandler;
 import com.elixr.poc.service.UserService;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +23,6 @@ public class UserCreationController {
 
     @PostMapping("/user")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserRequest newUser) {
-        return  new ResponseEntity<>(userService.sendResponse(newUser), HttpStatus.OK);
+        return  new ResponseEntity<>(userService.createValidUser(newUser), HttpStatus.OK);
     }
 }

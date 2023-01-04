@@ -3,31 +3,33 @@ package com.elixr.poc.service;
 import com.elixr.poc.data.User;
 import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.request.UserRequest;
-import com.elixr.poc.rest.response.ExceptionHandler;
-import com.elixr.poc.rest.response.UserResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.elixr.poc.rest.response.UserPostResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-/* service class for  editing response and save or update new user to database */
+/**
+ * Service class to interact with controller and create new user
+ */
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
 
+    public UserService(UserRepository userRepository) {
 
-    public UserService(UserRepository saveDataToRepository) {
-
-        this.userRepository = saveDataToRepository;
+        this.userRepository = userRepository;
     }
 
-    /* Sending the successful response to user */
-    public UserResponse sendResponse(UserRequest userRequestObject) {
+    /**
+     * Creating a valid user
+     * @param userRequestObject
+     * @return
+     */
+    public UserPostResponse createValidUser(UserRequest userRequestObject) {
         User userObject = createUserObjectFromRequest(userRequestObject);
         saveDataToDatabase(userObject);
-        return UserResponse.builder().success(true).id(userObject.getId()).userName(userObject.getUserName()).firstName(userObject.getFirstName()).lastName(userObject.getLastName()).build();
+        return UserPostResponse.builder().success(true).id(userObject.getId()).userName(userObject.getUserName()).firstName(userObject.getFirstName()).lastName(userObject.getLastName()).build();
     }
 
     private User createUserObjectFromRequest(UserRequest userRequest) {
@@ -35,13 +37,15 @@ public class UserService {
         return user;
     }
 
-    /*
-    calling UserRepository to store the valid user information to the database
+    /**
+     * Calling the repository to store data
+     * @param user
+     * @return
      */
     private User saveDataToDatabase(User user) {
 
-        if (user.getId() == null || user.getId().toString().isEmpty()) {
-            user.setId(UUID.randomUUID());
+        if (user.getId() == null || user.getId().isEmpty()) {
+            user.setId(String.valueOf(UUID.randomUUID()));
         }
         user = this.userRepository.save(user);
         return user;
