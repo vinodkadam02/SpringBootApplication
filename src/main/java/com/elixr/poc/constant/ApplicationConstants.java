@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ErrorConstants {
+public class ApplicationConstants {
 
     public static final String FIRST_NAME_MISSING_IN_USER = "First name is mandatory";
     public static final String USER_NAME_MISSING_IN_USER = "User name is mandatory";

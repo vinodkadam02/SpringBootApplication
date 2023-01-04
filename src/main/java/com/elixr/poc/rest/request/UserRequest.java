@@ -1,6 +1,6 @@
 package com.elixr.poc.rest.request;
 
-import com.elixr.poc.constant.ErrorConstants;
+import com.elixr.poc.constant.ApplicationConstants;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 /**
@@ -10,10 +10,10 @@ import lombok.Data;
 @Data
 public class UserRequest {
 
-    @NotBlank(message = ErrorConstants.USER_NAME_MISSING_IN_USER)
+    @NotBlank(message = ApplicationConstants.USER_NAME_MISSING_IN_USER)
     private String userName;
-    @NotBlank(message = ErrorConstants.FIRST_NAME_MISSING_IN_USER)
+    @NotBlank(message = ApplicationConstants.FIRST_NAME_MISSING_IN_USER)
     private String firstName;
-   @NotBlank(message = ErrorConstants.LAST_NAME_MISSING_IN_USER)
+   @NotBlank(message = ApplicationConstants.LAST_NAME_MISSING_IN_USER)
     private String lastName;
 }
