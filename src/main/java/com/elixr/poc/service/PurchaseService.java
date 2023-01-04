@@ -1,15 +1,14 @@
 package com.elixr.poc.service;
 
-import com.elixr.poc.Constant.ApplicationConstants;
-import com.elixr.poc.Repository.PurchaseRepository;
+import com.elixr.poc.constant.ApplicationConstants;
 import com.elixr.poc.exception.NoRecordFoundException;
+import com.elixr.poc.repository.PurchaseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
 public class PurchaseService {
-
     private final PurchaseRepository purchaseRepository;
 
     public PurchaseService(PurchaseRepository purchaseRepository) {
@@ -18,6 +17,7 @@ public class PurchaseService {
 
     /**
      * If the PurchaseId exists then delete the PurchaseId or else send Id is mismatched.
+     *
      * @param purchaseId
      * @return
      * @throws NoRecordFoundException

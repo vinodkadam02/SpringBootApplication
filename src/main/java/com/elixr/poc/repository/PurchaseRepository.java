@@ -1,4 +1,4 @@
-package com.elixr.poc.Repository;
+package com.elixr.poc.repository;
 
 import com.elixr.poc.data.Purchase;
 import org.springframework.data.mongodb.repository.MongoRepository;
