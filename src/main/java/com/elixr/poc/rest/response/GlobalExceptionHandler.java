@@ -11,17 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
-public class PurchaseExceptionHandler {
-    private PurchaseErrorResponse errorResponse;
+public class GlobalExceptionHandler {
 
-    /*Handling the Exception and sending error message*/
+    /**
+     * Handling the Exception and sending error message
+     * @param methodArgumentNotValidException
+     * @return
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> myMessage(MethodArgumentNotValidException methodArgumentNotValidException) {
-        return getResponseEntity(methodArgumentNotValidException);
-    }
-
     private ResponseEntity<?> getResponseEntity(MethodArgumentNotValidException methodArgumentNotValidException) {
-        errorResponse = new PurchaseErrorResponse();
+        ErrorResponse errorResponse = new ErrorResponse();
         List<String> errorList = new ArrayList<>();
         for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
             errorList.add(error.getDefaultMessage());

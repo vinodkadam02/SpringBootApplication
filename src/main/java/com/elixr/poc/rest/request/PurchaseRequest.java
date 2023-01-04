@@ -1,12 +1,13 @@
 package com.elixr.poc.rest.request;
-
 import com.elixr.poc.Constant.ErrorConstants;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-
 import java.util.UUID;
-/* This Class holds the request attributes for purchase related end points */
+
+/**
+ * This Class holds the request attributes for purchase related end points
+ */
 
 @Data
 public class PurchaseRequest {
