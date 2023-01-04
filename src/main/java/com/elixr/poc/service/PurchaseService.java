@@ -16,16 +16,21 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
     }
 
-    public boolean  deletePurchaseDetails(UUID purchaseId)throws NoRecordFoundException {
-        boolean success=false;
+    /**
+     * If the PurchaseId exists then delete the PurchaseId or else send Id is mismatched.
+     * @param purchaseId
+     * @return
+     * @throws NoRecordFoundException
+     */
+    public boolean deletePurchaseDetails(UUID purchaseId) throws NoRecordFoundException {
+        boolean success = false;
         boolean purchaseRecordExists = purchaseRepository.existsById(purchaseId);
         if (purchaseRecordExists) {
             purchaseRepository.deleteById(purchaseId);
-           success=true;
+            success = true;
         } else {
             throw new NoRecordFoundException(ApplicationConstants.ID_MISMATCH);
         }
         return success;
     }
 }
-

@@ -5,4 +5,3 @@ public class NoRecordFoundException extends Exception {
         super(message);
     }
 }
-

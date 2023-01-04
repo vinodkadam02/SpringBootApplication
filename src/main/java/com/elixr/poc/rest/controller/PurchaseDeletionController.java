@@ -26,8 +26,8 @@ purchaseDeletionController is invoking the purchaseService.
         this.purchaseService = purchaseService;
     }
 
-    /*
-    Calling deletePurchaseDetails method with the parameter of the purchaseId to delete purchase
+    /**
+     * Calling deletePurchaseDetails method with the parameter of the purchaseId to delete purchase
      */
     @DeleteMapping("/purchase/{purchaseId}")
     public ResponseEntity<?> deletePurchase(@PathVariable("purchaseId") UUID purchaseId) {
@@ -36,14 +36,13 @@ purchaseDeletionController is invoking the purchaseService.
         try {
             boolean success = purchaseService.deletePurchaseDetails(purchaseId);
             deleteResponse.setSuccess(success);
-            deleteResponse.setMessages(ApplicationConstants.DELETED);
+            deleteResponse.setErrormessages(ApplicationConstants.DELETED);
             httpStatus = HttpStatus.OK;
         } catch (NoRecordFoundException e) {
             deleteResponse.setSuccess(false);
-            deleteResponse.setMessages(e.getMessage());
+            deleteResponse.setErrormessages(e.getMessage());
             httpStatus = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity<>(deleteResponse, httpStatus);
     }
-
 }
