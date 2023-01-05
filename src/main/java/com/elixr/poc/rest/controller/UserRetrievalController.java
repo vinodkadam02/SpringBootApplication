@@ -1,25 +1,23 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.data.User;
-import com.elixr.poc.service.UserRetrievalService;
+import com.elixr.poc.rest.response.UserGetResponse;
+import com.elixr.poc.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/home")
 public class UserRetrievalController {
 
-    private UserRetrievalService userRetrievalService;
+    private final UserService userService;
 
-    public UserRetrievalController(UserRetrievalService userRetrievalService) {
-        this.userRetrievalService = userRetrievalService;
+    public UserRetrievalController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/users")
-    public List<User> getAllUser(){
-        return userRetrievalService.getAllUsers();
+    public UserGetResponse getAllUser() {
+        return userService.getAllUsers();
     }
 }

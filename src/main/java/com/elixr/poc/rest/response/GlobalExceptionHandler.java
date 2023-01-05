@@ -17,14 +17,12 @@ Handling the exception and sending proper error message
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handelMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
-        ErrorResponse errorResponse = new ErrorResponse();
+    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<String> errorList = new ArrayList<>();
         for(final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()){
              errorList.add(error.getDefaultMessage());
         }
-        errorResponse.setErrorMessage(errorList);
-        errorResponse.setSuccess(false);
+    ErrorResponse errorResponse = ErrorResponse.builder().errorMessage(errorList).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }

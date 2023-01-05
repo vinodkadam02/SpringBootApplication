@@ -1,16 +1,19 @@
 package com.elixr.poc.rest.response;
 
 import com.elixr.poc.data.User;
-import jakarta.validation.constraints.Negative;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-@Builder
-public class UserGetResponse {
+public class UserGetResponse extends UserResponse {
 
-    private boolean success;
     private List<User> users;
+
+    @Builder(builderMethodName = "newGetBuilder")
+    public UserGetResponse(boolean success, List<User> users) {
+        super(success);
+        this.users = users;
+    }
 }
