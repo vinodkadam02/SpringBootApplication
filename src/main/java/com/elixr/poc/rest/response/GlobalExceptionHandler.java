@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoRecordFoundException.class)
-    public ResponseEntity<?> handleNoRecordFoundExcepion(NoRecordFoundException noRecordFoundException) {
+    public ResponseEntity<?> handleNoRecordFoundException(NoRecordFoundException noRecordFoundException) {
         CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false)
                 .errorMessage(ApplicationConstants.ID_MISMATCH).build();
         return new ResponseEntity<>(commonErrorResponse, HttpStatus.BAD_REQUEST);
