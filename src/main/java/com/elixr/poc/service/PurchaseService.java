@@ -19,10 +19,6 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
     }
 
-    private Purchase createPurchaseObjectFromRequest(PurchaseRequest purchaseRequest) {
-        return Purchase.builder().userName(purchaseRequest.getUserName()).product(purchaseRequest.getProduct()).amount(purchaseRequest.getAmount()).date(purchaseRequest.getDate()).build();
-    }
-
     public PurchaseResponse createPurchase(Purchase newPurchase) {
         savePurchase(newPurchase);
         return PurchaseResponse.purchaseBuilder().success(true).id(newPurchase.getId())
