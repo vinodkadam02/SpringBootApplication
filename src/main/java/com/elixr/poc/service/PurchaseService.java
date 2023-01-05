@@ -19,14 +19,15 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
     }
 
-    private static Purchase createPurchaseObjectFromRequest(PurchaseRequest purchaseRequest) {
+    private Purchase createPurchaseObjectFromRequest(PurchaseRequest purchaseRequest) {
         return Purchase.builder().userName(purchaseRequest.getUserName()).product(purchaseRequest.getProduct()).amount(purchaseRequest.getAmount()).date(purchaseRequest.getDate()).build();
     }
 
-    public PurchaseResponse createPurchase(PurchaseRequest purchaseRequestObject) {
-        Purchase purchaseObject = createPurchaseObjectFromRequest(purchaseRequestObject);
-        saveRepository(purchaseObject);
-        return PurchaseResponse.purchaseBuilder().success(true).id(purchaseObject.getId()).userName(purchaseObject.getUserName()).product(purchaseObject.getProduct()).amount(purchaseObject.getAmount()).date(purchaseObject.getDate()).build();
+    public PurchaseResponse createPurchase(Purchase newPurchase) {
+        savePurchase(newPurchase);
+        return PurchaseResponse.purchaseBuilder().success(true).id(newPurchase.getId())
+                .userName(newPurchase.getUserName()).product(newPurchase.getProduct())
+                .amount(newPurchase.getAmount()).date(newPurchase.getDate()).build();
     }
 
     /**
@@ -34,7 +35,7 @@ public class PurchaseService {
      * @param purchase
      * @return
      */
-    private Purchase saveRepository(Purchase purchase) {
+    private Purchase savePurchase(Purchase purchase) {
         if (purchase.getId() == null || purchase.getId().toString().isEmpty()) {
             purchase.setId(UUID.randomUUID());
         }

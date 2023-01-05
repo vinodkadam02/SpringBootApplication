@@ -1,5 +1,6 @@
 package com.elixr.poc.rest.controller;
 
+import com.elixr.poc.data.Purchase;
 import com.elixr.poc.rest.request.PurchaseRequest;
 import com.elixr.poc.service.PurchaseService;
 import jakarta.validation.Valid;
@@ -28,6 +29,8 @@ public class PurchaseCreationController {
 
     @PostMapping("/purchase")
     public ResponseEntity<?> addPurchase(@RequestBody @Valid PurchaseRequest newPurchase) {
-        return new ResponseEntity<>(purchaseService.createPurchase(newPurchase), HttpStatus.OK);
+        Purchase purchase = Purchase.builder().userName(newPurchase.getUserName()).product(newPurchase.getProduct()).
+                amount(newPurchase.getAmount()).date(newPurchase.getDate()).build();
+        return new ResponseEntity<>(purchaseService.createPurchase(purchase), HttpStatus.OK);
     }
 }
