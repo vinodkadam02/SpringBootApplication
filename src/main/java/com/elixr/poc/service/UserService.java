@@ -8,6 +8,7 @@ import com.elixr.poc.rest.request.UserRequest;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -40,6 +41,7 @@ public class UserService {
 
     /**
      * Creating a valid user
+     *
      * @param userRequestObject
      * @return
      */
@@ -55,6 +57,7 @@ public class UserService {
 
     /**
      * Calling the repository to store data
+     *
      * @param user
      * @return
      */
@@ -65,5 +68,17 @@ public class UserService {
         }
         user = this.userRepository.save(user);
         return user;
+    }
+
+    /**
+     * Finding User by userId and returning the user.
+     *
+     * @param userId
+     * @return
+     * @throws NoRecordFoundException
+     */
+    public User getUserByUserId(UUID userId) throws NoRecordFoundException {
+        Optional<User> user = userRepository.findById(userId);
+        return user.orElseThrow(() -> new NoRecordFoundException(ApplicationConstants.ID_MISMATCH));
     }
 }

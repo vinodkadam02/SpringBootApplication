@@ -10,6 +10,10 @@ import java.util.UUID;
 @Data
 @Builder
 @Document(collection = "User")
+
+/**
+ * User class which holds the user details
+ */
 public class User {
     @Id
     private UUID id;
