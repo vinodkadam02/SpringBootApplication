@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class UserRequest {
 
-    @NotBlank(message = ApplicationConstants.USER_NAME_MISSING_IN_USER)
+    @NotBlank(message = ApplicationConstants.USER_NAME_MISSING)
     private String userName;
     @NotBlank(message = ApplicationConstants.FIRST_NAME_MISSING_IN_USER)
     private String firstName;

@@ -38,11 +38,11 @@ import java.util.UUID;
         try {
             boolean success = purchaseService.deletePurchaseDetails(purchaseId);
             deleteResponse.setSuccess(success);
-            deleteResponse.setErrorMessages(ApplicationConstants.DELETED);
+            deleteResponse.setErrorMessage(ApplicationConstants.SUCCESSFULLY_DELETED);
             httpStatus = HttpStatus.OK;
         } catch (NoRecordFoundException e) {
             deleteResponse.setSuccess(false);
-            deleteResponse.setErrorMessages(e.getMessage());
+            deleteResponse.setErrorMessage(e.getMessage());
             httpStatus = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity<>(deleteResponse, httpStatus);
