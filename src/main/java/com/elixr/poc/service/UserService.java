@@ -5,10 +5,8 @@ import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.request.UserRequest;
 import com.elixr.poc.rest.response.UserGetResponse;
 import com.elixr.poc.rest.response.UserPostResponse;
-import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -32,7 +30,7 @@ public class UserService {
     public UserPostResponse createValidUser(UserRequest userRequestObject) {
         User userObject = createUserObjectFromRequest(userRequestObject);
         saveDataToDatabase(userObject);
-        return UserPostResponse.newBuilder().success(true).id(userObject.getId()).userName(userObject.getUserName()).firstName(userObject.getFirstName()).lastName(userObject.getLastName()).build();
+        return UserPostResponse.newBuilder().id(userObject.getId()).userName(userObject.getUserName()).firstName(userObject.getFirstName()).lastName(userObject.getLastName()).build();
     }
 
     private User createUserObjectFromRequest(UserRequest userRequest) {
@@ -44,13 +42,12 @@ public class UserService {
      * @param user
      * @return
      */
-    private User saveDataToDatabase(User user) {
+    private void saveDataToDatabase(User user) {
 
         if (user.getId() == null || user.getId().isEmpty()) {
             user.setId(String.valueOf(UUID.randomUUID()));
         }
-        user = this.userRepository.save(user);
-        return user;
+        this.userRepository.save(user);
     }
 
 
@@ -60,6 +57,6 @@ public class UserService {
      */
     public UserGetResponse getAllUsers() {
 
-        return  UserGetResponse.newGetBuilder().success(true).users(userRepository.findAll()).build();
+        return  UserGetResponse.newGetBuilder().users(userRepository.findAll()).build();
     }
 }

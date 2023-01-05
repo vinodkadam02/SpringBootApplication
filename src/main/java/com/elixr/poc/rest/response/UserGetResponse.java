@@ -8,12 +8,11 @@ import java.util.List;
 
 @Data
 public class UserGetResponse extends UserResponse {
-
     private List<User> users;
 
     @Builder(builderMethodName = "newGetBuilder")
-    public UserGetResponse(boolean success, List<User> users) {
-        super(success);
+    public UserGetResponse(List<User> users) {
+       setSuccess(true);
         this.users = users;
     }
 }
