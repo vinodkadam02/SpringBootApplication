@@ -1,4 +1,5 @@
 package com.elixr.poc.rest.controller;
+
 import com.elixr.poc.rest.request.PurchaseRequest;
 import com.elixr.poc.service.PurchaseService;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PurchaseCreationController {
 
     private final PurchaseService purchaseService;
+
     public PurchaseCreationController(PurchaseService purchaseService) {
         this.purchaseService = purchaseService;
     }
