@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 
 @Data
-public class PurchasePostResponse extends ErrorResponse {
+public class PurchaseResponse extends ErrorResponse {
 
     @Id
     private UUID id;
@@ -21,7 +21,7 @@ public class PurchasePostResponse extends ErrorResponse {
     private String date;
 
     @Builder(builderMethodName = "purchaseBuilder")
-    public PurchasePostResponse(boolean success, List<String> errorMessage, UUID id, String userName, String product, String amount, String date) {
+    public PurchaseResponse(boolean success, List<String> errorMessage, UUID id, String userName, String product, String amount, String date) {
         super(success, errorMessage);
         this.id = id;
         this.userName = userName;

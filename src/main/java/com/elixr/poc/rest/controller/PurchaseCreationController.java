@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Validated
 @RequestMapping("/controller")
-public class PurchasePostController {
+public class PurchaseCreationController {
 
     private final PurchaseService purchaseService;
-    public PurchasePostController(PurchaseService purchaseService) {
+    public PurchaseCreationController(PurchaseService purchaseService) {
         this.purchaseService = purchaseService;
     }
 

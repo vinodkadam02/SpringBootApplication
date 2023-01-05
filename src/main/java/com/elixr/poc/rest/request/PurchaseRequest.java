@@ -1,5 +1,5 @@
 package com.elixr.poc.rest.request;
-import com.elixr.poc.Constant.ErrorConstants;
+import com.elixr.poc.constants.ErrorConstants;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.data.annotation.Id;

@@ -1,9 +1,9 @@
 package com.elixr.poc.service;
 
 import com.elixr.poc.data.Purchase;
-import com.elixr.poc.repository.PurchaseRepository;
+import com.elixr.poc.repository.GlobalRepository;
 import com.elixr.poc.rest.request.PurchaseRequest;
-import com.elixr.poc.rest.response.PurchasePostResponse;
+import com.elixr.poc.rest.response.PurchaseResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -14,9 +14,9 @@ import java.util.UUID;
 
 @Service
 public class PurchaseService {
-    private final PurchaseRepository purchaseRepository;
+    private final GlobalRepository purchaseRepository;
 
-    public PurchaseService(PurchaseRepository purchaseRepository) {
+    public PurchaseService(GlobalRepository purchaseRepository) {
         this.purchaseRepository = purchaseRepository;
     }
 
@@ -24,10 +24,10 @@ public class PurchaseService {
         return Purchase.builder().userName(purchaseRequest.getUserName()).product(purchaseRequest.getProduct()).amount(purchaseRequest.getAmount()).date(purchaseRequest.getDate()).build();
     }
 
-    public PurchasePostResponse createValidPurchase(PurchaseRequest purchaseRequestObject) {
+    public PurchaseResponse createValidPurchase(PurchaseRequest purchaseRequestObject) {
         Purchase purchaseObject = createPurchaseObjectFromRequest(purchaseRequestObject);
         saveRepository(purchaseObject);
-        return PurchasePostResponse.purchaseBuilder().success(true).id(purchaseObject.getId()).userName(purchaseObject.getUserName()).product(purchaseObject.getProduct()).amount(purchaseObject.getAmount()).date(purchaseObject.getDate()).build();
+        return PurchaseResponse.purchaseBuilder().success(true).id(purchaseObject.getId()).userName(purchaseObject.getUserName()).product(purchaseObject.getProduct()).amount(purchaseObject.getAmount()).date(purchaseObject.getDate()).build();
     }
 
     /**
