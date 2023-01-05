@@ -28,6 +28,6 @@ public class PurchaseCreationController {
 
     @PostMapping("/purchase")
     public ResponseEntity<?> addPurchase(@RequestBody @Valid PurchaseRequest newPurchase) {
-        return new ResponseEntity<>(purchaseService.createValidPurchase(newPurchase), HttpStatus.OK);
+        return new ResponseEntity<>(purchaseService.createPurchase(newPurchase), HttpStatus.OK);
     }
 }

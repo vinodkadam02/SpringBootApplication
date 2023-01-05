@@ -23,7 +23,7 @@ public class PurchaseService {
         return Purchase.builder().userName(purchaseRequest.getUserName()).product(purchaseRequest.getProduct()).amount(purchaseRequest.getAmount()).date(purchaseRequest.getDate()).build();
     }
 
-    public PurchaseResponse createValidPurchase(PurchaseRequest purchaseRequestObject) {
+    public PurchaseResponse createPurchase(PurchaseRequest purchaseRequestObject) {
         Purchase purchaseObject = createPurchaseObjectFromRequest(purchaseRequestObject);
         saveRepository(purchaseObject);
         return PurchaseResponse.purchaseBuilder().success(true).id(purchaseObject.getId()).userName(purchaseObject.getUserName()).product(purchaseObject.getProduct()).amount(purchaseObject.getAmount()).date(purchaseObject.getDate()).build();
@@ -34,7 +34,7 @@ public class PurchaseService {
      * @param purchase
      * @return
      */
-    public Purchase saveRepository(Purchase purchase) {
+    private Purchase saveRepository(Purchase purchase) {
         if (purchase.getId() == null || purchase.getId().toString().isEmpty()) {
             purchase.setId(UUID.randomUUID());
         }
