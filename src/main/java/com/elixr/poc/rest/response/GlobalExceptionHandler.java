@@ -10,21 +10,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
-Handling the exception and sending proper error message
- */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    /**
+     * Handling the Exception and sending error message
+     * @param methodArgumentNotValidException
+     * @return
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handelMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
-        ErrorResponse errorResponse = new ErrorResponse();
+    private ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<String> errorList = new ArrayList<>();
-        for(final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()){
-             errorList.add(error.getDefaultMessage());
+        for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
+            errorList.add(error.getDefaultMessage());
         }
-        errorResponse.setErrorMessage(errorList);
-        errorResponse.setSuccess(false);
+        ErrorResponse errorResponse = ErrorResponse.builder().errorMessage(errorList)
+                .success(false).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }
