@@ -4,10 +4,9 @@ import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.data.User;
 import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.repository.UserRepository;
-import com.elixr.poc.rest.request.UserRequest;
-import com.elixr.poc.rest.response.UserPostResponse;
 import com.elixr.poc.rest.response.UserResponse;
-import com.elixr.poc.rest.response.UserGetResponse;
+import com.elixr.poc.rest.response.ErrorResponse;
+import com.elixr.poc.rest.response.GetAllResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -46,9 +45,9 @@ public class UserService {
      * @param user
      * @return
      */
-    public UserResponse createValidUser(User user) {
+    public ErrorResponse createValidUser(User user) {
         saveDataToDatabase(user);
-        return UserPostResponse.newBuilder().id(user.getId()).userName(user.getUserName()).firstName(user.getFirstName()).lastName(user.getLastName()).build();
+        return UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName()).firstName(user.getFirstName()).lastName(user.getLastName()).build();
     }
 
     /**
@@ -68,7 +67,7 @@ public class UserService {
      * Retriving all the users
      * @return
      */
-    public UserGetResponse getAllUsers() {
-        return UserGetResponse.newGetBuilder().users(userRepository.findAll()).build();
+    public GetAllResponse getAllUsers() {
+        return GetAllResponse.builder().success(true).users(userRepository.findAll()).build();
     }
 }

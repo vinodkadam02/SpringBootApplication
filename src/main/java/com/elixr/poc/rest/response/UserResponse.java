@@ -1,18 +1,24 @@
 package com.elixr.poc.rest.response;
-
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import java.util.UUID;
 
+@Data
+public class UserResponse extends ErrorResponse {
 
-/**
- * Abstract class inherited by all user response classes
- */
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-public abstract class UserResponse {
-    protected boolean success;
-}
+    @Id
+    private UUID id;
+    private String userName;
+    private String firstName;
+    private String lastName;
+
+    @Builder
+    public UserResponse(boolean success,UUID id, String userName, String firstName, String lastName) {
+        setSuccess(success);
+        this.id = id;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }}

@@ -1,15 +1,15 @@
 package com.elixr.poc.rest.response;
-import lombok.Builder;
-import lombok.Data;
 
-import java.util.List;
+import lombok.*;
+
 
 /**
- * This class object sends the proper error message if there is any invalid user  request comes
+ * Abstract class inherited by all user response classes
  */
-@Data
-@Builder
-public class ErrorResponse extends UserResponse {
-
-    private List<String> errorMessage;
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public abstract class ErrorResponse {
+    protected boolean success;
 }
