@@ -1,7 +1,8 @@
-package com.elixr.poc.rest.response;
+package com.elixr.poc.exception;
 
 import com.elixr.poc.constants.ApplicationConstants;
-import com.elixr.poc.exception.NoRecordFoundException;
+import com.elixr.poc.rest.response.CommonErrorResponse;
+import com.elixr.poc.rest.response.PostErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -26,15 +27,13 @@ public class GlobalExceptionHandler {
         for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
             errorList.add(error.getDefaultMessage());
         }
-        ErrorResponse errorResponse = ErrorResponse.builder().errorMessage(errorList)
-                .success(false).build();
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        PostErrorResponse postErrorResponse = PostErrorResponse.builder().errorMessage(errorList).build();
+        return new ResponseEntity<>(postErrorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(NoRecordFoundException.class)
-    public ResponseEntity<?> handleNoRecordFoundException(NoRecordFoundException noRecordFoundException) {
-        CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false)
-                .errorMessage(ApplicationConstants.ID_MISMATCH).build();
+    @ExceptionHandler(GlobalException.class)
+    public ResponseEntity<?> handleGlobalException(GlobalException globalException) {
+        CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(ApplicationConstants.ID_MISMATCH).build();
         return new ResponseEntity<>(commonErrorResponse, HttpStatus.BAD_REQUEST);
     }
 }

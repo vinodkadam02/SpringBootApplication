@@ -1,7 +1,7 @@
 package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.constants.ApplicationConstants;
-import com.elixr.poc.exception.NoRecordFoundException;
+import com.elixr.poc.exception.GlobalException;
 import com.elixr.poc.rest.response.CommonErrorResponse;
 import com.elixr.poc.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -25,17 +25,16 @@ public class UserDeletionController {
      * And handling the Exception if the userId is not matching.
      */
     @DeleteMapping("/user/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable("userId") UUID userId) throws NoRecordFoundException {
-        CommonErrorResponse deleteResponse;
+    public ResponseEntity<?> deleteUser(@PathVariable("userId") UUID userId) throws GlobalException {
+        CommonErrorResponse commonErrorResponse;
         HttpStatus httpStatus;
         try {
             boolean success = userService.deleteUserDetails(userId);
-            deleteResponse = CommonErrorResponse.builder().success(success)
-                    .errorMessage(ApplicationConstants.SUCCESSFULLY_DELETED).build();
+            commonErrorResponse = CommonErrorResponse.builder().success(success).errorMessage(ApplicationConstants.SUCCESSFULLY_DELETED).build();
             httpStatus = HttpStatus.OK;
-        } catch (NoRecordFoundException noRecordFoundException) {
-            throw noRecordFoundException;
+        } catch (Throwable throwable) {
+            throw new GlobalException(ApplicationConstants.ID_MISMATCH);
         }
-        return new ResponseEntity<>(deleteResponse, httpStatus);
+        return new ResponseEntity<>(commonErrorResponse, httpStatus);
     }
 }

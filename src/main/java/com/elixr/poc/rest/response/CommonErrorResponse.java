@@ -3,9 +3,14 @@ package com.elixr.poc.rest.response;
 import lombok.Builder;
 import lombok.Data;
 
+
 @Data
-@Builder
-public class CommonErrorResponse {
-    private boolean success;
+public class CommonErrorResponse extends ErrorResponse {
     private String errorMessage;
+
+    @Builder
+    public CommonErrorResponse(boolean success, String errorMessage) {
+        setSuccess(success);
+        this.errorMessage = errorMessage;
+    }
 }

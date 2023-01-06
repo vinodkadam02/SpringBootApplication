@@ -1,7 +1,8 @@
 package com.elixr.poc.rest.controller;
 
+import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.data.User;
-import com.elixr.poc.exception.NoRecordFoundException;
+import com.elixr.poc.exception.GlobalException;
 import com.elixr.poc.rest.response.UserResponse;
 import com.elixr.poc.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
+
+/**
+ * Controller class for User retrieval operation
+ */
 
 @RestController
 @RequestMapping("/application")
@@ -30,10 +35,10 @@ public class UserRetrievalController {
      * And handling the Exception if the userId is not matching.
      * @param userId
      * @return
-     * @throws NoRecordFoundException
+     * @throws GlobalException
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity<?> retrieveUser(@PathVariable("userId") UUID userId) throws NoRecordFoundException {
+    public ResponseEntity<?> retrieveUser(@PathVariable("userId") UUID userId) throws GlobalException {
         HttpStatus httpStatus;
         try {
             User user = userService.getUserByUserId(userId);
@@ -41,8 +46,8 @@ public class UserRetrievalController {
                     .firstName(user.getFirstName()).lastName(user.getLastName()).build();
             httpStatus = HttpStatus.OK;
             return new ResponseEntity<>(userResponse, httpStatus);
-        } catch (NoRecordFoundException noRecordFoundException) {
-            throw noRecordFoundException;
+        } catch (Throwable throwable) {
+            throw new GlobalException(ApplicationConstants.ID_MISMATCH);
         }
     }
 }

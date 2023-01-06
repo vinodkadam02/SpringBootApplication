@@ -10,11 +10,19 @@ import java.util.UUID;
  */
 
 @Data
-@Builder
-public class UserResponse {
-    private boolean success;
+public class UserResponse extends ErrorResponse {
+
     private UUID id;
     private String userName;
     private String firstName;
     private String lastName;
+
+    @Builder
+    public UserResponse(boolean success, UUID id, String userName, String firstName, String lastName) {
+        setSuccess(success);
+        this.id = id;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }
