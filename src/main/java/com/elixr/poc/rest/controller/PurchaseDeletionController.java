@@ -2,7 +2,7 @@ package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.exception.NoRecordFoundException;
-import com.elixr.poc.rest.response.DeleteResponse;
+import com.elixr.poc.rest.response.CommonErrorResponse;
 import com.elixr.poc.service.PurchaseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,18 +32,15 @@ import java.util.UUID;
      * @return
      */
     @DeleteMapping("/purchase/{purchaseId}")
-    public ResponseEntity<?> deletePurchase(@PathVariable("purchaseId") UUID purchaseId) {
-        DeleteResponse deleteResponse = new DeleteResponse();
+    public ResponseEntity<?> deletePurchase(@PathVariable("purchaseId") UUID purchaseId) throws NoRecordFoundException {
+        CommonErrorResponse deleteResponse;
         HttpStatus httpStatus;
         try {
             boolean success = purchaseService.deletePurchaseDetails(purchaseId);
-            deleteResponse.setSuccess(success);
-            deleteResponse.setErrorMessage(ApplicationConstants.SUCCESSFULLY_DELETED);
+            deleteResponse = CommonErrorResponse.builder().success(success).errorMessage(ApplicationConstants.SUCCESSFULLY_DELETED).build();
             httpStatus = HttpStatus.OK;
-        } catch (NoRecordFoundException e) {
-            deleteResponse.setSuccess(false);
-            deleteResponse.setErrorMessage(e.getMessage());
-            httpStatus = HttpStatus.BAD_REQUEST;
+        } catch (NoRecordFoundException noRecordFoundException) {
+            throw noRecordFoundException;
         }
         return new ResponseEntity<>(deleteResponse, httpStatus);
     }
