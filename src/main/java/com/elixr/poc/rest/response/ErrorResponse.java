@@ -5,15 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.List;
 
-@Data
-@Builder
+/**
+ * Abstract class inherited by all user response classes
+ */
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorResponse {
-    private boolean success;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> errorMessage;
+@Getter
+@Setter
+public abstract class ErrorResponse {
+    protected boolean success;
 }
