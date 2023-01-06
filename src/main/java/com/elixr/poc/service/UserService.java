@@ -4,9 +4,9 @@ import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.data.User;
 import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.repository.UserRepository;
-import com.elixr.poc.rest.response.UserResponse;
 import com.elixr.poc.rest.response.ErrorResponse;
 import com.elixr.poc.rest.response.GetAllResponse;
+import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -42,6 +42,7 @@ public class UserService {
 
     /**
      * Creating a valid user
+     *
      * @param user
      * @return
      */
@@ -52,6 +53,7 @@ public class UserService {
 
     /**
      * Calling the repository to store data
+     *
      * @param user
      * @return
      */
@@ -65,6 +67,7 @@ public class UserService {
 
     /**
      * Retriving all the users
+     *
      * @return
      */
     public GetAllResponse getAllUsers() {

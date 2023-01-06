@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 import java.util.UUID;
 
 /**
- * This Class holds the request attributes for user related end points
+ * This Class holds the request attributes for user related end points.
  */
 
 @Data

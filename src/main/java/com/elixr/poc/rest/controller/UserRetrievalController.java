@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Controller class for User retrieval operation
+ * Controller class for User retrieval operation.
  */
 
 @RestController
