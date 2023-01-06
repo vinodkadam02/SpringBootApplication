@@ -11,6 +11,7 @@ import java.util.UUID;
 /**
  * Service class to interact with controllers for all user related operations
  */
+
 @Service
 public class UserService {
 
@@ -23,10 +24,10 @@ public class UserService {
 
     /**
      * Creating a valid user
-     *
      * @param newUser
      * @return
      */
+
     public UserPostResponse createValidUser(User newUser) {
         saveDataToDatabase(newUser);
         return UserPostResponse.newBuilder().id(newUser.getId()).userName(newUser.getUserName()).firstName(newUser.getFirstName()).lastName(newUser.getLastName()).build();
@@ -34,10 +35,10 @@ public class UserService {
 
     /**
      * Calling the repository to store data
-     *
      * @param user
      * @return
      */
+
     private void saveDataToDatabase(User user) {
 
         if (user.getId() == null || user.getId().isEmpty()) {
@@ -48,11 +49,10 @@ public class UserService {
 
     /**
      * Retriving all the users
-     *
      * @return
      */
-    public UserGetResponse getAllUsers() {
 
+    public UserGetResponse getAllUsers() {
         return UserGetResponse.newGetBuilder().users(userRepository.findAll()).build();
     }
 }
