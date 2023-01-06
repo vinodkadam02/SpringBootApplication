@@ -1,14 +1,15 @@
 package com.elixr.poc.rest.response;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 import java.util.UUID;
 
+/**
+ * This class holds the response attributes for user related end points
+ */
 @Data
 public class UserResponse extends ErrorResponse {
 
-    @Id
     private UUID id;
     private String userName;
     private String firstName;
