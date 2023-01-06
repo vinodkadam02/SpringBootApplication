@@ -26,9 +26,8 @@ public class UserRetrievalController {
     /**
      * Getting the user by userId.
      * Calling a method getUserByUserId of service class.
-     * Printing the user and HttpStatus.
+     * Returning the response.
      * And handling the Exception if the userId is not matching.
-     *
      * @param userId
      * @return
      * @throws NoRecordFoundException

@@ -25,7 +25,7 @@ public class UserService {
 
     /**
      * Deleting the user by the userId.
-     * throwing a NoRecordFoundException to handel if the UserId is not present.
+     * Throwing a NoRecordFoundException to handel if the UserId is not present.
      */
     public boolean deleteUserDetails(UUID userId) throws NoRecordFoundException {
         boolean success = false;
@@ -41,7 +41,6 @@ public class UserService {
 
     /**
      * Creating a valid user
-     *
      * @param userRequestObject
      * @return
      */
@@ -57,7 +56,6 @@ public class UserService {
 
     /**
      * Calling the repository to store data
-     *
      * @param user
      * @return
      */
@@ -72,7 +70,6 @@ public class UserService {
 
     /**
      * Finding User by userId and returning the user.
-     *
      * @param userId
      * @return
      * @throws NoRecordFoundException
