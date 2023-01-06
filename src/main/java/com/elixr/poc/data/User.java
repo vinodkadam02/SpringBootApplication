@@ -7,9 +7,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
 
+/**
+ *Entity class whose object is getting stored into db
+ */
 @Data
 @Builder
-@Document(collection = "User")
+@Document(collection = "users")
 public class User {
     @Id
     private UUID id;

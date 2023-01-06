@@ -1,18 +1,15 @@
 package com.elixr.poc.rest.response;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * This class object sends the proper error message if there is any invalid user  request comes
+ */
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class ErrorResponse {
-    private boolean success;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class ErrorResponse extends UserResponse {
+
     private List<String> errorMessage;
 }

@@ -1,22 +1,18 @@
 package com.elixr.poc.rest.response;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 
 import java.util.UUID;
 
-/**
- *  This Class holds the response attributes for user related end points
- */
 
-@Data
-@Builder
-public class UserResponse {
-    private boolean success;
-    @Id
-    private UUID id;
-    private String userName;
-    private String firstName;
-    private String lastName;
+/**
+ * Abstract class inherited by all user response classes
+ */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public abstract class UserResponse {
+    protected boolean success;
 }

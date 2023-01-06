@@ -5,13 +5,15 @@ import com.elixr.poc.data.User;
 import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.request.UserRequest;
+import com.elixr.poc.rest.response.UserPostResponse;
 import com.elixr.poc.rest.response.UserResponse;
+import com.elixr.poc.rest.response.UserGetResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 /**
- * Service class to interact with controller and create new user
+ * Service class to interact with controllers for all user related operations
  */
 @Service
 public class UserService {
@@ -20,6 +22,7 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+
     }
 
     /**
@@ -35,22 +38,17 @@ public class UserService {
         } else {
             throw new NoRecordFoundException(ApplicationConstants.ID_MISMATCH);
         }
-        return success;
+        return true;
     }
 
     /**
      * Creating a valid user
-     * @param userRequestObject
+     * @param user
      * @return
      */
-    public UserResponse createValidUser(UserRequest userRequestObject) {
-        User userObject = createUserObjectFromRequest(userRequestObject);
-        saveDataToDatabase(userObject);
-        return UserResponse.builder().success(true).id(userObject.getId()).userName(userObject.getUserName()).firstName(userObject.getFirstName()).lastName(userObject.getLastName()).build();
-    }
-
-    private User createUserObjectFromRequest(UserRequest userRequest) {
-        return User.builder().userName(userRequest.getUserName()).firstName(userRequest.getFirstName()).lastName(userRequest.getLastName()).build();
+    public UserResponse createValidUser(User user) {
+        saveDataToDatabase(user);
+        return UserPostResponse.newBuilder().id(user.getId()).userName(user.getUserName()).firstName(user.getFirstName()).lastName(user.getLastName()).build();
     }
 
     /**
@@ -58,12 +56,19 @@ public class UserService {
      * @param user
      * @return
      */
-    private User saveDataToDatabase(User user) {
+    private void saveDataToDatabase(User user) {
 
         if (user.getId() == null || user.getId().toString().isEmpty()) {
             user.setId(UUID.randomUUID());
         }
-        user = this.userRepository.save(user);
-        return user;
+        this.userRepository.save(user);
+    }
+
+    /**
+     * Retriving all the users
+     * @return
+     */
+    public UserGetResponse getAllUsers() {
+        return UserGetResponse.newGetBuilder().users(userRepository.findAll()).build();
     }
 }
