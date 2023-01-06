@@ -1,5 +1,6 @@
 package com.elixr.poc.rest.response;
 
+import com.elixr.poc.data.Purchase;
 import com.elixr.poc.data.User;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,6 @@ public class GetAllResponse extends ErrorResponse {
     @Builder
     public GetAllResponse(boolean success,List<User> users) {
        setSuccess(success);
-        this.users = users;
+        this.users = this.users;
     }
 }

@@ -4,12 +4,13 @@ import com.elixr.poc.data.Purchase;
 import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.repository.PurchaseRepository;
+import com.elixr.poc.rest.response.PurchaseGetResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 /**
- * service class for editing response and save or update new purchase to database
+ * service class to interact with controllers for all purchase related operations.
  */
 
 @Service
@@ -17,10 +18,12 @@ public class PurchaseService {
     private final PurchaseRepository purchaseRepository;
 
     public PurchaseService(PurchaseRepository purchaseRepository) {
+
         this.purchaseRepository = purchaseRepository;
     }
 
-    public void createPurchase(Purchase purchase) {
+    public void createPurchase(Purchase purchase)
+    {
         savePurchase(purchase);
     }
 
@@ -30,13 +33,15 @@ public class PurchaseService {
      * @param purchase
      * @return
      */
-    private Purchase savePurchase(Purchase purchase) {
+    private void savePurchase(Purchase purchase) {
         if (purchase.getId() == null || purchase.getId().toString().isEmpty()) {
             purchase.setId(UUID.randomUUID());
         }
-        purchase = this.purchaseRepository.save(purchase);
-        return purchase;
-        this.purchaseRepository = purchaseRepository;
+         this.purchaseRepository.save(purchase);
+    }
+    public PurchaseGetResponse getAllPurchases()
+    {
+        return PurchaseGetResponse.builder().success(true).purchase(purchaseRepository.findAll()).build();
     }
 
     /**
