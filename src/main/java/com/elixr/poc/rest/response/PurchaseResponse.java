@@ -1,4 +1,5 @@
 package com.elixr.poc.rest.response;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -8,7 +9,6 @@ import java.util.UUID;
 /**
  * This Class holds the response attributes for purchase related end points
  */
-
 @Data
 public class PurchaseResponse extends ErrorResponse {
 
@@ -21,7 +21,7 @@ public class PurchaseResponse extends ErrorResponse {
 
     @Builder(builderMethodName = "purchaseBuilder")
     public PurchaseResponse(boolean success, List<String> errorMessage, UUID id, String userName, String product, String amount, String date) {
-        super(success, errorMessage);
+        setSuccess(true);
         this.id = id;
         this.userName = userName;
         this.product = product;

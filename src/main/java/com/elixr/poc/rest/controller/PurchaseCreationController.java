@@ -28,7 +28,7 @@ public class PurchaseCreationController {
     }
 
     @PostMapping("/purchase")
-    public ResponseEntity<?> addPurchase(@RequestBody @Valid PurchaseRequest newPurchase) {
+    public ResponseEntity addPurchase(@RequestBody @Valid PurchaseRequest newPurchase) {
         Purchase purchase = Purchase.builder().userName(newPurchase.getUserName()).product(newPurchase.getProduct()).amount(newPurchase.getAmount()).date(newPurchase.getDate()).build();
         purchaseService.createPurchase(purchase);
 

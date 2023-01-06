@@ -1,6 +1,6 @@
 package com.elixr.poc.exception;
 
-import com.elixr.poc.rest.response.ErrorResponse;
+import com.elixr.poc.rest.response.PostErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -16,6 +16,7 @@ public class GlobalExceptionHandler {
 
     /**
      * Handling the Exception and sending error message
+     *
      * @param methodArgumentNotValidException
      * @return
      */
@@ -25,8 +26,7 @@ public class GlobalExceptionHandler {
         for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
             errorList.add(error.getDefaultMessage());
         }
-        ErrorResponse errorResponse = ErrorResponse.builder().errorMessage(errorList)
-                .success(false).build();
+        PostErrorResponse errorResponse = PostErrorResponse.builder().errorMessage(errorList).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }

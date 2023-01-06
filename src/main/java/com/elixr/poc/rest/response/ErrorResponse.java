@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorResponse {
-    private boolean success;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> errorMessage;
+public abstract class ErrorResponse {
+    protected boolean success;
+
 }
