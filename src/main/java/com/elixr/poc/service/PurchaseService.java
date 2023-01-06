@@ -29,10 +29,11 @@ public class PurchaseService {
      * @param purchase
      * @return
      */
-    private void savePurchase(Purchase purchase) {
+    private Purchase savePurchase(Purchase purchase) {
         if (purchase.getId() == null || purchase.getId().toString().isEmpty()) {
             purchase.setId(UUID.randomUUID());
         }
-        this.purchaseRepository.save(purchase);
+        purchase = this.purchaseRepository.save(purchase);
+        return purchase;
     }
 }
