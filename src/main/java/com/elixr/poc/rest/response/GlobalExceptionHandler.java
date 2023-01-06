@@ -16,6 +16,11 @@ Handling the exception and sending proper error message
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    /**
+     * Handles MethodArgumentNotValidException
+     * @param methodArgumentNotValidException
+     * @return
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<String> errorList = new ArrayList<>();

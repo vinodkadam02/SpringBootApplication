@@ -5,6 +5,9 @@ package com.elixr.poc.constant;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+/**
+ * Constants class holds all the error messages
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplicationConstants {
 

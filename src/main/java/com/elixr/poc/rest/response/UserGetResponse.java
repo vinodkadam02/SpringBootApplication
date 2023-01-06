@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Sends successful response to the user while retrieval operation
+ */
 @Data
 public class UserGetResponse extends UserResponse {
     private List<User> users;

@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Abstract class inherited by all user response classes
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
