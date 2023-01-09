@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleGenericException(Exception exception){
-        CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(ApplicationConstants.BLANK_ID).build();
+        CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(exception.getLocalizedMessage()).build();
         return new ResponseEntity<>(commonErrorResponse, HttpStatus.BAD_REQUEST);
     }
 }
