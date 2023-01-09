@@ -18,4 +18,5 @@ public class ApplicationConstants {
     public static final String AMOUNT_MISSING_IN_PURCHASE = "Amount is mandatory";
     public static final String PRODUCT_NAME_IS_MISSING_IN_PURCHASE = "Product name is mandatory";
     public static final String DATE_MISSING_IN_PURCHASE = "Date is mandatory";
+    public static final String NULL_ID = "The Id is Invalid";
 }
