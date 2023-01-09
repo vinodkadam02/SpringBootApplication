@@ -3,7 +3,6 @@ package com.elixr.poc.service;
 import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.data.User;
 import com.elixr.poc.exception.GlobalException;
-import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
@@ -67,7 +66,7 @@ public class UserService {
      * Finding User by userId and returning the user.
      * @param userId
      * @return
-     * @throws NoRecordFoundException
+     * @throws GlobalException
      */
     public User getUserByUserId(UUID userId) throws  GlobalException {
         Optional<User> user = userRepository.findById(userId);
