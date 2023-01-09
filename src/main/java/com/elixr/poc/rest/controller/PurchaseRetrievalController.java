@@ -15,10 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
+/**
+ * Controller class for purchase details.
+ */
+
 @Validated
 @RestController
 @RequestMapping("/controller")
 public class PurchaseRetrievalController {
+    /**
+     * Getting the purchase by purchaseID
+     * Calling a method getPurchaseByPurchaseID
+     * Returning the response
+     * And handling the exception if the purchaseId is not matching.
+     */
     private final PurchaseService purchaseService;
 
     public PurchaseRetrievalController(PurchaseService purchaseService) {
@@ -30,7 +40,9 @@ public class PurchaseRetrievalController {
         HttpStatus httpStatus;
         try {
             Purchase purchase = purchaseService.getPurchaseByPurchaseId(purchaseId);
-            PurchaseResponse purchaseResponse = PurchaseResponse.purchaseBuilder().success(true).id(purchase.getId()).userName(purchase.getUserName()).product(purchase.getProduct()).amount(purchase.getAmount()).date(purchase.getDate()).build();
+            PurchaseResponse purchaseResponse = PurchaseResponse.purchaseBuilder().success(true).id(purchase.getId())
+                    .userName(purchase.getUserName()).product(purchase.getProduct()).amount(purchase.getAmount())
+                    .date(purchase.getDate()).build();
             httpStatus = HttpStatus.OK;
             return new ResponseEntity<>(purchaseResponse, httpStatus);
         } catch (GlobalException globalException) {

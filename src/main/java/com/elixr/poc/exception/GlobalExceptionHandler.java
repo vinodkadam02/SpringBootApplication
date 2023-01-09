@@ -17,7 +17,8 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     /**
-     * Handles MethodArgumentNotValidException
+     * Handle the execption and sending the error message
+     *
      * @param methodArgumentNotValidException
      * @return
      */
@@ -27,12 +28,19 @@ public class GlobalExceptionHandler {
         for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
             errorList.add(error.getDefaultMessage());
         }
-       PostErrorResponse errorResponse = PostErrorResponse.builder().errorMessage(errorList).build();
+        PostErrorResponse errorResponse = PostErrorResponse.builder().errorMessage(errorList).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(GlobalException.class)
-        public ResponseEntity handleGlobalException(GlobalException globalException){
-            CommonErrorResponse commanErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(ApplicationConstants.ID_MISMATCH).build();
-            return new ResponseEntity<>(commanErrorResponse,HttpStatus.BAD_REQUEST);
+    public ResponseEntity handleGlobalException(GlobalException globalException) {
+        CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(ApplicationConstants.ID_MISMATCH).build();
+        return new ResponseEntity<>(commonErrorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity handleGenericException(Exception exception){
+        CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(ApplicationConstants.BLANK_ID).build();
+        return new ResponseEntity<>(commonErrorResponse, HttpStatus.BAD_REQUEST);
     }
 }

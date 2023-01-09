@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Send successful response to user while reterival operations.
+ */
 @Data
 public class PurchaseGetResponse extends ErrorResponse {
 

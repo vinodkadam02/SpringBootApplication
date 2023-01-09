@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * This Class holds the response attributes for purchase related end points
+ * This Class holds the response attributes for purchase related end points.
  */
 
 @Data
