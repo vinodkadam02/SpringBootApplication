@@ -32,8 +32,8 @@ public class UserDeletionController {
             boolean success = userService.deleteUserDetails(userId);
             commonErrorResponse = CommonErrorResponse.builder().success(success).errorMessage(ApplicationConstants.SUCCESSFULLY_DELETED).build();
             httpStatus = HttpStatus.OK;
-        } catch (Throwable throwable) {
-            throw new GlobalException(ApplicationConstants.ID_MISMATCH);
+        } catch (GlobalException globalException) {
+            throw globalException;
         }
         return new ResponseEntity<>(commonErrorResponse, httpStatus);
     }

@@ -5,8 +5,6 @@ import com.elixr.poc.data.User;
 import com.elixr.poc.exception.GlobalException;
 import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.repository.UserRepository;
-import com.elixr.poc.rest.request.UserRequest;
-import com.elixr.poc.rest.response.CommonErrorResponse;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 

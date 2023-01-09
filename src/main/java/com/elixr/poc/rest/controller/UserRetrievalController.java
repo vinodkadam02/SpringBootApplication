@@ -46,8 +46,8 @@ public class UserRetrievalController {
                     .firstName(user.getFirstName()).lastName(user.getLastName()).build();
             httpStatus = HttpStatus.OK;
             return new ResponseEntity<>(userResponse, httpStatus);
-        } catch (Throwable throwable) {
-            throw new GlobalException(ApplicationConstants.ID_MISMATCH);
+        } catch (GlobalException globalException) {
+            throw globalException;
         }
     }
 }
