@@ -4,10 +4,11 @@ import com.elixr.poc.data.Purchase;
 import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.service.PurchaseService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -25,12 +26,11 @@ public class PurchaseModificationController {
      * And handling the Exception if the userId is not matching.
      *
      * @param purchaseId
-     * @param fields
      * @return
      * @throws NoRecordFoundException
      */
     @PatchMapping("/purchase/{purchaseId}")
-    public Purchase updatePurchase(@PathVariable("purchaseId") @Valid UUID purchaseId, @RequestBody Map<String, String> fields) throws NoRecordFoundException {
-        return purchaseService.updatePurchase(purchaseId, fields);
+    public ResponseEntity<Purchase> updateUserPartially(@PathVariable("purchaseId") UUID purchaseId, @RequestBody @Valid Purchase purchaseDetails) throws NoRecordFoundException {
+        return new ResponseEntity<>(purchaseService.updateUserPartially(purchaseId, purchaseDetails), HttpStatus.OK);
     }
 }
