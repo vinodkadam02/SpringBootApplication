@@ -38,7 +38,7 @@ public class UserRetrievalController {
      * @throws GlobalException
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity<?> retrieveUser(@PathVariable("userId") UUID userId) throws GlobalException {
+    public ResponseEntity retrieveUser(@PathVariable("userId") UUID userId) throws GlobalException {
         HttpStatus httpStatus;
         try {
             User user = userService.getUserByUserId(userId);

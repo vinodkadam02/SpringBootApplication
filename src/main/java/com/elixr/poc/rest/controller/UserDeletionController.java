@@ -25,7 +25,7 @@ public class UserDeletionController {
      * And handling the Exception if the userId is not matching.
      */
     @DeleteMapping("/user/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable("userId") UUID userId) throws GlobalException {
+    public ResponseEntity deleteUser(@PathVariable("userId") UUID userId) throws GlobalException {
         CommonErrorResponse commonErrorResponse;
         HttpStatus httpStatus;
         try {
