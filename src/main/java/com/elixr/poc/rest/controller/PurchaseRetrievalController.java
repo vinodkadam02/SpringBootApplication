@@ -15,7 +15,7 @@ public class PurchaseRetrievalController {
         this.purchaseService = purchaseService;
     }
 
-    @GetMapping("/getPurchase")
+    @GetMapping("/purchase")
     public PurchaseGetResponse getAllPurchase() {
         return purchaseService.getAllPurchases();
     }

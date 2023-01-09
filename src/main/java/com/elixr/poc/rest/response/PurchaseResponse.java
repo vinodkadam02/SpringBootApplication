@@ -21,7 +21,7 @@ public class PurchaseResponse extends ErrorResponse {
 
     @Builder(builderMethodName = "purchaseBuilder")
     public PurchaseResponse(boolean success, List<String> errorMessage, UUID id, String userName, String product, String amount, String date) {
-        super(success, errorMessage);
+        super(success);
         this.id = id;
         this.userName = userName;
         this.product = product;

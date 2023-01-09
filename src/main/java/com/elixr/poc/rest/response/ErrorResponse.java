@@ -1,6 +1,8 @@
 package com.elixr.poc.rest.response;
 import lombok.*;
 
+import java.util.List;
+
 /**
  * Abstract class inherited by all purchase response classes
  */
