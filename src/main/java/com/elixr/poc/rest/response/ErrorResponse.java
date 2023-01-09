@@ -11,5 +11,5 @@ import lombok.*;
 @Getter
 @Setter
 public abstract class ErrorResponse {
-    protected boolean success;
+    private boolean success;
 }

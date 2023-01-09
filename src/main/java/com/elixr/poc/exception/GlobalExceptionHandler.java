@@ -1,10 +1,11 @@
 package com.elixr.poc.exception;
 
+import com.elixr.poc.constants.ApplicationConstants;
+import com.elixr.poc.rest.response.CommonErrorResponse;
 import com.elixr.poc.rest.response.PostErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,13 +22,17 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+    public ResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<String> errorList = new ArrayList<>();
         for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
             errorList.add(error.getDefaultMessage());
         }
-       PostErrorResponse errorResponse = PostErrorResponse.builder().errorMessage(errorList)
-                .build();
+       PostErrorResponse errorResponse = PostErrorResponse.builder().errorMessage(errorList).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(GlobalException.class)
+        public ResponseEntity handleGlobalException(GlobalException globalException){
+            CommonErrorResponse commanErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(ApplicationConstants.ID_MISMATCH).build();
+            return new ResponseEntity<>(commanErrorResponse,HttpStatus.BAD_REQUEST);
     }
 }
