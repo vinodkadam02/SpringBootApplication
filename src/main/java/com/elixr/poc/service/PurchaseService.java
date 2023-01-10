@@ -2,8 +2,9 @@ package com.elixr.poc.service;
 
 import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.data.Purchase;
-import com.elixr.poc.exception.NoRecordFoundException;
+import com.elixr.poc.exception.GlobalException;
 import com.elixr.poc.repository.PurchaseRepository;
+import com.elixr.poc.rest.request.PurchaseRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -21,16 +22,16 @@ public class PurchaseService {
      *
      * @param purchaseId
      * @return
-     * @throws NoRecordFoundException
+     * @throws GlobalException
      */
-    public boolean deletePurchaseDetails(UUID purchaseId) throws NoRecordFoundException {
+    public boolean deletePurchaseDetails(UUID purchaseId) throws GlobalException {
         boolean success;
         boolean purchaseRecordExists = purchaseRepository.existsById(purchaseId);
         if (purchaseRecordExists) {
             purchaseRepository.deleteById(purchaseId);
             success = true;
         } else {
-            throw new NoRecordFoundException(ApplicationConstants.ID_MISMATCH);
+            throw new GlobalException(ApplicationConstants.ID_MISMATCH);
         }
         return success;
     }
@@ -40,10 +41,10 @@ public class PurchaseService {
      *
      * @param purchaseId
      * @return
-     * @throws NoRecordFoundException
+     * @throws GlobalException
      */
-    public Purchase updateUserPartially(UUID purchaseId, Purchase purchaseDetails) throws NoRecordFoundException {
-        Purchase purchase = purchaseRepository.findById(purchaseId).orElseThrow(() -> new NoRecordFoundException("User not found on :: " + purchaseId));
+    public Purchase updateUserPartially(UUID purchaseId, PurchaseRequest purchaseDetails) throws GlobalException {
+        Purchase purchase = purchaseRepository.findById(purchaseId).orElseThrow(() -> new GlobalException("Purchase not found on :: " + purchaseId));
         purchase.setUserName(purchaseDetails.getUserName());
         purchase.setProduct(purchaseDetails.getProduct());
         purchase.setAmount(purchaseDetails.getAmount());

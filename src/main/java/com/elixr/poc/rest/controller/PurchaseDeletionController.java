@@ -1,7 +1,7 @@
 package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.constants.ApplicationConstants;
-import com.elixr.poc.exception.NoRecordFoundException;
+import com.elixr.poc.exception.GlobalException;
 import com.elixr.poc.rest.response.CommonErrorResponse;
 import com.elixr.poc.service.PurchaseService;
 import org.springframework.http.HttpStatus;
@@ -32,16 +32,12 @@ import java.util.UUID;
      * @return
      */
     @DeleteMapping("/purchase/{purchaseId}")
-    public ResponseEntity<?> deletePurchase(@PathVariable("purchaseId") UUID purchaseId) throws NoRecordFoundException {
+    public ResponseEntity<?> deletePurchase(@PathVariable("purchaseId") UUID purchaseId) throws GlobalException {
         CommonErrorResponse deleteResponse;
         HttpStatus httpStatus;
-        try {
-            boolean success = purchaseService.deletePurchaseDetails(purchaseId);
-            deleteResponse = CommonErrorResponse.builder().success(success).errorMessage(ApplicationConstants.SUCCESSFULLY_DELETED).build();
-            httpStatus = HttpStatus.OK;
-        } catch (NoRecordFoundException noRecordFoundException) {
-            throw noRecordFoundException;
-        }
+        boolean success = purchaseService.deletePurchaseDetails(purchaseId);
+        deleteResponse = CommonErrorResponse.builder().success(success).errorMessage(ApplicationConstants.SUCCESSFULLY_DELETED).build();
+        httpStatus = HttpStatus.OK;
         return new ResponseEntity<>(deleteResponse, httpStatus);
     }
 }

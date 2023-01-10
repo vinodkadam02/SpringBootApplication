@@ -1,7 +1,7 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.data.Purchase;
-import com.elixr.poc.exception.NoRecordFoundException;
+import com.elixr.poc.exception.GlobalException;
+import com.elixr.poc.rest.request.PurchaseRequest;
 import com.elixr.poc.service.PurchaseService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,10 +27,10 @@ public class PurchaseModificationController {
      *
      * @param purchaseId
      * @return
-     * @throws NoRecordFoundException
+     * @throws GlobalException
      */
     @PatchMapping("/purchase/{purchaseId}")
-    public ResponseEntity<Purchase> updateUserPartially(@PathVariable("purchaseId") UUID purchaseId, @RequestBody @Valid Purchase purchaseDetails) throws NoRecordFoundException {
+    public ResponseEntity updateUserPartially(@PathVariable("purchaseId") UUID purchaseId, @RequestBody @Valid PurchaseRequest purchaseDetails) throws GlobalException {
         return new ResponseEntity<>(purchaseService.updateUserPartially(purchaseId, purchaseDetails), HttpStatus.OK);
     }
 }

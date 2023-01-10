@@ -7,11 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Abstract class inherited by all response classes
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorResponse {
+public class AppResponse {
     private boolean success;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> errorMessage;
