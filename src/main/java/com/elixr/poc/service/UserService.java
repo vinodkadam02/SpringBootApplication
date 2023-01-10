@@ -5,7 +5,6 @@ import com.elixr.poc.data.User;
 import com.elixr.poc.exception.GlobalException;
 import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.response.UserResponse;
-import org.bson.assertions.Assertions;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -26,6 +25,9 @@ public class UserService {
     /**
      * Deleting the user by the userId.
      * Throwing a NoRecordFoundException to handel if the UserId is not present.
+     * @param userId
+     * @return
+     * @throws GlobalException
      */
     public boolean deleteUserDetails(UUID userId) throws GlobalException {
         boolean success = false;
@@ -41,7 +43,6 @@ public class UserService {
 
     /**
      * Creating a valid user
-     *
      * @param user
      * @return
      */
@@ -52,7 +53,6 @@ public class UserService {
 
     /**
      * Calling the repository to store data
-     *
      * @param user
      * @return
      */
@@ -67,16 +67,11 @@ public class UserService {
 
     /**
      * Finding User by userId and returning the user.
-     *
      * @param userId
      * @return
      * @throws GlobalException
      */
     public User getUserByUserId(UUID userId) throws GlobalException {
-//       if(Assertions.assertNotNull(userId).toString().isEmpty()){
-//           return new Exception(ApplicationConstants.NULL_ID);
-//        }
-       // Assertions.notNull(userId.toString(),userId);
         Optional<User> user = userRepository.findById(userId);
         return user.orElseThrow(() -> new GlobalException(ApplicationConstants.ID_MISMATCH));
     }

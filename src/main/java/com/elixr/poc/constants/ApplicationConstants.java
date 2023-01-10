@@ -1,7 +1,7 @@
 package com.elixr.poc.constants;
 
 /**
- * this constant file holds all the error messages for all the end points
+ * This constant file holds all the error messages for all the end points
  */
 
 import lombok.AccessLevel;
