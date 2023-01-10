@@ -32,15 +32,27 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * URL exceptions are handled.
+     * @param globalException
+     * @return
+     */
+
     @ExceptionHandler(GlobalException.class)
     public ResponseEntity handleGlobalException(GlobalException globalException) {
         CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(ApplicationConstants.ID_MISMATCH).build();
         return new ResponseEntity<>(commonErrorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Generic exceptions are handled.
+     * @param exception
+     * @return
+     */
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleGenericException(Exception exception){
         CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(exception.getLocalizedMessage()).build();
-        return new ResponseEntity<>(commonErrorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(commonErrorResponse, HttpStatus.NOT_FOUND);
     }
 }

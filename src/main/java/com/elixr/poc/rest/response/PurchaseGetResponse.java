@@ -10,7 +10,7 @@ import java.util.List;
  * Send successful response to user while reterival operations.
  */
 @Data
-public class PurchaseGetResponse extends ErrorResponse {
+public class PurchaseGetResponse extends AppResponse {
 
     private List<Purchase> purchase;
 

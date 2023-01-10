@@ -10,6 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public abstract class ErrorResponse {
+public abstract class AppResponse {
     private boolean success;
 }

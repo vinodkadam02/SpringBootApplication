@@ -38,15 +38,11 @@ public class PurchaseRetrievalController {
     @GetMapping("/purchase/{purchaseId}")
     public ResponseEntity retrievePurchase(@PathVariable("purchaseId") @Valid UUID purchaseId) throws GlobalException {
         HttpStatus httpStatus;
-        try {
             Purchase purchase = purchaseService.getPurchaseByPurchaseId(purchaseId);
             PurchaseResponse purchaseResponse = PurchaseResponse.purchaseBuilder().success(true).id(purchase.getId())
                     .userName(purchase.getUserName()).product(purchase.getProduct()).amount(purchase.getAmount())
                     .date(purchase.getDate()).build();
             httpStatus = HttpStatus.OK;
             return new ResponseEntity<>(purchaseResponse, httpStatus);
-        } catch (GlobalException globalException) {
-            throw globalException;
-        }
     }
 }

@@ -12,9 +12,8 @@ import java.util.UUID;
  */
 
 @Data
-public class PurchaseResponse extends ErrorResponse {
+public class PurchaseResponse extends AppResponse {
 
-    @Id
     private UUID id;
     private String userName;
     private String product;
