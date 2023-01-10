@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+
+/**
+ * Abstract class inherited by all user response classes
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
