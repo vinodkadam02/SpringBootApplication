@@ -6,6 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+/**
+ * Repository interface to communicate with database
+ */
+
 @Repository
 public interface UserRepository extends MongoRepository<User, UUID> {
 }
