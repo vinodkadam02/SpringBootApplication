@@ -33,7 +33,7 @@ public class PurchaseService {
         if (purchase.getId() == null || purchase.getId().toString().isEmpty()) {
             purchase.setId(UUID.randomUUID());
         }
-        purchase = this.purchaseRepository.save(purchase);
+        purchase = purchaseRepository.save(purchase);
         return purchase;
     }
 }
