@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequestMapping("/controller")
 public class PurchaseCreationController {
-
     private final PurchaseService purchaseService;
 
     public PurchaseCreationController(PurchaseService purchaseService) {
@@ -29,9 +28,11 @@ public class PurchaseCreationController {
 
     @PostMapping("/purchase")
     public ResponseEntity addPurchase(@RequestBody @Valid PurchaseRequest newPurchase) {
-        Purchase purchase = Purchase.builder().userName(newPurchase.getUserName()).product(newPurchase.getProduct()).amount(newPurchase.getAmount()).date(newPurchase.getDate()).build();
+        Purchase purchase = Purchase.builder().userName(newPurchase.getUserName()).product(newPurchase.getProduct())
+                .amount(newPurchase.getAmount()).date(newPurchase.getDate()).build();
         purchaseService.createPurchase(purchase);
-
-        return new ResponseEntity<>(PurchaseResponse.purchaseBuilder().success(true).id(purchase.getId()).userName(purchase.getUserName()).product(purchase.getProduct()).amount(purchase.getAmount()).date(purchase.getDate()).build(), HttpStatus.OK);
+        return new ResponseEntity<>(PurchaseResponse.purchaseBuilder().success(true).id(purchase.getId())
+                .userName(purchase.getUserName()).product(purchase.getProduct()).amount(purchase.getAmount())
+                .date(purchase.getDate()).build(), HttpStatus.OK);
     }
 }

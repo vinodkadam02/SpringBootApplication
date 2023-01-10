@@ -10,7 +10,6 @@ import java.util.UUID;
 @Builder
 @Document(collection = "purchaseDetails")
 public class Purchase {
-    @Id
     private UUID id;
     private String userName;
     private String product;
