@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Abstract class inherited by all user response classes
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
