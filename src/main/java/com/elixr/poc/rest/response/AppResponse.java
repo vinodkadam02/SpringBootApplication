@@ -4,7 +4,7 @@ import lombok.*;
 
 
 /**
- * Abstract class inherited by all user response classes
+ * Abstract class inherited by all response classes
  */
 @AllArgsConstructor
 @NoArgsConstructor
