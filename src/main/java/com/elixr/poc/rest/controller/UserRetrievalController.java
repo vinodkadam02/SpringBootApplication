@@ -41,17 +41,12 @@ public class UserRetrievalController {
      * @throws GlobalException
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity retrieveUser(@PathVariable("userId") @Valid UUID userId) throws GlobalException {
+    public ResponseEntity retrieveUser(@PathVariable("userId") @Valid UUID userId) {
         HttpStatus httpStatus;
-        try {
-            User.builder().build().setId(userId);
             User user = userService.getUserByUserId(userId);
             UserResponse userResponse = UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName())
                     .firstName(user.getFirstName()).lastName(user.getLastName()).build();
             httpStatus = HttpStatus.OK;
             return new ResponseEntity<>(userResponse, httpStatus);
-        } catch (GlobalException globalException) {
-            throw globalException;
-        }
     }
 }

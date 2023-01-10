@@ -28,16 +28,12 @@ public class UserDeletionController {
      * And handling the Exception if the userId is not matching.
      */
     @DeleteMapping("/user/{userId}")
-    public ResponseEntity deleteUser(@PathVariable("userId") @Valid UUID userId) throws GlobalException {
+    public ResponseEntity deleteUser(@PathVariable("userId") @Valid UUID userId) {
         CommonErrorResponse commonErrorResponse;
         HttpStatus httpStatus;
-        try {
             boolean success = userService.deleteUserDetails(userId);
             commonErrorResponse = CommonErrorResponse.builder().success(success).errorMessage(ApplicationConstants.SUCCESSFULLY_DELETED).build();
             httpStatus = HttpStatus.OK;
-        } catch (GlobalException globalException) {
-            throw globalException;
-        }
         return new ResponseEntity<>(commonErrorResponse, httpStatus);
     }
 }

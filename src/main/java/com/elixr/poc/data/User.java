@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 @Data
 @Builder
-@Document(collection = "User")
+@Document(collection = "users")
 public class User {
     @Id
     private UUID id;

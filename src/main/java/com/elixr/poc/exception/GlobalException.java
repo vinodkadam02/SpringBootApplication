@@ -1,6 +1,9 @@
 package com.elixr.poc.exception;
 
-public class GlobalException extends Exception {
+/**
+ * Handling the exception when there is incorrect URL.
+ */
+public class GlobalException extends RuntimeException {
     public GlobalException(String message) {
         super(message);
     }

@@ -5,7 +5,7 @@ import lombok.Data;
 
 
 @Data
-public class CommonErrorResponse extends ErrorResponse {
+public class CommonErrorResponse extends AppResponse {
     private String errorMessage;
 
     @Builder

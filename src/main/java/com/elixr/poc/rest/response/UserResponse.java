@@ -10,7 +10,7 @@ import java.util.UUID;
  */
 
 @Data
-public class UserResponse extends ErrorResponse {
+public class UserResponse extends AppResponse {
 
     private UUID id;
     private String userName;
