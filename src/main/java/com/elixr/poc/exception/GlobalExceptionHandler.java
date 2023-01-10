@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(GlobalException.class)
     public ResponseEntity handleGlobalException(GlobalException globalException) {
         CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(ApplicationConstants.ID_MISMATCH).build();
-        return new ResponseEntity<>(commonErrorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(commonErrorResponse, HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -53,6 +53,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleGenericException(Exception exception){
         CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(exception.getLocalizedMessage()).build();
-        return new ResponseEntity<>(commonErrorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(commonErrorResponse, HttpStatus.BAD_REQUEST);
     }
 }
