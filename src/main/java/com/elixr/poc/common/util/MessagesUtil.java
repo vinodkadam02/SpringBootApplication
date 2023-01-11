@@ -15,31 +15,30 @@ public class MessagesUtil {
     private static final String MESSAGE_PROPERTY_FILE_PREFIX = "messages";
     private static ResourceBundle moduleMessagesResourceBundle;
 
-    static{
-        try{
+    static {
+        try {
             // Initialize messagesResourceBundle in a static block because the module may not have messages.properties.
             moduleMessagesResourceBundle = ResourceBundle.getBundle(MESSAGE_PROPERTY_FILE_PREFIX);
-        }
-        catch (MissingResourceException e){
+        } catch (MissingResourceException e) {
             moduleMessagesResourceBundle = null;
         }
     }
 
-    public static String getMessage(String key, Object ... arguments){
+    public static String getMessage(String key, Object... arguments) {
 
         String message = null;
-        if(moduleMessagesResourceBundle != null){
+        if (moduleMessagesResourceBundle != null) {
             message = getMessage(moduleMessagesResourceBundle, key, arguments);
-            if(!message.equals(key)){
+            if (!message.equals(key)) {
                 return message;
             }
         }
         return key;
     }
 
-    public static String getMessage(ResourceBundle resourceBundle, String key, Object ... arguments){
+    public static String getMessage(ResourceBundle resourceBundle, String key, Object... arguments) {
 
-        if(resourceBundle.containsKey(key)){
+        if (resourceBundle.containsKey(key)) {
             String error = resourceBundle.getString(key);
             return MessageFormat.format(error, arguments);
         }
