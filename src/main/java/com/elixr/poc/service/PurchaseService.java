@@ -1,7 +1,7 @@
 package com.elixr.poc.service;
 
+import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.constants.ApplicationConstants;
-import com.elixr.poc.common.exception.GlobalException;
 import com.elixr.poc.repository.PurchaseRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +20,16 @@ public class PurchaseService {
      *
      * @param purchaseId
      * @return
-     * @throws GlobalException
+     * @throws IdNotFoundException
      */
-    public boolean deletePurchaseDetails(UUID purchaseId) throws GlobalException {
+    public boolean deletePurchaseDetails(UUID purchaseId) throws IdNotFoundException {
         boolean success = false;
         boolean purchaseRecordExists = purchaseRepository.existsById(purchaseId);
         if (purchaseRecordExists) {
             purchaseRepository.deleteById(purchaseId);
             success = true;
         } else {
-            throw new GlobalException(ApplicationConstants.ID_MISMATCH);
+            throw new IdNotFoundException(ApplicationConstants.ID_MISMATCH);
         }
         return success;
     }

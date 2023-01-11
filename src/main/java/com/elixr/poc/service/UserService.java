@@ -1,9 +1,9 @@
 package com.elixr.poc.service;
 
 import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
-import com.elixr.poc.common.exception.GlobalException;
 import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.response.AppResponse;
 import com.elixr.poc.rest.response.GetAllResponse;
@@ -31,14 +31,14 @@ public class UserService {
      * Deleting the user by the userId.
      * throwing a GlobalException to handel if the UserId is not present.
      */
-    public boolean deleteUserDetails(UUID userId) throws GlobalException {
+    public boolean deleteUserDetails(UUID userId) throws IdNotFoundException {
         boolean success = false;
         boolean userRecordExists = userRepository.existsById(userId);
         if (userRecordExists) {
             userRepository.deleteById(userId);
             success = true;
         } else {
-            throw new GlobalException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_NOT_EXISTS.getKey()));
+            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_NOT_EXISTS.getKey()));
         }
         return true;
     }
