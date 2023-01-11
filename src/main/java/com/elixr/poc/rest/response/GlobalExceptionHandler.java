@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
         for(final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()){
              errorList.add(error.getDefaultMessage());
         }
-    ErrorResponse errorResponse = ErrorResponse.builder().errorMessage(errorList).build();
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    AppResponse appResponse = AppResponse.builder().errorMessage(errorList).build();
+        return new ResponseEntity<>(appResponse, HttpStatus.BAD_REQUEST);
     }
 }

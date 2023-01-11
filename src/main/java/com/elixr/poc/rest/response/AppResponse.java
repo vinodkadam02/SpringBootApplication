@@ -8,7 +8,7 @@ import java.util.List;
  */
 @Data
 @Builder
-public class ErrorResponse extends UserResponse {
+public class AppResponse extends UserResponse {
 
     private List<String> errorMessage;
 }

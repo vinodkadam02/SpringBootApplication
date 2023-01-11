@@ -1,6 +1,6 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.rest.response.UserGetResponse;
+import com.elixr.poc.rest.response.GetAllResponse;
 import com.elixr.poc.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ public class UserRetrievalController {
     }
 
     @GetMapping("/users")
-    public UserGetResponse getAllUser() {
+    public GetAllResponse getAllUser() {
         return userService.getAllUsers();
     }
 }

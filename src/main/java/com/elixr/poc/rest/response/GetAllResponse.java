@@ -10,11 +10,11 @@ import java.util.List;
  * Sends successful response to the user while retrieval operation
  */
 @Data
-public class UserGetResponse extends UserResponse {
+public class GetAllResponse extends UserResponse {
     private List<User> users;
 
     @Builder(builderMethodName = "newGetBuilder")
-    public UserGetResponse(List<User> users) {
+    public GetAllResponse(List<User> users) {
        setSuccess(true);
         this.users = users;
     }

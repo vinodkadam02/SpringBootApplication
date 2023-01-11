@@ -2,7 +2,7 @@ package com.elixr.poc.service;
 
 import com.elixr.poc.data.User;
 import com.elixr.poc.repository.UserRepository;
-import com.elixr.poc.rest.response.UserGetResponse;
+import com.elixr.poc.rest.response.GetAllResponse;
 import com.elixr.poc.rest.response.UserPostResponse;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +48,7 @@ public class UserService {
      * Retriving all the users
      * @return
      */
-    public UserGetResponse getAllUsers() {
-        return UserGetResponse.newGetBuilder().users(userRepository.findAll()).build();
+    public GetAllResponse getAllUsers() {
+        return GetAllResponse.newGetBuilder().users(userRepository.findAll()).build();
     }
 }
