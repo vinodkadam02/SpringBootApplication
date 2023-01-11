@@ -30,7 +30,8 @@ public class PurchaseModificationController {
      * @throws GlobalException
      */
     @PatchMapping("/purchase/{purchaseId}")
-    public ResponseEntity updateUserPartially(@PathVariable("purchaseId") UUID purchaseId, @RequestBody @Valid PurchaseRequest purchaseDetails) throws GlobalException {
-        return new ResponseEntity<>(purchaseService.updateUserPartially(purchaseId, purchaseDetails), HttpStatus.OK);
+    public ResponseEntity purchaseUpdate(@PathVariable("purchaseId") UUID purchaseId,
+                                         @RequestBody @Valid PurchaseRequest purchaseDetails) throws GlobalException {
+        return new ResponseEntity<>(purchaseService.purchaseUpdate(purchaseId, purchaseDetails), HttpStatus.OK);
     }
 }

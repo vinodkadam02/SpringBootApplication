@@ -1,8 +1,9 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.constants.ApplicationConstants;
+import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.exception.GlobalException;
-import com.elixr.poc.rest.response.CommonErrorResponse;
+import com.elixr.poc.rest.response.CommonResponse;
 import com.elixr.poc.service.PurchaseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +33,12 @@ import java.util.UUID;
      * @return
      */
     @DeleteMapping("/purchase/{purchaseId}")
-    public ResponseEntity<?> deletePurchase(@PathVariable("purchaseId") UUID purchaseId) throws GlobalException {
-        CommonErrorResponse deleteResponse;
+    public ResponseEntity deletePurchase(@PathVariable("purchaseId") UUID purchaseId) throws GlobalException {
+        CommonResponse deleteResponse;
         HttpStatus httpStatus;
         boolean success = purchaseService.deletePurchaseDetails(purchaseId);
-        deleteResponse = CommonErrorResponse.builder().success(success).errorMessage(ApplicationConstants.SUCCESSFULLY_DELETED).build();
+        deleteResponse = CommonResponse.builder().success(success)
+                .errorMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DELETED_SUCCESSFULLY.getKey())).build();
         httpStatus = HttpStatus.OK;
         return new ResponseEntity<>(deleteResponse, httpStatus);
     }
