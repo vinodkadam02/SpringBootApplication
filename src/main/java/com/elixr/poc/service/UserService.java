@@ -5,6 +5,7 @@ import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
 import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.repository.UserRepository;
+import com.elixr.poc.rest.request.UserRequest;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
@@ -76,5 +77,21 @@ public class UserService {
     public User getUserByUserId(UUID userId) throws IdNotFoundException {
         Optional<User> user = userRepository.findById(userId);
         return user.orElseThrow(() -> new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())));
+    }
+
+    /**
+     * Updating the user details by userId.
+     * @param userId
+     * @param userDetails
+     * @return
+     * @throws IdNotFoundException
+     */
+    public User updateUserPartially(UUID userId, UserRequest userDetails) throws IdNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IdNotFoundException("User not found on :: " + userId));
+        user.setUserName(userDetails.getUserName());
+        user.setFirstName(userDetails.getFirstName());
+        user.setLastName(userDetails.getLastName());
+        final User updatedUser = userRepository.save(user);
+        return updatedUser;
     }
 }
