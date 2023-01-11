@@ -3,8 +3,8 @@ package com.elixr.poc.exception;
 /**
  * Handling the exception when their is incorrect URL
  */
-public class GlobalException extends RuntimeException {
-    public GlobalException(String message) {
+public class IdNotFoundException extends RuntimeException {
+    public IdNotFoundException(String message) {
         super(message);
     }
 }

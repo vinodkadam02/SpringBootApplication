@@ -1,6 +1,6 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.exception.GlobalException;
+import com.elixr.poc.exception.IdNotFoundException;
 import com.elixr.poc.rest.request.PurchaseRequest;
 import com.elixr.poc.service.PurchaseService;
 import jakarta.validation.Valid;
@@ -27,11 +27,11 @@ public class PurchaseModificationController {
      *
      * @param purchaseId
      * @return
-     * @throws GlobalException
+     * @throws IdNotFoundException
      */
     @PatchMapping("/purchase/{purchaseId}")
     public ResponseEntity purchaseUpdate(@PathVariable("purchaseId") UUID purchaseId,
-                                         @RequestBody @Valid PurchaseRequest purchaseDetails) throws GlobalException {
+                                         @RequestBody @Valid PurchaseRequest purchaseDetails) throws IdNotFoundException {
         return new ResponseEntity<>(purchaseService.purchaseUpdate(purchaseId, purchaseDetails), HttpStatus.OK);
     }
 }

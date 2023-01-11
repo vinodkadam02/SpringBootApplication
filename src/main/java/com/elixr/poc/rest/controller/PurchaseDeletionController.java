@@ -2,7 +2,7 @@ package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.util.MessagesUtil;
-import com.elixr.poc.exception.GlobalException;
+import com.elixr.poc.exception.IdNotFoundException;
 import com.elixr.poc.rest.response.CommonResponse;
 import com.elixr.poc.service.PurchaseService;
 import org.springframework.http.HttpStatus;
@@ -33,7 +33,7 @@ import java.util.UUID;
      * @return
      */
     @DeleteMapping("/purchase/{purchaseId}")
-    public ResponseEntity deletePurchase(@PathVariable("purchaseId") UUID purchaseId) throws GlobalException {
+    public ResponseEntity deletePurchase(@PathVariable("purchaseId") UUID purchaseId) throws IdNotFoundException {
         CommonResponse deleteResponse;
         HttpStatus httpStatus;
         boolean success = purchaseService.deletePurchaseDetails(purchaseId);
