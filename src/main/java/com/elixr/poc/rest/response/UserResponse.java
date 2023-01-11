@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import java.util.UUID;
 
 @Data
-public class UserResponse extends ErrorResponse {
+public class UserResponse extends AppResponse {
 
     @Id
     private UUID id;

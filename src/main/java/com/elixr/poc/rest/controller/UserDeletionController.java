@@ -1,7 +1,7 @@
 package com.elixr.poc.rest.controller;
 
+import com.elixr.poc.common.exception.GlobalException;
 import com.elixr.poc.constants.ApplicationConstants;
-import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.rest.response.DeleteResponse;
 import com.elixr.poc.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -36,7 +36,7 @@ public class UserDeletionController {
             deleteResponse.setSuccess(success);
             deleteResponse.setErrorMessage(ApplicationConstants.SUCCESSFULLY_DELETED);
             httpStatus = HttpStatus.OK;
-        } catch (NoRecordFoundException e) {
+        } catch (GlobalException e) {
             deleteResponse.setSuccess(false);
             deleteResponse.setErrorMessage(e.getMessage());
             httpStatus = HttpStatus.BAD_REQUEST;
