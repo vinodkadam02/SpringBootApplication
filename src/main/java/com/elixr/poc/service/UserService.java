@@ -45,6 +45,7 @@ public class UserService {
 
     /**
      * Creating a valid new user.
+     *
      * @param user
      * @return
      */
@@ -82,12 +83,12 @@ public class UserService {
 
     /**
      * Retrieve user by username.
+     *
      * @param userName
      * @return
      */
     public User getUserByName(String userName) {
         User existingUser = userRepository.findByUserName(userName);
-        System.out.println(userRepository.existsByUserName(userName));
         return existingUser;
     }
 }
