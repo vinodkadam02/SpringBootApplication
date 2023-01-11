@@ -11,7 +11,8 @@ public enum MessagesKeyEnum {
     ENTITY_DELETED_SUCCESSFULLY("entity.deleted.successfully"),
     ENTITY_ID_NOT_EXISTS("entity.id.dose.not.exists"),
     ENTITY_MANDATORY_FIELD_MISSING("entity.mandatory.field.missing"),
-    ENTITY_USER_EXISTS("entity.user.exists");
+    ENTITY_USER_EXISTS("entity.user.exists"),
+    ENTITY_USER_NOT_EXISTS("entity.user.not.exists");
 
     MessagesKeyEnum(String key) {
         this.key=key;
