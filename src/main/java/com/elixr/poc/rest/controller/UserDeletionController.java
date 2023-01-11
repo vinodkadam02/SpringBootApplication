@@ -1,8 +1,8 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.constants.ApplicationConstants;
-import com.elixr.poc.exception.GlobalException;
-import com.elixr.poc.rest.response.CommonErrorResponse;
+import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.common.util.MessagesUtil;
+import com.elixr.poc.rest.response.CommonResponse;
 import com.elixr.poc.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -29,10 +29,11 @@ public class UserDeletionController {
      */
     @DeleteMapping("/user/{userId}")
     public ResponseEntity deleteUser(@PathVariable("userId") @Valid UUID userId) {
-        CommonErrorResponse commonErrorResponse;
+        CommonResponse commonErrorResponse;
         HttpStatus httpStatus;
             boolean success = userService.deleteUserDetails(userId);
-            commonErrorResponse = CommonErrorResponse.builder().success(success).errorMessage(ApplicationConstants.SUCCESSFULLY_DELETED).build();
+            commonErrorResponse = CommonResponse.builder().success(success)
+                    .errorMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DELETED_SUCCESSFULLY.getKey())).build();
             httpStatus = HttpStatus.OK;
         return new ResponseEntity<>(commonErrorResponse, httpStatus);
     }

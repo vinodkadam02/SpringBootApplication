@@ -1,8 +1,9 @@
 package com.elixr.poc.service;
 
-import com.elixr.poc.constants.ApplicationConstants;
+import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
-import com.elixr.poc.exception.GlobalException;
+import com.elixr.poc.common.exception.GlobalException;
 import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class UserService {
             userRepository.deleteById(userId);
             success = true;
         } else {
-            throw new GlobalException(ApplicationConstants.ID_MISMATCH);
+            throw new GlobalException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey()));
         }
         return success;
     }
@@ -48,7 +49,8 @@ public class UserService {
      */
     public UserResponse createValidUser(User user) {
         saveDataToDatabase(user);
-        return UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName()).firstName(user.getFirstName()).lastName(user.getLastName()).build();
+        return UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName()).firstName(user
+                .getFirstName()).lastName(user.getLastName()).build();
     }
 
     /**
@@ -71,8 +73,8 @@ public class UserService {
      * @return
      * @throws GlobalException
      */
-    public User getUserByUserId(UUID userId) throws GlobalException {
+    public User getUserByUserId(UUID userId) throws GlobalException{
         Optional<User> user = userRepository.findById(userId);
-        return user.orElseThrow(() -> new GlobalException(ApplicationConstants.ID_MISMATCH));
+        return user.orElseThrow(() -> new GlobalException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())));
     }
 }
