@@ -40,8 +40,8 @@ public class GlobalExceptionHandler {
      * @return
      */
 
-    @ExceptionHandler(GlobalException.class)
-    public ResponseEntity handleGlobalException(GlobalException globalException) {
+    @ExceptionHandler(IdNotFoundException.class)
+    public ResponseEntity handleGlobalException(IdNotFoundException globalException) {
         CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false)
                 .errorMessage(MessagesUtil.getMessage(MessageKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())).build();
         return new ResponseEntity<>(commonErrorResponse, HttpStatus.NOT_FOUND);
