@@ -45,7 +45,6 @@ public class UserService {
 
     /**
      * Creating a valid new user.
-     *
      * @param user
      * @return
      */
@@ -60,7 +59,6 @@ public class UserService {
 
     /**
      * Calling the repository to store data
-     *
      * @param user
      * @return
      */
@@ -74,7 +72,6 @@ public class UserService {
 
     /**
      * Retriving all the users
-     *
      * @return
      */
     public GetAllResponse getAllUsers() {
@@ -83,7 +80,6 @@ public class UserService {
 
     /**
      * Retrieve user by username.
-     *
      * @param userName
      * @return
      */

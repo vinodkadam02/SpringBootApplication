@@ -13,7 +13,6 @@ import java.util.ResourceBundle;
 public class MessagesUtil {
 
     private static final String MESSAGE_PROPERTY_FILE_PREFIX = "messages";
-
     private static ResourceBundle moduleMessagesResourceBundle;
 
     static{
@@ -37,6 +36,7 @@ public class MessagesUtil {
         }
         return key;
     }
+
     public static String getMessage(ResourceBundle resourceBundle, String key, Object ... arguments){
 
         if(resourceBundle.containsKey(key)){
