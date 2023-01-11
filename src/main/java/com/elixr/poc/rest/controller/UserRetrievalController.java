@@ -1,7 +1,7 @@
 package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.data.User;
-import com.elixr.poc.common.exception.GlobalException;
+import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.rest.response.UserResponse;
 import com.elixr.poc.service.UserService;
 import jakarta.validation.Valid;
@@ -38,7 +38,7 @@ public class UserRetrievalController {
      *
      * @param userId
      * @return
-     * @throws GlobalException
+     * @throws IdNotFoundException
      */
     @GetMapping("/user/{userId}")
     public ResponseEntity retrieveUser(@PathVariable("userId") @Valid UUID userId) {

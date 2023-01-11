@@ -3,7 +3,7 @@ package com.elixr.poc.service;
 import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
-import com.elixr.poc.common.exception.GlobalException;
+import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
@@ -28,16 +28,16 @@ public class UserService {
      * Throwing a NoRecordFoundException to handel if the UserId is not present.
      * @param userId
      * @return
-     * @throws GlobalException
+     * @throws IdNotFoundException
      */
-    public boolean deleteUserDetails(UUID userId) throws GlobalException {
+    public boolean deleteUserDetails(UUID userId) throws IdNotFoundException {
         boolean success = false;
         boolean userRecordExists = userRepository.existsById(userId);
         if (userRecordExists) {
             userRepository.deleteById(userId);
             success = true;
         } else {
-            throw new GlobalException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey()));
+            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey()));
         }
         return success;
     }
@@ -71,10 +71,10 @@ public class UserService {
      * Finding User by userId and returning the user.
      * @param userId
      * @return
-     * @throws GlobalException
+     * @throws IdNotFoundException
      */
-    public User getUserByUserId(UUID userId) throws GlobalException{
+    public User getUserByUserId(UUID userId) throws IdNotFoundException {
         Optional<User> user = userRepository.findById(userId);
-        return user.orElseThrow(() -> new GlobalException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())));
+        return user.orElseThrow(() -> new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())));
     }
 }
