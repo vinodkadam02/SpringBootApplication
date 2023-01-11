@@ -1,6 +1,7 @@
-package com.elixr.poc.exception;
+package com.elixr.poc.common.exception;
 
-import com.elixr.poc.constants.ApplicationConstants;
+import com.elixr.poc.common.MessageKeyEnum;
+import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.rest.response.CommonErrorResponse;
 import com.elixr.poc.rest.response.PostErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<String> errorList = new ArrayList<>();
         for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
-            errorList.add(error.getDefaultMessage());
+            errorList.add(error.getField()+" "+MessagesUtil.getMessage(MessageKeyEnum.ENTITY_MANDATORY_FIELD_MISSING.getKey()));
         }
         PostErrorResponse errorResponse = PostErrorResponse.builder().errorMessage(errorList).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
@@ -34,25 +35,29 @@ public class GlobalExceptionHandler {
 
     /**
      * URL exceptions are handled.
+     *
      * @param globalException
      * @return
      */
 
     @ExceptionHandler(GlobalException.class)
     public ResponseEntity handleGlobalException(GlobalException globalException) {
-        CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(ApplicationConstants.ID_MISMATCH).build();
+        CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false)
+                .errorMessage(MessagesUtil.getMessage(MessageKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())).build();
         return new ResponseEntity<>(commonErrorResponse, HttpStatus.NOT_FOUND);
     }
 
     /**
      * Generic exceptions are handled.
+     *
      * @param exception
      * @return
      */
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity handleGenericException(Exception exception){
-        CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false).errorMessage(exception.getLocalizedMessage()).build();
+    public ResponseEntity handleGenericException(Exception exception) {
+        CommonErrorResponse commonErrorResponse = CommonErrorResponse.builder().success(false)
+                .errorMessage(exception.getLocalizedMessage()).build();
         return new ResponseEntity<>(commonErrorResponse, HttpStatus.BAD_REQUEST);
     }
 }

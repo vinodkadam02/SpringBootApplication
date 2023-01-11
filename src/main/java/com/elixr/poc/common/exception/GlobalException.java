@@ -1,4 +1,4 @@
-package com.elixr.poc.exception;
+package com.elixr.poc.common.exception;
 
 /**
  * Handling the exception when there is incorrect URL.

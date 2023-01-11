@@ -1,8 +1,9 @@
 package com.elixr.poc.service;
 
-import com.elixr.poc.constants.ApplicationConstants;
+import com.elixr.poc.common.MessageKeyEnum;
+import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.Purchase;
-import com.elixr.poc.exception.GlobalException;
+import com.elixr.poc.common.exception.GlobalException;
 import com.elixr.poc.repository.PurchaseRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class PurchaseService {
             purchaseRepository.deleteById(purchaseId);
             success = true;
         } else {
-            throw new GlobalException(ApplicationConstants.ID_MISMATCH);
+            throw new GlobalException(MessagesUtil.getMessage(MessageKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey()));
         }
         return success;
     }
@@ -41,6 +42,6 @@ public class PurchaseService {
      */
     public Purchase getPurchaseByPurchaseId(UUID purchaseId) throws GlobalException {
         Optional<Purchase> purchase = purchaseRepository.findById(purchaseId);
-        return purchase.orElseThrow(() -> new GlobalException(ApplicationConstants.ID_MISMATCH));
+        return purchase.orElseThrow(() -> new GlobalException(MessagesUtil.getMessage(MessageKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())));
     }
 }

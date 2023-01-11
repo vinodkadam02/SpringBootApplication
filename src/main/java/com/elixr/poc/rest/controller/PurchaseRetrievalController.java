@@ -1,7 +1,7 @@
 package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.data.Purchase;
-import com.elixr.poc.exception.GlobalException;
+import com.elixr.poc.common.exception.GlobalException;
 import com.elixr.poc.rest.response.PurchaseResponse;
 import com.elixr.poc.service.PurchaseService;
 import jakarta.validation.Valid;
