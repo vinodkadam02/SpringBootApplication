@@ -41,12 +41,10 @@ public class UserRetrievalController {
      * @throws IdNotFoundException
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity retrieveUser(@PathVariable("userId") @Valid UUID userId) {
-        HttpStatus httpStatus;
+    public ResponseEntity retrieveUser(@PathVariable("userId") @Valid String userId) {
             User user = userService.getUserByUserId(userId);
             UserResponse userResponse = UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName())
                     .firstName(user.getFirstName()).lastName(user.getLastName()).build();
-            httpStatus = HttpStatus.OK;
-            return new ResponseEntity<>(userResponse, httpStatus);
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 }

@@ -28,7 +28,7 @@ public class UserDeletionController {
      * And handling the Exception if the userId is not matching.
      */
     @DeleteMapping("/user/{userId}")
-    public ResponseEntity deleteUser(@PathVariable("userId") @Valid UUID userId) {
+    public ResponseEntity deleteUser(@PathVariable("userId") @Valid String userId) {
         CommonResponse commonErrorResponse;
         HttpStatus httpStatus;
             boolean success = userService.deleteUserDetails(userId);

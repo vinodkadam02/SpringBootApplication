@@ -1,6 +1,7 @@
 package com.elixr.poc.service;
 
 import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.common.exception.IdFormatException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
 import com.elixr.poc.common.exception.IdNotFoundException;
@@ -31,16 +32,21 @@ public class UserService {
      * @return
      * @throws IdNotFoundException
      */
-    public boolean deleteUserDetails(UUID userId) throws IdNotFoundException {
-        boolean success = false;
-        boolean userRecordExists = userRepository.existsById(userId);
-        if (userRecordExists) {
-            userRepository.deleteById(userId);
-            success = true;
-        } else {
-            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey()));
+    public boolean deleteUserDetails(String userId) {
+        try {
+            UUID uuid = UUID.fromString(userId);
+            boolean success = false;
+            boolean userRecordExists = userRepository.existsById(uuid);
+            if (userRecordExists) {
+                userRepository.deleteById(uuid);
+                success = true;
+            } else {
+                throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey()));
+            }
+            return success;
+        } catch (IllegalArgumentException illegalArgumentException) {
+            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey()));
         }
-        return success;
     }
 
     /**
@@ -74,9 +80,14 @@ public class UserService {
      * @return
      * @throws IdNotFoundException
      */
-    public User getUserByUserId(UUID userId) throws IdNotFoundException {
-        Optional<User> user = userRepository.findById(userId);
-        return user.orElseThrow(() -> new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())));
+    public User getUserByUserId(String userId) {
+        try {
+            UUID uuid = UUID.fromString(userId);
+            Optional<User> user = userRepository.findById(uuid);
+            return user.orElseThrow(() -> new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())));
+        } catch (IllegalArgumentException illegalArgumentException) {
+            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey()));
+        }
     }
 
     /**
