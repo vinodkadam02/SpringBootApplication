@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public abstract class AppResponse {
     protected boolean success;
-
 }

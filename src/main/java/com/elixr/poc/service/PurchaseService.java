@@ -2,8 +2,8 @@ package com.elixr.poc.service;
 
 import com.elixr.poc.data.Purchase;
 import com.elixr.poc.repository.PurchaseRepository;
+import com.elixr.poc.rest.response.PurchaseResponse;
 import org.springframework.stereotype.Service;
-
 import java.util.UUID;
 
 /**
@@ -19,8 +19,10 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
     }
 
-    public void createPurchase(Purchase purchase) {
+    public PurchaseResponse createPurchase(Purchase purchase) {
         savePurchase(purchase);
+        return  PurchaseResponse.purchaseBuilder().success(true).id(purchase.getId()).userName(purchase.getUserName())
+                .product(purchase.getProduct()).amount(purchase.getAmount()).date(purchase.getDate()).build();
     }
 
     /**

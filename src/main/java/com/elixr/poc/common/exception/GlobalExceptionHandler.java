@@ -1,4 +1,4 @@
-package com.elixr.poc.exception;
+package com.elixr.poc.common.exception;
 
 import com.elixr.poc.rest.response.PostErrorResponse;
 import org.springframework.http.HttpStatus;
