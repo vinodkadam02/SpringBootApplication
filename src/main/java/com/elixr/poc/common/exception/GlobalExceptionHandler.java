@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    private ResponseEntity<PostErrorResponse>  handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+    private ResponseEntity<PostErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<String> errorList = new ArrayList<>();
         for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
             errorList.add(error.getField() + " " + MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_MANDATORY_FIELD_MISSING.getKey()));
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(IdNotFoundException.class)
-    public ResponseEntity<CommonResponse>  handleGlobalException(IdNotFoundException idNotFoundException) {
+    public ResponseEntity<CommonResponse> handleGlobalException(IdNotFoundException idNotFoundException) {
         CommonResponse commonResponse = CommonResponse.builder().success(false)
                 .errorMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())).build();
         return new ResponseEntity<>(commonResponse, HttpStatus.NOT_FOUND);
@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<CommonResponse>  handleGenericException(Exception exception) {
+    public ResponseEntity<CommonResponse> handleGenericException(Exception exception) {
         CommonResponse commonResponse = CommonResponse.builder().success(false)
                 .errorMessage(exception.getLocalizedMessage()).build();
         return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
