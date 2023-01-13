@@ -51,7 +51,7 @@ public class UserService {
     public AppResponse createValidUser(User user) {
         if (userRepository.existsByUserName(user.getUserName())) {
             return PostErrorResponse.builder().errorMessage(Collections.singletonList(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_EXISTS.getKey()))).build();
-        } else {
+      } else {
             saveDataToDatabase(user);
             return UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName()).firstName(user.getFirstName()).lastName(user.getLastName()).build();
         }
