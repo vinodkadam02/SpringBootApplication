@@ -12,4 +12,8 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, UUID> {
+
+ User findByUserName(String userName);
+ boolean existsByUserName(String userName);
+
 }

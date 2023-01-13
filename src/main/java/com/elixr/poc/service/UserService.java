@@ -1,14 +1,18 @@
 package com.elixr.poc.service;
 
-import com.elixr.poc.constants.ApplicationConstants;
+import com.elixr.poc.common.exception.IdNotFoundException;
+import com.elixr.poc.common.util.MessagesKeyEnum;
+import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
-import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.repository.UserRepository;
-import com.elixr.poc.rest.response.UserResponse;
-import com.elixr.poc.rest.response.ErrorResponse;
+import com.elixr.poc.repository.UserRepository;
+import com.elixr.poc.rest.response.AppResponse;
 import com.elixr.poc.rest.response.GetAllResponse;
+import com.elixr.poc.rest.response.PostErrorResponse;
+import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.UUID;
 
 /**
@@ -26,28 +30,32 @@ public class UserService {
 
     /**
      * Deleting the user by the userId.
-     * throwing a NoRecordFoundException to handel if the UserId is not present.
+     * throwing a GlobalException to handel if the UserId is not present.
      */
-    public boolean deleteUserDetails(UUID userId) throws NoRecordFoundException {
+    public boolean deleteUserDetails(UUID userId) throws IdNotFoundException {
         boolean success = false;
         boolean userRecordExists = userRepository.existsById(userId);
         if (userRecordExists) {
             userRepository.deleteById(userId);
             success = true;
         } else {
-            throw new NoRecordFoundException(ApplicationConstants.ID_MISMATCH);
+            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_NOT_EXISTS.getKey()));
         }
         return true;
     }
 
     /**
-     * Creating a valid user
+     * Creating a valid new user.
      * @param user
      * @return
      */
-    public ErrorResponse createValidUser(User user) {
-        saveDataToDatabase(user);
-        return UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName()).firstName(user.getFirstName()).lastName(user.getLastName()).build();
+    public AppResponse validateUserRequestAndCreateNewUser(User user) {
+        if (userRepository.existsByUserName(user.getUserName())) {
+            return PostErrorResponse.builder().errorMessage(Collections.singletonList(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_EXISTS.getKey()))).build();
+        } else {
+            saveDataToDatabase(user);
+            return UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName()).firstName(user.getFirstName()).lastName(user.getLastName()).build();
+        }
     }
 
     /**
@@ -69,5 +77,15 @@ public class UserService {
      */
     public GetAllResponse getAllUsers() {
         return GetAllResponse.builder().success(true).users(userRepository.findAll()).build();
+    }
+
+    /**
+     * Retrieve user by username.
+     * @param userName
+     * @return
+     */
+    public User getUserByName(String userName) {
+        User existingUser = userRepository.findByUserName(userName);
+        return existingUser;
     }
 }
