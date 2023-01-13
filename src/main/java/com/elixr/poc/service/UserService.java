@@ -25,6 +25,20 @@ public class UserService {
     }
 
     /**
+     * Validating UUID format.
+     * @param userId
+     * @return
+     */
+    private UUID uuidValidation(String userId) {
+        try {
+            UUID uuid = UUID.fromString(userId);
+            return uuid;
+        } catch (IllegalArgumentException illegalArgumentException) {
+            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey()));
+        }
+    }
+
+    /**
      * Deleting the user by the userId.
      * Throwing a NoRecordFoundException to handel if the UserId is not present.
      * @param userId
@@ -32,20 +46,16 @@ public class UserService {
      * @throws IdNotFoundException
      */
     public boolean deleteUserDetails(String userId) {
-        try {
-            UUID uuid = UUID.fromString(userId);
-            boolean success = false;
-            boolean userRecordExists = userRepository.existsById(uuid);
-            if (userRecordExists) {
-                userRepository.deleteById(uuid);
-                success = true;
-            } else {
-                throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey()));
-            }
-            return success;
-        } catch (IllegalArgumentException illegalArgumentException) {
-            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey()));
+        UUID uuid = uuidValidation(userId);
+        boolean success = false;
+        boolean userRecordExists = userRepository.existsById(uuid);
+        if (userRecordExists) {
+            userRepository.deleteById(uuid);
+            success = true;
+        } else {
+            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey()));
         }
+        return success;
     }
 
     /**
@@ -80,12 +90,9 @@ public class UserService {
      * @throws IdNotFoundException
      */
     public User getUserByUserId(String userId) {
-        try {
-            UUID uuid = UUID.fromString(userId);
-            Optional<User> user = userRepository.findById(uuid);
-            return user.orElseThrow(() -> new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())));
-        } catch (IllegalArgumentException illegalArgumentException) {
-            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey()));
-        }
+        UUID uuid = uuidValidation(userId);
+        Optional<User> user = userRepository.findById(uuid);
+        return user.orElseThrow(() -> new IdNotFoundException(MessagesUtil
+                .getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())));
     }
 }
