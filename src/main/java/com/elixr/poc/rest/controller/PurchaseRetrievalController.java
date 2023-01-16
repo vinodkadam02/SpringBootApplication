@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/controller")
 public class PurchaseRetrievalController {
     /**
-     * Getting the purchase by purchaseID
-     * Calling a method getPurchaseByPurchaseID
+     * Getting the purchase by userId
+     * Calling a method getPurchaseByUserID
      * Returning the response
-     * And handling the exception if the purchaseId is not matching.
      */
     private final PurchaseService purchaseService;
     private final UserService userService;

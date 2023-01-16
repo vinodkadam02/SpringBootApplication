@@ -78,6 +78,12 @@ public class PurchaseService {
         return updatedPurchase;
     }
 
+    /**
+     * It checks if the user is preset in the userId
+     * or else it will throw an error
+     * @param userName
+     * @return
+     */
     public PurchaseGetResponse getPurchaseByUserName(String userName) {
         List<Purchase> existingUser = purchaseRepository.findPurchasesByUserName(userName);
         if (existingUser.isEmpty()) {
