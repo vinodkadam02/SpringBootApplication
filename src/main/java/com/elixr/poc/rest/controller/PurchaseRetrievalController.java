@@ -1,7 +1,6 @@
 package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.data.Purchase;
-import com.elixr.poc.common.exception.GlobalException;
 import com.elixr.poc.rest.response.PurchaseResponse;
 import com.elixr.poc.service.PurchaseService;
 import jakarta.validation.Valid;
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
 
 /**
  * Controller class for purchase details.
@@ -36,7 +33,7 @@ public class PurchaseRetrievalController {
     }
 
     @GetMapping("/purchase/{purchaseId}")
-    public ResponseEntity retrievePurchase(@PathVariable("purchaseId") @Valid UUID purchaseId) throws GlobalException {
+    public ResponseEntity retrievePurchase(@PathVariable("purchaseId") @Valid String purchaseId) {
         HttpStatus httpStatus;
             Purchase purchase = purchaseService.getPurchaseByPurchaseId(purchaseId);
             PurchaseResponse purchaseResponse = PurchaseResponse.purchaseBuilder().success(true).id(purchase.getId())

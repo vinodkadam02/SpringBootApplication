@@ -1,8 +1,8 @@
 package com.elixr.poc.common.exception;
 
-import com.elixr.poc.common.MessageKeyEnum;
+import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.util.MessagesUtil;
-import com.elixr.poc.rest.response.CommonErrorResponse;
+import com.elixr.poc.rest.response.CommonResponse;
 import com.elixr.poc.rest.response.PostErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,13 +48,14 @@ public class GlobalExceptionHandler {
 
     /**
      * Invalid format of UUID is handled.
+     *
      * @param idFormatException
      * @return
      */
     @ExceptionHandler(IdFormatException.class)
-    public ResponseEntity<CommonResponse> handleIdFormatException(IdFormatException idFormatException){
+    public ResponseEntity<CommonResponse> handleIdFormatException(IdFormatException idFormatException) {
         CommonResponse commonResponse = CommonResponse.builder().errorMessage(idFormatException.getMessage()).build();
-        return new ResponseEntity<>(commonResponse,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
     }
 
     /**
