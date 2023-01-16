@@ -13,13 +13,6 @@ public enum MessagesKeyEnum {
     ENTITY_MANDATORY_FIELD_MISSING("entity.mandatory.field.missing"),
     ENTITY_USER_EXISTS("entity.user.exists");
 
-    MessagesKeyEnum(String key) {
-        this.key=key;
-    }
-    private String key;
-    ENTITY_MANDATORY_FIELD_MISSING("entity.mandatory.field.missing"),
-    ENTITY_USER_EXISTS("entity.user.exists");
-
     public String key;
 
     MessagesKeyEnum(String key) {

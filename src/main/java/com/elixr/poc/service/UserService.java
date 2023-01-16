@@ -2,10 +2,12 @@ package com.elixr.poc.service;
 
 import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.exception.IdFormatException;
+import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
-import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.repository.UserRepository;
+import com.elixr.poc.rest.response.AppResponse;
+import com.elixr.poc.rest.response.GetAllResponse;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,7 @@ public class UserService {
             UUID uuid = UUID.fromString(userId);
             return uuid;
         } catch (IllegalArgumentException illegalArgumentException) {
-            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey()));
+            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey(), "UserId"));
         }
     }
 
@@ -63,7 +65,7 @@ public class UserService {
      * @param user
      * @return
      */
-    public UserResponse createValidUser(User user) {
+    public AppResponse createValidUser(User user) {
         saveDataToDatabase(user);
         return UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName()).firstName(user
                 .getFirstName()).lastName(user.getLastName()).build();
@@ -71,17 +73,28 @@ public class UserService {
 
     /**
      * Calling the repository to store data
-     *
      * @param user
      * @return
      */
-    private User saveDataToDatabase(User user) {
+    private void saveDataToDatabase(User user) {
 
         if (user.getId() == null || user.getId().toString().isEmpty()) {
             user.setId(UUID.randomUUID());
         }
-        user = this.userRepository.save(user);
-        return user;
+        this.userRepository.save(user);
+    }
+
+    /**
+     * Retriving all the users
+     * @return
+     */
+    public GetAllResponse getAllUsers() {
+        return GetAllResponse.builder().success(true).users(userRepository.findAll()).build();
+    }
+
+    public User getUserByUserName(String userName){
+        User existingUser = userRepository.findUserByUserName(userName);
+        return existingUser;
     }
 
     /**
