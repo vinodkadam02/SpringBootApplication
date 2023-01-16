@@ -40,9 +40,9 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(IdNotFoundException.class)
-    public ResponseEntity<CommonResponse> handleGlobalException(IdNotFoundException idNotFoundException) {
+    public ResponseEntity<CommonResponse> handleIdNotFoundException(IdNotFoundException idNotFoundException) {
         CommonResponse commonResponse = CommonResponse.builder().success(false)
-                .errorMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())).build();
+                .errorMessage(idNotFoundException.getMessage()).build();
         return new ResponseEntity<>(commonResponse, HttpStatus.NOT_FOUND);
     }
 
@@ -52,9 +52,8 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(IdFormatException.class)
-    public ResponseEntity handleIdFormatException(IdFormatException idFormatException){
-        CommonResponse commonResponse = CommonResponse.builder().errorMessage(MessagesUtil.getMessage(MessagesKeyEnum
-                .ENTITY_INVALID_ID_FORMAT.getKey())).build();
+    public ResponseEntity<CommonResponse> handleIdFormatException(IdFormatException idFormatException){
+        CommonResponse commonResponse = CommonResponse.builder().errorMessage(idFormatException.getMessage()).build();
         return new ResponseEntity<>(commonResponse,HttpStatus.BAD_REQUEST);
     }
 
