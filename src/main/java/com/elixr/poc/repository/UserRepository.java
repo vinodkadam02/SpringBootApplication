@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 /**
- * Repository interface to communicate with database
+ * Repository interface to communicate with db
  */
 
 @Repository

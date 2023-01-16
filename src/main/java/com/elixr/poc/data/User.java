@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- *Entity class whose object is getting stored into db
+ * Entity class whose object is getting stored into db
  */
 @Data
 @Builder

@@ -8,7 +8,7 @@ public class CommonResponse extends AppResponse {
     private String errorMessage;
 
     @Builder
-    public CommonResponse(boolean success,String errorMessage){
+    public CommonResponse(boolean success, String errorMessage) {
         setSuccess(success);
         this.errorMessage = errorMessage;
     }

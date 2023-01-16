@@ -1,6 +1,9 @@
 package com.elixr.poc.common.exception;
 
-public class IdNotFoundException extends Exception {
+/**
+ * Handling the exception when there is incorrect ID
+ */
+public class IdNotFoundException extends RuntimeException {
     public IdNotFoundException(String message) {
         super(message);
     }
