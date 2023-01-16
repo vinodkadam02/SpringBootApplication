@@ -69,7 +69,7 @@ public class UserService {
         if (userRepository.existsByUserName(user.getUserName())) {
             return PostErrorResponse.builder().errorMessage(Collections.singletonList(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_EXISTS.getKey()))).build();
       } else {
-            saveDataToDatabase(user);
+            saveUser(user);
             return UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName()).firstName(user.getFirstName()).lastName(user.getLastName()).build();
         }
     }
@@ -79,7 +79,7 @@ public class UserService {
      * @param user
      * @return
      */
-    private User saveDataToDatabase(User user) {
+    private User saveUser(User user) {
 
         if (user.getId() == null || user.getId().toString().isEmpty()) {
             user.setId(UUID.randomUUID());
