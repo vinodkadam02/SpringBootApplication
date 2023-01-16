@@ -20,7 +20,6 @@ public class PurchaseRetrievalController {
      * Get the purchase by userName
      */
     private final PurchaseService purchaseService;
-
     public PurchaseRetrievalController(PurchaseService purchaseService) {
         this.purchaseService = purchaseService;
     }

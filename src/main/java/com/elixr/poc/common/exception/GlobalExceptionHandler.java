@@ -18,43 +18,32 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     /**
-     * Handling the Exception and sending error message
+     * Handles MethodArgumentNotValidException
      *
      * @param methodArgumentNotValidException
      * @return
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    private ResponseEntity<PostErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<String> errorList = new ArrayList<>();
         for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
-            errorList.add(error.getField() + " " + MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_MANDATORY_FIELD_MISSING.getKey()));
+            errorList.add(error.getField()+" "+ MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_MANDATORY_FIELD_MISSING.getKey()));
         }
-        PostErrorResponse postErrorResponse = PostErrorResponse.builder().errorMessage(errorList).build();
-        return new ResponseEntity<>(postErrorResponse, HttpStatus.BAD_REQUEST);
+        PostErrorResponse errorResponse = PostErrorResponse.builder().errorMessage(errorList).build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     /**
      * URL exceptions are handled.
      *
-     * @param idNotFoundException
+     * @param globalException
      * @return
      */
     @ExceptionHandler(IdNotFoundException.class)
-    public ResponseEntity<CommonResponse> handleIdNotFoundException(IdNotFoundException idNotFoundException) {
+    public ResponseEntity handleGlobalException(IdNotFoundException globalException) {
         CommonResponse commonResponse = CommonResponse.builder().success(false)
-                .errorMessage(idNotFoundException.getMessage()).build();
+                .errorMessage(MessagesUtil.getMessage(globalException.getMessage())).build();
         return new ResponseEntity<>(commonResponse, HttpStatus.NOT_FOUND);
-    }
-
-    /**
-     * Invalid format of UUID is handled.
-     * @param idFormatException
-     * @return
-     */
-    @ExceptionHandler(IdFormatException.class)
-    public ResponseEntity<CommonResponse> handleIdFormatException(IdFormatException idFormatException){
-        CommonResponse commonResponse = CommonResponse.builder().errorMessage(idFormatException.getMessage()).build();
-        return new ResponseEntity<>(commonResponse,HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -64,9 +53,10 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<CommonResponse> handleGenericException(Exception exception) {
+    public ResponseEntity handleGenericException(Exception exception) {
         CommonResponse commonResponse = CommonResponse.builder().success(false)
                 .errorMessage(exception.getLocalizedMessage()).build();
         return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
+
     }
 }

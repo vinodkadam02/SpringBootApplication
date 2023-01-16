@@ -2,10 +2,12 @@ package com.elixr.poc.service;
 
 import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.exception.IdFormatException;
+import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
-import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.repository.UserRepository;
+import com.elixr.poc.rest.response.AppResponse;
+import com.elixr.poc.rest.response.GetAllResponse;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +65,7 @@ public class UserService {
      * @param user
      * @return
      */
-    public UserResponse createValidUser(User user) {
+    public AppResponse createValidUser(User user) {
         saveDataToDatabase(user);
         return UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName()).firstName(user
                 .getFirstName()).lastName(user.getLastName()).build();
@@ -82,6 +84,24 @@ public class UserService {
         }
         user = this.userRepository.save(user);
         return user;
+    }
+
+    /**
+     * Retriving all the users
+     * @return
+     */
+    public GetAllResponse getAllUsers() {
+        return GetAllResponse.builder().success(true).users(userRepository.findAll()).build();
+    }
+
+    /**
+     * Retrieve user by username.
+     * @param userName
+     * @return
+     */
+    public User getUserByName(String userName) {
+        User existingUser = userRepository.findByUserName(userName);
+        return existingUser;
     }
 
     /**
