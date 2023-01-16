@@ -7,6 +7,6 @@ import java.util.List;
 
 @Builder
 @Data
-public class PostErrorResponse extends ErrorResponse{
+public class PostErrorResponse extends AppResponse {
    private List<String> errorMessage;
 }
