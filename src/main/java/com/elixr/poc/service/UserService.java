@@ -26,6 +26,7 @@ public class UserService {
 
     /**
      * Validating UUID format.
+     *
      * @param userId
      * @return
      */
@@ -41,25 +42,24 @@ public class UserService {
     /**
      * Deleting the user by the userId.
      * Throwing a NoRecordFoundException to handel if the UserId is not present.
+     *
      * @param userId
      * @return
      * @throws IdNotFoundException
      */
     public boolean deleteUserDetails(String userId) {
         UUID uuid = uuidValidation(userId);
-        boolean success = false;
         boolean userRecordExists = userRepository.existsById(uuid);
-        if (userRecordExists) {
-            userRepository.deleteById(uuid);
-            success = true;
-        } else {
-            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey()));
+        if (!userRecordExists) {
+            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "User"));
         }
-        return success;
+        userRepository.deleteById(uuid);
+        return true;
     }
 
     /**
      * Creating a valid user
+     *
      * @param user
      * @return
      */
@@ -71,6 +71,7 @@ public class UserService {
 
     /**
      * Calling the repository to store data
+     *
      * @param user
      * @return
      */
@@ -85,6 +86,7 @@ public class UserService {
 
     /**
      * Finding User by userId and returning the user.
+     *
      * @param userId
      * @return
      * @throws IdNotFoundException
@@ -93,6 +95,6 @@ public class UserService {
         UUID uuid = uuidValidation(userId);
         Optional<User> user = userRepository.findById(uuid);
         return user.orElseThrow(() -> new IdNotFoundException(MessagesUtil
-                .getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey())));
+                .getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "User")));
     }
 }

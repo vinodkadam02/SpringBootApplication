@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
-
 /**
  * Controller class for User retrieval operation
  */
@@ -41,10 +39,10 @@ public class UserRetrievalController {
      * @throws IdNotFoundException
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity retrieveUser(@PathVariable("userId") @Valid String userId) {
-            User user = userService.getUserByUserId(userId);
-            UserResponse userResponse = UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName())
-                    .firstName(user.getFirstName()).lastName(user.getLastName()).build();
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+    public ResponseEntity<UserResponse> retrieveUser(@PathVariable("userId") @Valid String userId) {
+        User user = userService.getUserByUserId(userId);
+        UserResponse userResponse = UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName())
+                .firstName(user.getFirstName()).lastName(user.getLastName()).build();
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 }
