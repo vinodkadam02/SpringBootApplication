@@ -3,6 +3,7 @@ package com.elixr.poc.rest.response;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.web.ErrorResponse;
 
 import java.util.UUID;
 
@@ -11,7 +12,7 @@ import java.util.UUID;
  */
 
 @Data
-public class UserResponse extends ErrorResponse {
+public class UserResponse extends AppResponse {
 
     @Id
     private UUID id;

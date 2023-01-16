@@ -4,11 +4,14 @@ import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.exception.IdFormatException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
-import com.elixr.poc.common.exception.IdNotFoundException;
+import com.elixr.poc.common.exception.NotFoundException;
 import com.elixr.poc.repository.UserRepository;
+import com.elixr.poc.rest.response.AppResponse;
+import com.elixr.poc.rest.response.PostErrorResponse;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,18 +29,33 @@ public class UserService {
     }
 
     /**
+     * Validating UUID format.
+     *
+     * @param userId
+     * @return
+     */
+    private UUID uuidValidation(String userId) {
+        try {
+            UUID uuid = UUID.fromString(userId);
+            return uuid;
+        } catch (IllegalArgumentException illegalArgumentException) {
+            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey()));
+        }
+    }
+
+    /**
      * Deleting the user by the userId.
      * Throwing a NoRecordFoundException to handel if the UserId is not present.
      *
      * @param userId
      * @return
-     * @throws IdNotFoundException
+     * @throws NotFoundException
      */
     public boolean deleteUserDetails(String userId) {
         UUID uuid = uuidValidation(userId);
         boolean userRecordExists = userRepository.existsById(uuid);
         if (!userRecordExists) {
-            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "User"));
+            throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(), "User"));
         }
         return true;
     }
@@ -75,13 +93,13 @@ public class UserService {
      *
      * @param userId
      * @return
-     * @throws IdNotFoundException
+     * @throws NotFoundException
      */
     public User getUserByUserId(String userId) {
         UUID uuid = uuidValidation(userId);
         Optional<User> user = userRepository.findById(uuid);
-        return user.orElseThrow(() -> new IdNotFoundException(MessagesUtil
-                .getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "User")));
+        return user.orElseThrow(() -> new NotFoundException(MessagesUtil
+                .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(), "User")));
     }
 
     /**
@@ -89,8 +107,14 @@ public class UserService {
      * @param userName
      * @return
      */
-    public User getUserByName(String userName) {
+    public AppResponse getUserByName(String userName) {
+        if (!userRepository.existsByUserName(userName)) {
+           throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(),"User"));
+        }
         User existingUser = userRepository.findByUserName(userName);
-        return existingUser;
+
+        return UserResponse.builder().success(true).id(existingUser.getId()).userName(existingUser.getUserName())
+                .firstName(existingUser.getFirstName())
+                .lastName(existingUser.getLastName()).build();
     }
 }

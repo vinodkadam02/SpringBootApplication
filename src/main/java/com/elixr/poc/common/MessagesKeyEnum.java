@@ -8,10 +8,11 @@ import lombok.Getter;
 @Getter
 public enum MessagesKeyEnum {
     ENTITY_DELETED_SUCCESSFULLY("entity.deleted.successfully"),
-    ENTITY_ID_DOES_NOT_EXISTS("entity.id.does.not.exists"),
+    ENTITY_DOES_NOT_EXISTS("entity.does.not.exists"),
     ENTITY_INVALID_ID_FORMAT("entity.invalid.id.format"),
     ENTITY_MANDATORY_FIELD_MISSING("entity.mandatory.field.missing"),
     ENTITY_USER_EXISTS("entity.user.exists");
+
 
     MessagesKeyEnum(String key) {
         this.key=key;
