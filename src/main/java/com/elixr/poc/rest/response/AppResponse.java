@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 /**
  * Abstract class inherited by all response classes
  */
-@Setter
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AppResponse {
+@Getter
+@Setter
+public abstract class AppResponse {
     private boolean success;
 }
