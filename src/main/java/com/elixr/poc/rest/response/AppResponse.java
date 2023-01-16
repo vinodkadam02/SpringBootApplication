@@ -1,15 +1,17 @@
 package com.elixr.poc.rest.response;
 
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
- * Abstract class inherited by all user response classes
+ * Abstract class inherited by all response classes
  */
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-public abstract class AppResponse {
-    protected boolean success;
+public class AppResponse {
+    private boolean success;
 }

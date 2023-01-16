@@ -7,15 +7,14 @@ import lombok.Getter;
  */
 @Getter
 public enum MessagesKeyEnum {
-
     ENTITY_DELETED_SUCCESSFULLY("entity.deleted.successfully"),
-    ENTITY_ID_NOT_EXISTS("entity.id.dose.not.exists"),
+    ENTITY_ID_DOES_NOT_EXISTS("entity.id.does.not.exists"),
+    ENTITY_INVALID_ID_FORMAT("entity.invalid.id.format"),
     ENTITY_MANDATORY_FIELD_MISSING("entity.mandatory.field.missing"),
-    ENTITY_USER_EXISTS("entity.user.exists"),
-    ENTITY_USER_NOT_EXISTS("entity.user.not.exists");
+    ENTITY_USER_EXISTS("entity.user.exists");
 
     MessagesKeyEnum(String key) {
         this.key=key;
     }
-    public String key;
+    private String key;
 }

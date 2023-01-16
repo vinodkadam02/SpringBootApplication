@@ -11,7 +11,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 /**
- * Repository interface to communicate with database
+ * Repository interface to communicate with db
  */
 
 @Repository

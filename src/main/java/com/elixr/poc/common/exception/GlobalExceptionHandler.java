@@ -2,6 +2,10 @@ package com.elixr.poc.common.exception;
 
 import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.util.MessagesUtil;
+<<<<<<< HEAD
+=======
+import com.elixr.poc.rest.response.CommonResponse;
+>>>>>>> main
 import com.elixr.poc.rest.response.PostErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +21,55 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     /**
-     * Handles MethodArgumentNotValidException
+     * Handling the Exception and sending error message
+     *
      * @param methodArgumentNotValidException
      * @return
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+    private ResponseEntity<PostErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<String> errorList = new ArrayList<>();
         for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
-            errorList.add(error.getField()+" "+ MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_MANDATORY_FIELD_MISSING.getKey()));
+            errorList.add(error.getField() + " " + MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_MANDATORY_FIELD_MISSING.getKey()));
         }
-       PostErrorResponse errorResponse = PostErrorResponse.builder().errorMessage(errorList)
-                .build();
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        PostErrorResponse postErrorResponse = PostErrorResponse.builder().errorMessage(errorList).build();
+        return new ResponseEntity<>(postErrorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * URL exceptions are handled.
+     *
+     * @param idNotFoundException
+     * @return
+     */
+    @ExceptionHandler(IdNotFoundException.class)
+    public ResponseEntity<CommonResponse> handleIdNotFoundException(IdNotFoundException idNotFoundException) {
+        CommonResponse commonResponse = CommonResponse.builder().success(false)
+                .errorMessage(idNotFoundException.getMessage()).build();
+        return new ResponseEntity<>(commonResponse, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Invalid format of UUID is handled.
+     * @param idFormatException
+     * @return
+     */
+    @ExceptionHandler(IdFormatException.class)
+    public ResponseEntity<CommonResponse> handleIdFormatException(IdFormatException idFormatException){
+        CommonResponse commonResponse = CommonResponse.builder().errorMessage(idFormatException.getMessage()).build();
+        return new ResponseEntity<>(commonResponse,HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Generic exceptions are handled.
+     *
+     * @param exception
+     * @return
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<CommonResponse> handleGenericException(Exception exception) {
+        CommonResponse commonResponse = CommonResponse.builder().success(false)
+                .errorMessage(exception.getLocalizedMessage()).build();
+        return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
     }
 }

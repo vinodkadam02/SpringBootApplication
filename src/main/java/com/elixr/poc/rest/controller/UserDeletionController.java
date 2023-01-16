@@ -1,20 +1,20 @@
 package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.common.MessagesKeyEnum;
-import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.common.util.MessagesUtil;
-import com.elixr.poc.rest.response.CommonResponse;
+import com.elixr.poc.rest.response.DeleteSuccessResponse;
 import com.elixr.poc.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
-
-/**
- * RestController for Delete API
- */
 @RestController
+@Validated
 @RequestMapping("/application")
 public class UserDeletionController {
 
@@ -27,14 +27,15 @@ public class UserDeletionController {
     /**
      * Calling deleteUserDetails method with the parameter userId to delete the user by userId.
      * And handling the Exception if the userId is not matching.
+     *
+     * @param userId
+     * @return
      */
     @DeleteMapping("/user/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable("userId") UUID userId) throws IdNotFoundException {
-        CommonResponse commonResponse;
-        HttpStatus httpStatus;
+    public ResponseEntity<DeleteSuccessResponse> deleteUser(@PathVariable("userId") @Valid String userId) {
         boolean success = userService.deleteUserDetails(userId);
-        commonResponse = CommonResponse.builder().success(success).errorMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DELETED_SUCCESSFULLY.getKey())).build();
-        httpStatus = HttpStatus.OK;
-        return new ResponseEntity<>(commonResponse, httpStatus);
+        DeleteSuccessResponse deleteSuccessResponse = DeleteSuccessResponse.builder().success(success)
+                .successMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DELETED_SUCCESSFULLY.getKey())).build();
+        return new ResponseEntity<>(deleteSuccessResponse, HttpStatus.OK);
     }
 }

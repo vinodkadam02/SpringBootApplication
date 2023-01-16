@@ -1,17 +1,15 @@
 package com.elixr.poc.service;
 
 import com.elixr.poc.common.MessagesKeyEnum;
-import com.elixr.poc.common.exception.IdNotFoundException;
+import com.elixr.poc.common.exception.IdFormatException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
+import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.repository.UserRepository;
-import com.elixr.poc.rest.response.AppResponse;
-import com.elixr.poc.rest.response.GetAllResponse;
-import com.elixr.poc.rest.response.PostErrorResponse;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -29,16 +27,17 @@ public class UserService {
 
     /**
      * Deleting the user by the userId.
-     * throwing a GlobalException to handel if the UserId is not present.
+     * Throwing a NoRecordFoundException to handel if the UserId is not present.
+     *
+     * @param userId
+     * @return
+     * @throws IdNotFoundException
      */
-    public boolean deleteUserDetails(UUID userId) throws IdNotFoundException {
-        boolean success = false;
-        boolean userRecordExists = userRepository.existsById(userId);
-        if (userRecordExists) {
-            userRepository.deleteById(userId);
-            success = true;
-        } else {
-            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_NOT_EXISTS.getKey()));
+    public boolean deleteUserDetails(String userId) {
+        UUID uuid = uuidValidation(userId);
+        boolean userRecordExists = userRepository.existsById(uuid);
+        if (!userRecordExists) {
+            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "User"));
         }
         return true;
     }
@@ -62,20 +61,27 @@ public class UserService {
      * @param user
      * @return
      */
-    private void saveDataToDatabase(User user) {
+    private User saveDataToDatabase(User user) {
 
         if (user.getId() == null || user.getId().toString().isEmpty()) {
             user.setId(UUID.randomUUID());
         }
-        this.userRepository.save(user);
+        user = this.userRepository.save(user);
+        return user;
     }
 
     /**
-     * Retriving all the users
+     * Finding User by userId and returning the user.
+     *
+     * @param userId
      * @return
+     * @throws IdNotFoundException
      */
-    public GetAllResponse getAllUsers() {
-        return GetAllResponse.builder().success(true).users(userRepository.findAll()).build();
+    public User getUserByUserId(String userId) {
+        UUID uuid = uuidValidation(userId);
+        Optional<User> user = userRepository.findById(uuid);
+        return user.orElseThrow(() -> new IdNotFoundException(MessagesUtil
+                .getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "User")));
     }
 
     /**

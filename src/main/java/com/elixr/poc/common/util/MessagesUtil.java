@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 public class MessagesUtil {
 
     private static final String MESSAGE_PROPERTY_FILE_PREFIX = "messages";
+
     private static ResourceBundle moduleMessagesResourceBundle;
 
     static {
