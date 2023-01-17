@@ -4,8 +4,12 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
-public class CommonResponse {
-    private boolean success;
+public class CommonResponse extends AppResponse {
     private String errorMessage;
+
+    @Builder
+    public CommonResponse(boolean success, String errorMessage) {
+        setSuccess(success);
+        this.errorMessage = errorMessage;
+    }
 }

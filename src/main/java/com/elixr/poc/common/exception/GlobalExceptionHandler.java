@@ -41,20 +41,20 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(IdNotFoundException.class)
     public ResponseEntity<CommonResponse> handleIdNotFoundException(IdNotFoundException idNotFoundException) {
-        CommonResponse commonResponse = CommonResponse.builder().success(false)
-                .errorMessage(idNotFoundException.getMessage()).build();
+        CommonResponse commonResponse = CommonResponse.builder().success(false).errorMessage(idNotFoundException.getMessage()).build();
         return new ResponseEntity<>(commonResponse, HttpStatus.NOT_FOUND);
     }
 
     /**
      * Invalid format of UUID is handled.
+     *
      * @param idFormatException
      * @return
      */
     @ExceptionHandler(IdFormatException.class)
-    public ResponseEntity<CommonResponse> handleIdFormatException(IdFormatException idFormatException){
+    public ResponseEntity<CommonResponse> handleIdFormatException(IdFormatException idFormatException) {
         CommonResponse commonResponse = CommonResponse.builder().errorMessage(idFormatException.getMessage()).build();
-        return new ResponseEntity<>(commonResponse,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -65,8 +65,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CommonResponse> handleGenericException(Exception exception) {
-        CommonResponse commonResponse = CommonResponse.builder().success(false)
-                .errorMessage(exception.getLocalizedMessage()).build();
+        CommonResponse commonResponse = CommonResponse.builder().success(false).errorMessage(exception.getLocalizedMessage()).build();
         return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
     }
 }
