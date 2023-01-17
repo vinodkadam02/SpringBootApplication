@@ -1,14 +1,9 @@
 package com.elixr.poc.repository;
 
 import com.elixr.poc.data.User;
-import org.springframework.data.domain.Example;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 import java.util.UUID;
-import java.util.function.Function;
 
 /**
  * Repository interface to communicate with db
@@ -17,6 +12,8 @@ import java.util.function.Function;
 @Repository
 public interface UserRepository extends MongoRepository<User, UUID> {
     User findByUserName(String userName);
+    User findUserById(UUID userId);
+    boolean existsUserById(UUID uuid);
 
     boolean existsByUserName(String userName);
 }

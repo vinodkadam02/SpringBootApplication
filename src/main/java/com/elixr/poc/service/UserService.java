@@ -84,7 +84,7 @@ public class UserService {
         if (user.getId() == null || user.getId().toString().isEmpty()) {
             user.setId(UUID.randomUUID());
         }
-         this.userRepository.save(user);
+        user = this.userRepository.save(user);
     }
 
     /**
@@ -106,14 +106,11 @@ public class UserService {
      * @param userName
      * @return
      */
-    public AppResponse getUserByName(String userName) {
+    public User getUserByName(String userName) {
         if (!userRepository.existsByUserName(userName)) {
            throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(),"User"));
         }
         User existingUser = userRepository.findByUserName(userName);
-
-        return UserResponse.builder().success(true).id(existingUser.getId()).userName(existingUser.getUserName())
-                .firstName(existingUser.getFirstName())
-                .lastName(existingUser.getLastName()).build();
+        return existingUser;
     }
 }
