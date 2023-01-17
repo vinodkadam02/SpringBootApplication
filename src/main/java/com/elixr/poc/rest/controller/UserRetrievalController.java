@@ -50,11 +50,13 @@ public class UserRetrievalController {
     /**
      * Retrieving all users
      * calling the getAllUses() method of service class
-     * returning the list of all users as GetAllResponse object
+     * returning the response as list of all users through GetAllResponse object
      * @return
      */
     @GetMapping("/users")
-    public GetAllResponse getAllUser() {
-        return userService.getAllUsers();
+    public ResponseEntity<GetAllResponse> getAllUser() {
+        GetAllResponse allUsers = GetAllResponse.builder().success(true)
+                .users(userService.getAllUsers()).build();
+        return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 }

@@ -10,6 +10,7 @@ import com.elixr.poc.rest.response.GetAllResponse;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -65,7 +66,7 @@ public class UserService {
      * @return
      */
     public UserResponse createValidUser(User user) {
-        saveDataToDatabase(user);
+        saveUser(user);
         return UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName()).firstName(user
                 .getFirstName()).lastName(user.getLastName()).build();
     }
@@ -76,7 +77,7 @@ public class UserService {
      * @param user
      * @return
      */
-    private void saveDataToDatabase(User user) {
+    private void saveUser(User user) {
 
         if (user.getId() == null || user.getId().toString().isEmpty()) {
             user.setId(UUID.randomUUID());
@@ -88,8 +89,8 @@ public class UserService {
      * Retriving all the users
      * @return
      */
-    public GetAllResponse getAllUsers() {
-        return GetAllResponse.builder().success(true).users(userRepository.findAll()).build();
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     /**
