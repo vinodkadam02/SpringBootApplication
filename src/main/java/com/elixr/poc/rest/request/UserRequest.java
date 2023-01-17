@@ -1,6 +1,5 @@
 package com.elixr.poc.rest.request;
 
-import com.elixr.poc.constants.ApplicationConstants;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -13,11 +12,12 @@ import java.util.UUID;
 
 @Data
 public class UserRequest {
-
-    @NotBlank(message = ApplicationConstants.USER_NAME_MISSING)
+    @Id
+    private UUID id;
+    @NotBlank
     private String userName;
-    @NotBlank(message = ApplicationConstants.FIRST_NAME_MISSING_IN_USER)
+    @NotBlank
     private String firstName;
-    @NotBlank(message = ApplicationConstants.LAST_NAME_MISSING_IN_USER)
+    @NotBlank
     private String lastName;
 }

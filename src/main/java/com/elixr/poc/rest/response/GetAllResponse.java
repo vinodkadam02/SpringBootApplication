@@ -10,7 +10,7 @@ import java.util.List;
  * Sends successful response to the user while retrieval operation.
  */
 @Data
-public class GetAllResponse extends ErrorResponse {
+public class GetAllResponse extends AppResponse {
     private List<User> users;
 
     @Builder

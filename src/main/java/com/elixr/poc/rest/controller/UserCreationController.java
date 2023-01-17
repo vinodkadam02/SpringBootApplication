@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Controller class for UserRequest creation Operation.
+ * Controller class for UserRequest creation Operation
  */
 @RestController
 @Validated
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserCreationController {
 
     private final UserService userService;
-
     public UserCreationController(UserService userService) {
         this.userService = userService;
     }

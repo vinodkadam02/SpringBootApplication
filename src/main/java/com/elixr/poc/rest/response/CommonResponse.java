@@ -1,18 +1,15 @@
 package com.elixr.poc.rest.response;
 
-import com.elixr.poc.data.User;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class DeleteResponse extends ErrorResponse{
-
+public class CommonResponse extends AppResponse {
     private String errorMessage;
+
     @Builder
-    public DeleteResponse(String errorMessage) {
-        setSuccess(true);
+    public CommonResponse(boolean success, String errorMessage) {
+        setSuccess(success);
         this.errorMessage = errorMessage;
     }
 }
