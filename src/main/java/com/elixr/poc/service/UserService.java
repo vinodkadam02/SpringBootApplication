@@ -79,13 +79,12 @@ public class UserService {
      * @param user
      * @return
      */
-    private User saveUser(User user) {
+    private void saveUser(User user) {
 
         if (user.getId() == null || user.getId().toString().isEmpty()) {
             user.setId(UUID.randomUUID());
         }
-        user = this.userRepository.save(user);
-        return user;
+         this.userRepository.save(user);
     }
 
     /**
