@@ -1,6 +1,7 @@
 package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.data.Purchase;
+import com.elixr.poc.rest.response.GetAllResponse;
 import com.elixr.poc.rest.response.PurchaseResponse;
 import com.elixr.poc.service.PurchaseService;
 import jakarta.validation.Valid;
@@ -42,4 +43,5 @@ public class PurchaseRetrievalController {
             httpStatus = HttpStatus.OK;
             return new ResponseEntity<>(purchaseResponse, httpStatus);
     }
+
 }

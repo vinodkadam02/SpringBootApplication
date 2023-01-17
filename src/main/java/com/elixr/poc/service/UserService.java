@@ -6,6 +6,7 @@ import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
 import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.repository.UserRepository;
+import com.elixr.poc.rest.response.GetAllResponse;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 

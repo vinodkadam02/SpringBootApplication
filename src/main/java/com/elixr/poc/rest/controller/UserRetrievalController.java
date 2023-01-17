@@ -2,6 +2,7 @@ package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.data.User;
 import com.elixr.poc.common.exception.IdNotFoundException;
+import com.elixr.poc.rest.response.GetAllResponse;
 import com.elixr.poc.rest.response.UserResponse;
 import com.elixr.poc.service.UserService;
 import jakarta.validation.Valid;
@@ -44,5 +45,16 @@ public class UserRetrievalController {
         UserResponse userResponse = UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName())
                 .firstName(user.getFirstName()).lastName(user.getLastName()).build();
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
+    }
+
+    /**
+     * Retrieving all users
+     * calling the getAllUses() method of service class
+     * returning the list of all users as GetAllResponse object
+     * @return
+     */
+    @GetMapping("/users")
+    public GetAllResponse getAllUser() {
+        return userService.getAllUsers();
     }
 }
