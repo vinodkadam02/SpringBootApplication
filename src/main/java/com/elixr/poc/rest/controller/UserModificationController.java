@@ -1,5 +1,6 @@
 package com.elixr.poc.rest.controller;
 
+import com.elixr.poc.data.User;
 import com.elixr.poc.rest.request.UserRequest;
 import com.elixr.poc.service.UserService;
 import jakarta.validation.Valid;
@@ -8,11 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 
 @RestController
 @Validated
-@RequestMapping("/application")
 public class UserModificationController {
     private final UserService userService;
 
@@ -29,8 +28,7 @@ public class UserModificationController {
      * @return
      */
     @PatchMapping("/user/{userId}")
-    public ResponseEntity modifyUser(@PathVariable("userId") UUID userId, @RequestBody @Valid UserRequest userDetails){
-        HttpStatus httpStatus = HttpStatus.OK;
-        return new ResponseEntity<>(userService.updateUserPartially(userId, userDetails), httpStatus);
+    public ResponseEntity<User> modifyUser(@PathVariable("userId") String userId, @RequestBody @Valid UserRequest userDetails){
+        return new ResponseEntity<>(userService.updateUserPartially(userId, userDetails), HttpStatus.OK);
     }
 }

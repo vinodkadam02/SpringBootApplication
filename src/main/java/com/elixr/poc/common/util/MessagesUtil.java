@@ -20,13 +20,12 @@ public class MessagesUtil {
         try {
             // Initialize messagesResourceBundle in a static block because the module may not have messages.properties.
             moduleMessagesResourceBundle = ResourceBundle.getBundle(MESSAGE_PROPERTY_FILE_PREFIX);
-        } catch (MissingResourceException e) {
-            moduleMessagesResourceBundle = null;
+        } catch (MissingResourceException missingResourceException) {
+            log.error(missingResourceException.getMessage());
         }
     }
 
     public static String getMessage(String key, Object... arguments) {
-
         String message = null;
         if (moduleMessagesResourceBundle != null) {
             message = getMessage(moduleMessagesResourceBundle, key, arguments);

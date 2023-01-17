@@ -36,7 +36,8 @@ public class UserService {
             UUID uuid = UUID.fromString(userId);
             return uuid;
         } catch (IllegalArgumentException illegalArgumentException) {
-            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey()));
+            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey(),
+                    MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_ID.getKey())));
         }
     }
 
@@ -52,7 +53,8 @@ public class UserService {
         UUID uuid = uuidValidation(userId);
         boolean userRecordExists = userRepository.existsById(uuid);
         if (!userRecordExists) {
-            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "User"));
+            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
+                    MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_ID.getKey())));
         }
         userRepository.deleteById(uuid);
         return true;
@@ -96,18 +98,23 @@ public class UserService {
         UUID uuid = uuidValidation(userId);
         Optional<User> user = userRepository.findById(uuid);
         return user.orElseThrow(() -> new IdNotFoundException(MessagesUtil
-                .getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "User")));
+                .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
+                        MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_ID.getKey()))));
     }
 
     /**
      * Updating the user details by userId.
+     *
      * @param userId
      * @param userDetails
      * @return
      * @throws IdNotFoundException
      */
-    public User updateUserPartially(UUID userId, UserRequest userDetails) throws IdNotFoundException {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IdNotFoundException("User not found on :: " + userId));
+    public User updateUserPartially(String userId, UserRequest userDetails) {
+        UUID uuid = uuidValidation(userId);
+        User user = userRepository.findById(uuid).orElseThrow(() -> new IdNotFoundException(MessagesUtil
+                .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
+                        MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_ID.getKey()))));
         user.setUserName(userDetails.getUserName());
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());

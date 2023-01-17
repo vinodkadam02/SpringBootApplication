@@ -57,16 +57,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(commonResponse,HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * Generic exceptions are handled.
-     *
-     * @param exception
-     * @return
-     */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<CommonResponse> handleGenericException(Exception exception) {
-        CommonResponse commonResponse = CommonResponse.builder().success(false)
-                .errorMessage(exception.getLocalizedMessage()).build();
-        return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
-    }
+//    /**
+//     * Generic exceptions are handled.
+//     *
+//     * @param exception
+//     * @return
+//     */
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<CommonResponse> handleGenericException(Exception exception) {
+//        CommonResponse commonResponse = CommonResponse.builder().success(false)
+//                .errorMessage(exception.getLocalizedMessage()).build();
+//        return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
+//    }
 }
