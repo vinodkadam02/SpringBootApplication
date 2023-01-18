@@ -11,7 +11,8 @@ public enum MessagesKeyEnum {
     ENTITY_DOES_NOT_EXISTS("entity.does.not.exists"),
     ENTITY_INVALID_ID_FORMAT("entity.invalid.id.format"),
     ENTITY_MANDATORY_FIELD_MISSING("entity.mandatory.field.missing"),
-    ENTITY_USER_EXISTS("entity.user.exists");
+    ENTITY_USER_EXISTS("entity.user.exists"),
+    ENTITY_PURCHASE_ID("entity.purchase.Id");
 
 
     MessagesKeyEnum(String key) {
