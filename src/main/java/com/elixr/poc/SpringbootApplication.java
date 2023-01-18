@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "com.elixr.poc.repository")
 public class SpringbootApplication {
     public static void main(String[] args) {
+
         SpringApplication.run(SpringbootApplication.class, args);
     }
 }
