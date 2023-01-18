@@ -20,23 +20,19 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
     }
 
-    public PurchaseResponse createPurchase(Purchase purchase) {
-        savePurchase(purchase);
-        return PurchaseResponse.purchaseBuilder().success(true).id(purchase.getId()).userName(purchase.getUserName()).product(purchase.getProduct()).amount(purchase.getAmount()).date(purchase.getDate()).build();
-    }
-
     /**
-     * Calling purchase repository to store the valid user information to the database
+     * Validating UUID format.
      *
-     * @param purchase
+     * @param purchaseId
      * @return
      */
-    private Purchase savePurchase(Purchase purchase) {
-        if (purchase.getId() == null || purchase.getId().toString().isEmpty()) {
-            purchase.setId(UUID.randomUUID());
+    private UUID uuidValidation(String purchaseId) {
+        try {
+            UUID uuid = UUID.fromString(purchaseId);
+            return uuid;
+        } catch (IllegalArgumentException illegalArgumentException) {
+            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey()));
         }
-        purchase = purchaseRepository.save(purchase);
-        return purchase;
     }
 
     /**
@@ -44,18 +40,16 @@ public class PurchaseService {
      *
      * @param purchaseId
      * @return
-     * @throws IdNotFoundException
+     * @throws NotFoundException
      */
-    public boolean deletePurchaseDetails(UUID purchaseId) throws IdNotFoundException {
-        boolean success;
-        boolean purchaseRecordExists = purchaseRepository.existsById(purchaseId);
-        if (purchaseRecordExists) {
-            purchaseRepository.deleteById(purchaseId);
-            success = true;
-        } else {
-            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey()));
+    public boolean deletePurchaseDetails(String purchaseId) {
+        UUID uuid = uuidValidation(purchaseId);
+        boolean purchaseRecordExists = purchaseRepository.existsById(uuid);
+        if (!purchaseRecordExists) {
+            throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(), "Purchase"));
         }
-        return success;
+        purchaseRepository.deleteById(uuid);
+        return true;
     }
 
     /**
@@ -63,10 +57,13 @@ public class PurchaseService {
      *
      * @param purchaseId
      * @return
-     * @throws IdNotFoundException
+     * @throws NotFoundException
      */
-    public Purchase purchaseUpdate(UUID purchaseId, PurchaseRequest purchaseDetails) throws IdNotFoundException {
-        Purchase purchase = purchaseRepository.findById(purchaseId).orElseThrow(() -> new IdNotFoundException("Purchase not found on :: " + purchaseId));
+    public Purchase purchaseUpdate(String purchaseId, PurchaseRequest purchaseDetails) {
+        UUID uuid = uuidValidation(purchaseId);
+        Purchase purchase = purchaseRepository.findById(uuid).orElseThrow(() -> new NotFoundException
+                (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(),
+                        MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_PURCHASE_ID.getKey()))));
         purchase.setUserName(purchaseDetails.getUserName());
         purchase.setProduct(purchaseDetails.getProduct());
         purchase.setAmount(purchaseDetails.getAmount());
@@ -76,16 +73,47 @@ public class PurchaseService {
     }
 
     /**
-     * Using UserName finding the purchaseDetails or else send UserName does not exist
+     * Finding Purchase by purchaseId and returning the purchase.
+     */
+    public Purchase getPurchaseByPurchaseId(String purchaseId) {
+        UUID uuid = uuidValidation(purchaseId);
+        Optional<Purchase> purchase = purchaseRepository.findById(uuid);
+        return purchase.orElseThrow(() -> new NotFoundException(MessagesUtil
+                .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(), "Purchase")));
+
+    }
+
+    public PurchaseResponse createPurchase(Purchase purchase) {
+        savePurchase(purchase);
+        return PurchaseResponse.purchaseBuilder().success(true).id(purchase.getId()).userName(purchase.getUserName())
+                .product(purchase.getProduct()).amount(purchase.getAmount()).date(purchase.getDate()).build();
+    }
+
+    /**
+     * Calling purchase repository to store the valid user information to the database
      *
-     * @param userName
+     * @param purchase
      * @return
      */
-    public List<Purchase> getPurchaseByUserName(String userName) {
-        List<Purchase> existingUser = purchaseRepository.findPurchasesByUserName(userName);
-        if (existingUser.isEmpty()) {
-            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_DOES_NOT_EXISTS.getKey()));
+
+    private Purchase savePurchase(Purchase purchase) {
+        if (purchase.getId() == null || purchase.getId().toString().isEmpty()) {
+            purchase.setId(UUID.randomUUID());
+            purchase = purchaseRepository.save(purchase);
+            return purchase;
         }
-        return existingUser;
+        /**
+         * Using UserName finding the purchaseDetails or else send UserName does not exist
+         *
+         * @param userName
+         * @return
+         */
+        public List<Purchase> getPurchaseByUserName (String userName){
+            List<Purchase> existingUser = purchaseRepository.findPurchasesByUserName(userName);
+            if (existingUser.isEmpty()) {
+                throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_DOES_NOT_EXISTS.getKey()));
+            }
+            return existingUser;
+        }
     }
 }

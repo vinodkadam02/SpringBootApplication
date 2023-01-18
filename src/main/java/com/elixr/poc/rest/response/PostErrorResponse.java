@@ -8,5 +8,5 @@ import java.util.List;
 @Builder
 @Data
 public class PostErrorResponse extends AppResponse {
-   private List<String> errorMessage;
+    private List<String> errorMessage;
 }

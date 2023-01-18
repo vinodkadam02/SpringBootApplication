@@ -2,7 +2,9 @@ package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.data.Purchase;
 import com.elixr.poc.rest.response.PurchaseGetResponse;
+import com.elixr.poc.rest.response.PurchaseResponse;
 import com.elixr.poc.service.PurchaseService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,5 +30,22 @@ public class PurchaseRetrievalController {
     public ResponseEntity<PurchaseGetResponse> retrievePurchase(@RequestBody @PathVariable("userName") String userName) {
         List<Purchase> purchases = purchaseService.getPurchaseByUserName(userName);
         return new ResponseEntity<>(PurchaseGetResponse.builder().success(true).purchases(purchases).build(), HttpStatus.OK);
+    }
+
+    /**
+     * Getting the purchase by purchaseID
+     * Calling a method getPurchaseByPurchaseID
+     * Returning the response
+     * And handling the exception if the purchaseId is not matching.
+     */
+    @GetMapping("/purchase/{purchaseId}")
+    public ResponseEntity retrievePurchase(@PathVariable("purchaseId") @Valid String purchaseId) {
+        HttpStatus httpStatus;
+        Purchase purchase = purchaseService.getPurchaseByPurchaseId(purchaseId);
+        PurchaseResponse purchaseResponse = PurchaseResponse.purchaseBuilder().success(true).id(purchase.getId())
+                .userName(purchase.getUserName()).product(purchase.getProduct()).amount(purchase.getAmount())
+                .date(purchase.getDate()).build();
+        httpStatus = HttpStatus.OK;
+        return new ResponseEntity<>(purchaseResponse, httpStatus);
     }
 }
