@@ -3,7 +3,6 @@ package com.elixr.poc.repository;
 import com.elixr.poc.data.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.UUID;
 
 /**
@@ -12,8 +11,9 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, UUID> {
+    User findByUserName(String userName);
+    User findUserById(UUID userId);
+    boolean existsUserById(UUID uuid);
 
- User findByUserName(String userName);
- boolean existsByUserName(String userName);
-
+    boolean existsByUserName(String userName);
 }

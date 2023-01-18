@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
             // Initialize messagesResourceBundle in a static block because the module may not have messages.properties.
             moduleMessagesResourceBundle = ResourceBundle.getBundle(MESSAGE_PROPERTY_FILE_PREFIX);
         } catch (MissingResourceException e) {
-            moduleMessagesResourceBundle = null;
+           log.error(e.getMessage());
         }
     }
 

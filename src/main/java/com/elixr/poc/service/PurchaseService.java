@@ -6,7 +6,6 @@ import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.Purchase;
 import com.elixr.poc.repository.PurchaseRepository;
-import com.elixr.poc.rest.response.PurchaseResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,7 +19,13 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
     }
 
-    private UUID uuidValidation(String userId) {
+    /**
+     * Validating UUID format.
+     *
+     * @param purchaseId
+     * @return
+     */
+    private UUID uuidValidation(String purchaseId) {
         try {
             UUID uuid = UUID.fromString(userId);
             return uuid;
@@ -36,18 +41,35 @@ public class PurchaseService {
      * @return
      * @throws IdNotFoundException
      */
-    public boolean deletePurchaseDetails(UUID purchaseId) {
-        boolean success = false;
-        boolean purchaseRecordExists = purchaseRepository.existsById(purchaseId);
-        if (purchaseRecordExists) {
-            purchaseRepository.deleteById(purchaseId);
-            success = true;
-        } else {
-            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey()));
+    public boolean deletePurchaseDetails(String purchaseId) {
+        UUID uuid = uuidValidation(purchaseId);
+        boolean purchaseRecordExists = purchaseRepository.existsById(uuid);
+        if (!purchaseRecordExists) {
+            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "Purchase"));
         }
-        return success;
+        purchaseRepository.deleteById(uuid);
+        return true;
     }
 
+    /**
+     * If the PurchaseId exists then update the PurchaseId or else send Id is mismatched.
+     *
+     * @param purchaseId
+     * @return
+     * @throws IdNotFoundException
+     */
+    public Purchase purchaseUpdate(String purchaseId, PurchaseRequest purchaseDetails) {
+        UUID uuid = uuidValidation(purchaseId);
+        Purchase purchase = purchaseRepository.findById(uuid).orElseThrow(() -> new IdNotFoundException
+                (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(),
+                        MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_PURCHASE_ID.getKey()))));
+        purchase.setUserName(purchaseDetails.getUserName());
+        purchase.setProduct(purchaseDetails.getProduct());
+        purchase.setAmount(purchaseDetails.getAmount());
+        purchase.setDate(purchaseDetails.getDate());
+        final Purchase updatedPurchase = purchaseRepository.save(purchase);
+        return updatedPurchase;
+    }
     /**
      * Finding Purchase by purchaseId and returning the purchase.
      */
