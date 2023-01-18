@@ -2,11 +2,12 @@ package com.elixr.poc.service;
 
 import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.exception.IdFormatException;
-import com.elixr.poc.common.exception.IdNotFoundException;
+import com.elixr.poc.common.exception.NotFoundException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.Purchase;
 import com.elixr.poc.repository.PurchaseRepository;
 import com.elixr.poc.rest.request.PurchaseRequest;
+import com.elixr.poc.rest.response.PurchaseResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -40,13 +41,13 @@ public class PurchaseService {
      *
      * @param purchaseId
      * @return
-     * @throws IdNotFoundException
+     * @throws NotFoundException
      */
     public boolean deletePurchaseDetails(String purchaseId) {
         UUID uuid = uuidValidation(purchaseId);
         boolean purchaseRecordExists = purchaseRepository.existsById(uuid);
         if (!purchaseRecordExists) {
-            throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "Purchase"));
+            throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(), "Purchase"));
         }
         purchaseRepository.deleteById(uuid);
         return true;
@@ -57,12 +58,12 @@ public class PurchaseService {
      *
      * @param purchaseId
      * @return
-     * @throws IdNotFoundException
+     * @throws NotFoundException
      */
     public Purchase purchaseUpdate(String purchaseId, PurchaseRequest purchaseDetails) {
         UUID uuid = uuidValidation(purchaseId);
-        Purchase purchase = purchaseRepository.findById(uuid).orElseThrow(() -> new IdNotFoundException
-                (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(),
+        Purchase purchase = purchaseRepository.findById(uuid).orElseThrow(() -> new NotFoundException
+                (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(),
                         MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_PURCHASE_ID.getKey()))));
         purchase.setUserName(purchaseDetails.getUserName());
         purchase.setProduct(purchaseDetails.getProduct());
@@ -77,7 +78,28 @@ public class PurchaseService {
     public Purchase getPurchaseByPurchaseId(String purchaseId) {
         UUID uuid = uuidValidation(purchaseId);
         Optional<Purchase> purchase = purchaseRepository.findById(uuid);
-        return purchase.orElseThrow(() -> new IdNotFoundException(MessagesUtil
-                .getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "Purchase")));
+        return purchase.orElseThrow(() -> new NotFoundException(MessagesUtil
+                .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(), "Purchase")));
+
+    }
+
+    public PurchaseResponse createPurchase(Purchase purchase) {
+        savePurchase(purchase);
+        return  PurchaseResponse.purchaseBuilder().success(true).id(purchase.getId()).userName(purchase.getUserName())
+                .product(purchase.getProduct()).amount(purchase.getAmount()).date(purchase.getDate()).build();
+    }
+
+    /**
+     * Calling purchase repository to store the valid user information to the database
+     *
+     * @param purchase
+     * @return
+     */
+    private Purchase savePurchase(Purchase purchase) {
+        if (purchase.getId() == null || purchase.getId().toString().isEmpty()) {
+            purchase.setId(UUID.randomUUID());
+        }
+        purchase = purchaseRepository.save(purchase);
+        return purchase;
     }
 }

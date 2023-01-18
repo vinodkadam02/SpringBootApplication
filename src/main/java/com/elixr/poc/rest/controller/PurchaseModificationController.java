@@ -1,6 +1,6 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.common.exception.IdNotFoundException;
+import com.elixr.poc.common.exception.NotFoundException;
 import com.elixr.poc.rest.request.PurchaseRequest;
 import com.elixr.poc.service.PurchaseService;
 import jakarta.validation.Valid;
@@ -27,11 +27,11 @@ public class PurchaseModificationController {
      *
      * @param purchaseId
      * @return
-     * @throws IdNotFoundException
+     * @throws NotFoundException
      */
     @PatchMapping("/purchase/{purchaseId}")
     public ResponseEntity purchaseUpdate(@PathVariable("purchaseId") String purchaseId, @RequestBody
-    @Valid PurchaseRequest purchaseDetails) throws IdNotFoundException {
+    @Valid PurchaseRequest purchaseDetails) throws NotFoundException {
         return new ResponseEntity<>(purchaseService.purchaseUpdate(purchaseId, purchaseDetails), HttpStatus.OK);
     }
 }

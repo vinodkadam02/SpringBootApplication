@@ -9,6 +9,7 @@ import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.response.AppResponse;
 import com.elixr.poc.rest.response.PostErrorResponse;
 import com.elixr.poc.rest.response.UserResponse;
+import com.elixr.poc.rest.response.GetAllResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -16,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Service class to interact with controllers for all user related operations
+ * Service class to interact with controller and create new user
  */
 @Service
 public class UserService {
@@ -57,6 +58,7 @@ public class UserService {
         if (!userRecordExists) {
             throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(), "User"));
         }
+        userRepository.deleteById(uuid);
         return true;
     }
 
@@ -76,6 +78,7 @@ public class UserService {
 
     /**
      * Calling the repository to store data
+     *
      * @param user
      * @return
      */
@@ -112,5 +115,13 @@ public class UserService {
         }
         User existingUser = userRepository.findByUserName(userName);
         return existingUser;
+    }
+
+    /**
+     * Retriving all the users
+     * @return
+     */
+    public GetAllResponse getAllUsers() {
+        return GetAllResponse.builder().success(true).users(userRepository.findAll()).build();
     }
 }
