@@ -8,7 +8,6 @@ import com.elixr.poc.common.exception.NotFoundException;
 import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.request.UserRequest;
 import com.elixr.poc.rest.response.AppResponse;
-import com.elixr.poc.rest.response.GetAllResponse;
 import com.elixr.poc.rest.response.PostErrorResponse;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
@@ -28,6 +27,7 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+
     }
 
     /**
@@ -67,20 +67,24 @@ public class UserService {
 
     /**
      * Creating a valid new user.
+     *
      * @param user
      * @return
      */
     public AppResponse createValidUser(User user) {
         if (userRepository.existsByUserName(user.getUserName())) {
-            return PostErrorResponse.builder().errorMessage(Collections.singletonList(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_EXISTS.getKey()))).build();
-      } else {
+            return PostErrorResponse.builder().errorMessage(Collections.singletonList(
+                    MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_EXISTS.getKey()))).build();
+        } else {
             saveUser(user);
-            return UserResponse.builder().success(true).id(user.getId()).userName(user.getUserName()).firstName(user.getFirstName()).lastName(user.getLastName()).build();
+            return UserResponse.builder().success(true).id(user.getId()).userName(
+                    user.getUserName()).firstName(user.getFirstName()).lastName(user.getLastName()).build();
         }
     }
 
     /**
      * Calling the repository to store data
+     *
      * @param user
      * @return
      */
@@ -94,6 +98,7 @@ public class UserService {
 
     /**
      * Retrieving all the users
+     *
      * @return
      */
     public List<User> getAllUsers() {
@@ -117,12 +122,13 @@ public class UserService {
 
     /**
      * Retrieve user by username.
+     *
      * @param userName
      * @return
      */
     public User getUserByName(String userName) {
         if (!userRepository.existsByUserName(userName)) {
-           throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),"User"));
+            throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(), "User"));
         }
         User existingUser = userRepository.findByUserName(userName);
         return existingUser;

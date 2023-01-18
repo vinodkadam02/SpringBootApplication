@@ -36,7 +36,7 @@ public class UserRetrievalController {
      * @throws NotFoundException
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity<UserResponse> retrieveUser(@PathVariable("userId") @Valid String userId) {
+    public ResponseEntity<UserResponse> retrieveUserByUserId(@PathVariable("userId") @Valid String userId) {
         User user = userService.getUserByUserId(userId);
         UserResponse userResponse = UserResponse.builder()
                 .success(true).id(user.getId())
@@ -50,6 +50,7 @@ public class UserRetrievalController {
      * calling getUserByName() method from service class
      * returning the UserResponse object
      * Handling the exception by GlobalExceptionHandler if any exception occurs
+     *
      * @param userName
      * @return
      */
@@ -65,6 +66,7 @@ public class UserRetrievalController {
      * Retrieving all users
      * calling the getAllUses() method of service class
      * returning the response as list of all users through GetAllResponse object
+     *
      * @return
      */
     @GetMapping("/users")
