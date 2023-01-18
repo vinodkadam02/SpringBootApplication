@@ -11,10 +11,10 @@ public enum MessagesKeyEnum {
     ENTITY_DOES_NOT_EXIST("entity.does.not.exist"),
     ENTITY_INVALID_ID_FORMAT("entity.invalid.id.format"),
     ENTITY_MANDATORY_FIELD_MISSING("entity.mandatory.field.missing"),
-    ENTITY_PURCHASE_ID("entity.purchase.Id"),
     ENTITY_USER_EXISTS("entity.user.exists"),
     ENTITY_USER_DOES_NOT_EXISTS("entity.user.does.not.exists"),
-    ENTITY_USER_ID("entity.user.id");
+    ENTITY_PURCHASE_ID("entity.purchase.Id");
+
 
     private final String key;
 

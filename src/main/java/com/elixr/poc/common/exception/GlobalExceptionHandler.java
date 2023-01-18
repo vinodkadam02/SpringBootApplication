@@ -1,5 +1,4 @@
 package com.elixr.poc.common.exception;
-
 import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.rest.response.CommonResponse;
@@ -20,7 +19,6 @@ public class GlobalExceptionHandler {
     /**
      * Handling the Exception and sending error message
      * Handles MethodArgumentNotValidException
-     *
      * @param methodArgumentNotValidException
      * @return
      */
@@ -36,7 +34,6 @@ public class GlobalExceptionHandler {
 
     /**
      * URL exceptions are handled.
-     *
      * @param notFoundException
      * @return
      */

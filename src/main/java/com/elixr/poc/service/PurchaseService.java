@@ -105,6 +105,7 @@ public class PurchaseService {
      * @param purchase
      * @return
      */
+
     private Purchase savePurchase(Purchase purchase) {
         if (purchase.getId() == null || purchase.getId().toString().isEmpty()) {
             purchase.setId(UUID.randomUUID());
