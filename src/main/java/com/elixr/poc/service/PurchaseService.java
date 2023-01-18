@@ -48,7 +48,8 @@ public class PurchaseService {
         UUID uuid = uuidValidation(purchaseId);
         boolean purchaseRecordExists = purchaseRepository.existsById(uuid);
         if (!purchaseRecordExists) {
-            throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(), "Purchase"));
+            throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
+                    MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_PURCHASE_ID.getKey())));
         }
         purchaseRepository.deleteById(uuid);
         return true;
@@ -64,7 +65,7 @@ public class PurchaseService {
     public Purchase purchaseUpdate(String purchaseId, PurchaseRequest purchaseDetails) {
         UUID uuid = uuidValidation(purchaseId);
         Purchase purchase = purchaseRepository.findById(uuid).orElseThrow(() -> new NotFoundException
-                (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(),
+                (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
                         MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_PURCHASE_ID.getKey()))));
         purchase.setUserName(purchaseDetails.getUserName());
         purchase.setProduct(purchaseDetails.getProduct());
@@ -81,7 +82,8 @@ public class PurchaseService {
         UUID uuid = uuidValidation(purchaseId.toString());
         Optional<Purchase> purchase = purchaseRepository.findById(uuid);
         return purchase.orElseThrow(() -> new NotFoundException(MessagesUtil
-                .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(), "Purchase")));
+                .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
+                        MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_PURCHASE_ID.getKey()))));
 
     }
 
