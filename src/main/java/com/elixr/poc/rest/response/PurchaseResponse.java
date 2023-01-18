@@ -1,18 +1,18 @@
 package com.elixr.poc.rest.response;
-import lombok.AllArgsConstructor;
+
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
+
 import java.util.List;
 import java.util.UUID;
 
 /**
- * This Class holds the response attributes for purchase related end points
+ * This Class holds the response attributes for purchase related end points.
  */
+
 @Data
 public class PurchaseResponse extends AppResponse {
 
-    @Id
     private UUID id;
     private String userName;
     private String product;

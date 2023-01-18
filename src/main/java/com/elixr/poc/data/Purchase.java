@@ -14,6 +14,7 @@ public class Purchase {
     @Id
     private UUID id;
     private String userName;
+    private UUID userId;
     private String product;
     private String amount;
     private String date;

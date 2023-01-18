@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class AppResponse {
-    protected boolean success;
+public class AppResponse {
+    private boolean success;
 }
