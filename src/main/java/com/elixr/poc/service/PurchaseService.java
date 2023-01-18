@@ -9,6 +9,7 @@ import com.elixr.poc.repository.PurchaseRepository;
 import com.elixr.poc.rest.request.PurchaseRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -67,5 +68,14 @@ public class PurchaseService {
         purchase.setDate(purchaseDetails.getDate());
         final Purchase updatedPurchase = purchaseRepository.save(purchase);
         return updatedPurchase;
+    }
+    /**
+     * Finding Purchase by purchaseId and returning the purchase.
+     */
+    public Purchase getPurchaseByPurchaseId(String purchaseId) {
+        UUID uuid = uuidValidation(purchaseId);
+        Optional<Purchase> purchase = purchaseRepository.findById(uuid);
+        return purchase.orElseThrow(() -> new IdNotFoundException(MessagesUtil
+                .getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "Purchase")));
     }
 }
