@@ -84,7 +84,7 @@ public class UserService {
     }
 
     /**
-     * Retriving all the users
+     * Retrieving all the users
      * @return
      */
     public List<User> getAllUsers() {
