@@ -7,16 +7,18 @@ import com.elixr.poc.service.PurchaseService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Controller class for purchase details.
  */
 
 @RestController
-@RequestMapping(path = "/controller")
 public class PurchaseRetrievalController {
     /**
      * Get the purchase by userName
@@ -27,7 +29,7 @@ public class PurchaseRetrievalController {
     }
 
     @GetMapping("/purchase/{userName}")
-    public ResponseEntity<PurchaseGetResponse> retrievePurchase(@RequestBody @PathVariable("userName") String userName) {
+    public ResponseEntity<PurchaseGetResponse> retrievePurchaseByUserName(@PathVariable("userName") String userName) {
         List<Purchase> purchases = purchaseService.getPurchaseByUserName(userName);
         return new ResponseEntity<>(PurchaseGetResponse.builder().success(true).purchases(purchases).build(), HttpStatus.OK);
     }
@@ -38,7 +40,7 @@ public class PurchaseRetrievalController {
      * Returning the response
      * And handling the exception if the purchaseId is not matching.
      */
-    @GetMapping("/purchase/{purchaseId}")
+    @GetMapping("/purchases/{purchaseId}")
     public ResponseEntity retrievePurchase(@PathVariable("purchaseId") @Valid String purchaseId) {
         HttpStatus httpStatus;
         Purchase purchase = purchaseService.getPurchaseByPurchaseId(purchaseId);

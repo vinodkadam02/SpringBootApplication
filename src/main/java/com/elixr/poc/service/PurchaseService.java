@@ -1,7 +1,8 @@
 package com.elixr.poc.service;
 
 import com.elixr.poc.common.MessagesKeyEnum;
-import com.elixr.poc.common.exception.IdNotFoundException;
+import com.elixr.poc.common.exception.IdFormatException;
+import com.elixr.poc.common.exception.NotFoundException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.Purchase;
 import com.elixr.poc.repository.PurchaseRepository;
@@ -10,6 +11,7 @@ import com.elixr.poc.rest.response.PurchaseResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -76,7 +78,7 @@ public class PurchaseService {
      * Finding Purchase by purchaseId and returning the purchase.
      */
     public Purchase getPurchaseByPurchaseId(String purchaseId) {
-        UUID uuid = uuidValidation(purchaseId);
+        UUID uuid = uuidValidation(purchaseId.toString());
         Optional<Purchase> purchase = purchaseRepository.findById(uuid);
         return purchase.orElseThrow(() -> new NotFoundException(MessagesUtil
                 .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(), "Purchase")));
@@ -100,20 +102,20 @@ public class PurchaseService {
         if (purchase.getId() == null || purchase.getId().toString().isEmpty()) {
             purchase.setId(UUID.randomUUID());
             purchase = purchaseRepository.save(purchase);
-            return purchase;
         }
-        /**
-         * Using UserName finding the purchaseDetails or else send UserName does not exist
-         *
-         * @param userName
-         * @return
-         */
-        public List<Purchase> getPurchaseByUserName (String userName){
-            List<Purchase> existingUser = purchaseRepository.findPurchasesByUserName(userName);
-            if (existingUser.isEmpty()) {
-                throw new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_DOES_NOT_EXISTS.getKey()));
-            }
-            return existingUser;
+        return purchase;
+    }
+    /**
+     * Using UserName finding the purchaseDetails or else send UserName does not exist
+     *
+     * @param userName
+     * @return
+     */
+    public List<Purchase> getPurchaseByUserName(String userName) {
+        List<Purchase> existingUser = purchaseRepository.findPurchasesByUserName(userName);
+        if (existingUser.isEmpty()) {
+            throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_DOES_NOT_EXISTS.getKey()));
         }
+        return existingUser;
     }
 }
