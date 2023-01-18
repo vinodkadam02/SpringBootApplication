@@ -5,8 +5,12 @@ import lombok.Data;
 
 import java.util.List;
 
-@Data
+/**
+ * Sending list of error message as per invalid field
+ */
+
 @Builder
-public class PostErrorResponse extends AppResponse{
-    List<String> errorMessage;
+@Data
+public class PostErrorResponse extends AppResponse {
+    private List<String> errorMessage;
 }

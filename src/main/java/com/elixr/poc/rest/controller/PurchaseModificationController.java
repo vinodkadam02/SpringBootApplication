@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Validated
 public class PurchaseModificationController {
-    private final PurchaseService purchaseService;
+    private final PurchaseService  purchaseService;
 
     public PurchaseModificationController(PurchaseService purchaseService) {
         this.purchaseService = purchaseService;
