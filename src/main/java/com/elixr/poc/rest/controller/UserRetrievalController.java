@@ -2,6 +2,7 @@ package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.data.User;
 import com.elixr.poc.common.exception.NotFoundException;
+import com.elixr.poc.rest.response.GetAllResponse;
 import com.elixr.poc.rest.response.UserResponse;
 import com.elixr.poc.service.UserService;
 import jakarta.validation.Valid;
