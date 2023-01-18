@@ -1,19 +1,19 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.exception.IdNotFoundException;
+import com.elixr.poc.common.exception.NotFoundException;
 import com.elixr.poc.rest.request.PurchaseRequest;
 import com.elixr.poc.service.PurchaseService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Validated
-@RequestMapping("/controller")
 public class PurchaseModificationController {
     private final PurchaseService purchaseService;
 
@@ -27,11 +27,11 @@ public class PurchaseModificationController {
      *
      * @param purchaseId
      * @return
-     * @throws IdNotFoundException
+     * @throws NotFoundException
      */
     @PatchMapping("/purchase/{purchaseId}")
-    public ResponseEntity purchaseUpdate(@PathVariable("purchaseId") UUID purchaseId,
-                                         @RequestBody @Valid PurchaseRequest purchaseDetails) throws IdNotFoundException {
+    public ResponseEntity purchaseUpdate(@PathVariable("purchaseId") String purchaseId, @RequestBody
+    @Valid PurchaseRequest purchaseDetails) throws NotFoundException {
         return new ResponseEntity<>(purchaseService.purchaseUpdate(purchaseId, purchaseDetails), HttpStatus.OK);
     }
 }

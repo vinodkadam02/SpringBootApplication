@@ -5,8 +5,8 @@ import lombok.Data;
 
 import java.util.List;
 
-@Builder
 @Data
-public class PostErrorResponse extends AppResponse {
-   private List<String> errorMessage;
+@Builder
+public class PostErrorResponse extends AppResponse{
+    List<String> errorMessage;
 }

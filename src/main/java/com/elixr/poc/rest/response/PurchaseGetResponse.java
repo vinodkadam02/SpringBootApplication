@@ -16,4 +16,3 @@ public class PurchaseGetResponse extends AppResponse{
         this.purchases = purchases;
     }
 }
-

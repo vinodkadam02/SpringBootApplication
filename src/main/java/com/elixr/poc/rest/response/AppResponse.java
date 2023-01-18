@@ -3,15 +3,11 @@ package com.elixr.poc.rest.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
- * Abstract class inherited by all response classes
+ * Abstract class inherited by all user response classes
  */
-@Setter
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AppResponse {
