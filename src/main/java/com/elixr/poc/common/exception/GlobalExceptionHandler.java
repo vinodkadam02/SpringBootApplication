@@ -1,5 +1,4 @@
 package com.elixr.poc.common.exception;
-
 import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.rest.response.CommonResponse;
@@ -38,13 +37,13 @@ public class GlobalExceptionHandler {
     /**
      * URL exceptions are handled.
      *
-     * @param idNotFoundException
+     * @param notFoundException
      * @return
      */
-    @ExceptionHandler(IdNotFoundException.class)
-    public ResponseEntity<CommonResponse> handleIdNotFoundException(IdNotFoundException idNotFoundException) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<CommonResponse> handleNotFoundException(NotFoundException notFoundException) {
         CommonResponse commonResponse = CommonResponse.builder().success(false)
-                .errorMessage(idNotFoundException.getMessage()).build();
+                .errorMessage(notFoundException.getMessage()).build();
         return new ResponseEntity<>(commonResponse, HttpStatus.NOT_FOUND);
     }
 
