@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * Sends successful response to the user while retrieval operation
+ * Sends successful response to the user while retrieval operation.
  */
 @Data
 public class GetAllResponse extends AppResponse {
@@ -16,6 +16,6 @@ public class GetAllResponse extends AppResponse {
     @Builder
     public GetAllResponse(boolean success,List<User> users) {
        setSuccess(success);
-        this.users = users;
+        this.users = this.users;
     }
 }

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
- * This Class holds the request attributes for user related end points
+ * This Class holds the request attributes for user related end points.
  */
 
 @Data

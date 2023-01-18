@@ -14,6 +14,7 @@ import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,7 +28,6 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-
     }
 
     /**
@@ -93,6 +93,14 @@ public class UserService {
     }
 
     /**
+     * Retrieving all the users
+     * @return
+     */
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    /**
      * Finding User by userId and returning the user.
      *
      * @param userId
@@ -118,14 +126,6 @@ public class UserService {
         }
         User existingUser = userRepository.findByUserName(userName);
         return existingUser;
-    }
-
-    /**
-     * Retriving all the users
-     * @return
-     */
-    public GetAllResponse getAllUsers() {
-        return GetAllResponse.builder().success(true).users(userRepository.findAll()).build();
     }
 
     /**

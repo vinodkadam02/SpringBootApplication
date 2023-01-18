@@ -34,7 +34,6 @@ public class GlobalExceptionHandler {
 
     /**
      * URL exceptions are handled.
-     *
      * @param notFoundException
      * @return
      */
