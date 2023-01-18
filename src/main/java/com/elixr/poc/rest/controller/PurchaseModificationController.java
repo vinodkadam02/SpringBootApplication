@@ -23,7 +23,7 @@ public class PurchaseModificationController {
 
     /**
      * Calling updatePurchase method with the parameter purchaseId to update the purchase by purchaseId.
-     * And handling the Exception if the userId is not matching.
+     * And handling the Exception if the userId is not matching
      *
      * @param purchaseId
      * @return
