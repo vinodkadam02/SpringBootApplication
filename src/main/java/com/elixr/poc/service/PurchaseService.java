@@ -7,6 +7,7 @@ import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.Purchase;
 import com.elixr.poc.repository.PurchaseRepository;
 import com.elixr.poc.rest.request.PurchaseRequest;
+import com.elixr.poc.rest.response.PurchaseGetResponse;
 import com.elixr.poc.rest.response.PurchaseResponse;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class PurchaseService {
      */
     private UUID uuidValidation(String purchaseId) {
         try {
-            UUID uuid = UUID.fromString(userId);
+            UUID uuid = UUID.fromString(purchaseId);
             return uuid;
         } catch (IllegalArgumentException illegalArgumentException) {
             throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey()));
@@ -84,7 +85,7 @@ public class PurchaseService {
      * Finding Purchase by purchaseId and returning the purchase.
      */
     public Purchase getPurchaseByPurchaseId(String purchaseId) {
-        UUID uuid = uuidValidation(purchaseId.toString());
+        UUID uuid = uuidValidation(purchaseId);
         Optional<Purchase> purchase = purchaseRepository.findById(uuid);
         return purchase.orElseThrow(() -> new NotFoundException(MessagesUtil
                 .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
@@ -125,4 +126,9 @@ public class PurchaseService {
         }
         return existingUser;
     }
+
+    public PurchaseGetResponse getAllPurchases() {
+        return PurchaseGetResponse.builder().success(true).purchases(purchaseRepository.findAll()).build();
+    }
+
 }
