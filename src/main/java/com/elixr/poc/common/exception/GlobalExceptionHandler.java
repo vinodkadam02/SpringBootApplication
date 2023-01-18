@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
 
     /**
      * Handling the Exception and sending error message
-     *
+     * Handles MethodArgumentNotValidException
      * @param methodArgumentNotValidException
      * @return
      */
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CommonResponse> handleGenericException(Exception exception) {
         CommonResponse commonResponse = CommonResponse.builder().success(false)
-                .errorMessage(exception.getMessage()).build();
+                .errorMessage(exception.getLocalizedMessage()).build();
         return new ResponseEntity<>(commonResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

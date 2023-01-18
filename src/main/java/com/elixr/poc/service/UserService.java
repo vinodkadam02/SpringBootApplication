@@ -2,13 +2,13 @@ package com.elixr.poc.service;
 
 import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.exception.IdFormatException;
-import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
 import com.elixr.poc.common.exception.NotFoundException;
 import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.request.UserRequest;
 import com.elixr.poc.rest.response.AppResponse;
+import com.elixr.poc.rest.response.GetAllResponse;
 import com.elixr.poc.rest.response.PostErrorResponse;
 import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,7 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+
     }
 
     /**
@@ -57,7 +58,8 @@ public class UserService {
         UUID uuid = uuidValidation(userId);
         boolean userRecordExists = userRepository.existsById(uuid);
         if (!userRecordExists) {
-            throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(), "User"));
+            throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
+                    MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_ID.getKey())));
         }
         userRepository.deleteById(uuid);
         return true;
@@ -87,7 +89,7 @@ public class UserService {
         if (user.getId() == null || user.getId().toString().isEmpty()) {
             user.setId(UUID.randomUUID());
         }
-        user = this.userRepository.save(user);
+        userRepository.save(user);
     }
 
     /**
@@ -101,7 +103,8 @@ public class UserService {
         UUID uuid = uuidValidation(userId);
         Optional<User> user = userRepository.findById(uuid);
         return user.orElseThrow(() -> new NotFoundException(MessagesUtil
-                .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(), "User")));
+                .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
+                        MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_ID.getKey()))));
     }
 
     /**
@@ -111,10 +114,18 @@ public class UserService {
      */
     public User getUserByName(String userName) {
         if (!userRepository.existsByUserName(userName)) {
-           throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(),"User"));
+           throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),"User"));
         }
         User existingUser = userRepository.findByUserName(userName);
         return existingUser;
+    }
+
+    /**
+     * Retriving all the users
+     * @return
+     */
+    public GetAllResponse getAllUsers() {
+        return GetAllResponse.builder().success(true).users(userRepository.findAll()).build();
     }
 
     /**
@@ -123,11 +134,11 @@ public class UserService {
      * @param userId
      * @param userDetails
      * @return
-     * @throws IdNotFoundException
+     * @throws NotFoundException
      */
     public User updateUserPartially(String userId, UserRequest userDetails) {
         UUID uuid = uuidValidation(userId);
-        User user = userRepository.findById(uuid).orElseThrow(() -> new IdNotFoundException(MessagesUtil
+        User user = userRepository.findById(uuid).orElseThrow(() -> new NotFoundException(MessagesUtil
                 .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
                         MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_ID.getKey()))));
         user.setUserName(userDetails.getUserName());
