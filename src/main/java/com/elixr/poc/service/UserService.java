@@ -80,7 +80,7 @@ public class UserService {
         if (user.getId() == null || user.getId().toString().isEmpty()) {
             user.setId(UUID.randomUUID());
         }
-        this.userRepository.save(user);
+        userRepository.save(user);
     }
 
     /**
