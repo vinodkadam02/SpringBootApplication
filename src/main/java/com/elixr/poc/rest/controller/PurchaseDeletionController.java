@@ -31,7 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
     @DeleteMapping("/purchase/{purchaseId}")
     public ResponseEntity<DeleteSuccessResponse> deletePurchase(@PathVariable("purchaseId") @Valid String purchaseId) {
         boolean success = purchaseService.deletePurchaseDetails(purchaseId);
-        DeleteSuccessResponse deleteSuccessResponse = DeleteSuccessResponse.builder().success(success).successMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DELETED_SUCCESSFULLY.getKey())).build();
+        DeleteSuccessResponse deleteSuccessResponse = DeleteSuccessResponse.builder().success(success)
+                .successMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DELETED_SUCCESSFULLY.getKey())).build();
         return new ResponseEntity<>(deleteSuccessResponse, HttpStatus.OK);
     }
 }

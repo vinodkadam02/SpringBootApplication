@@ -41,7 +41,7 @@ public class PurchaseCreationController {
             return new ResponseEntity<>(purchaseService.createPurchase(purchase), HttpStatus.OK);
         } else {
             return new ResponseEntity(CommonResponse.builder().success(false)
-                    .errorMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey(),"User")), HttpStatus.NOT_FOUND);
+                    .errorMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),"User")), HttpStatus.NOT_FOUND);
         }
     }
 }
