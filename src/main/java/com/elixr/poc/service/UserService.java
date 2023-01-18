@@ -9,6 +9,7 @@ import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.response.AppResponse;
 import com.elixr.poc.rest.response.PostErrorResponse;
 import com.elixr.poc.rest.response.UserResponse;
+import com.elixr.poc.rest.response.AppResponse;
 import com.elixr.poc.rest.response.GetAllResponse;
 import org.springframework.stereotype.Service;
 
@@ -78,7 +79,6 @@ public class UserService {
 
     /**
      * Calling the repository to store data
-     *
      * @param user
      * @return
      */

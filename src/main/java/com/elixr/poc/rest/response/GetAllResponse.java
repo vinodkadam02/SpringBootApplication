@@ -1,6 +1,5 @@
 package com.elixr.poc.rest.response;
 
-import com.elixr.poc.data.Purchase;
 import com.elixr.poc.data.User;
 import lombok.Builder;
 import lombok.Data;

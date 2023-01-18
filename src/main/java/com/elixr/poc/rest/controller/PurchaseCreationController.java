@@ -1,6 +1,6 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.common.util.MessagesKeyEnum;
+import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.Purchase;
 import com.elixr.poc.data.User;
@@ -41,7 +41,7 @@ public class PurchaseCreationController {
             return new ResponseEntity<>(purchaseService.createPurchase(purchase), HttpStatus.OK);
         } else {
             return new ResponseEntity(CommonResponse.builder().success(false)
-                    .errorMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_NOT_EXISTS.getKey())).build(), HttpStatus.NOT_FOUND);
+                    .errorMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXISTS.getKey())).build(), HttpStatus.NOT_FOUND);
         }
     }
 }
