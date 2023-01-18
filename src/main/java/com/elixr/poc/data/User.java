@@ -5,10 +5,11 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
- *Entity class whose object is getting stored into db
+ * Entity class whose object is getting stored into db
  */
 @Data
 @Builder
@@ -19,4 +20,5 @@ public class User {
     private String userName;
     private String firstName;
     private String lastName;
+    private List<Purchase> purchases;
 }

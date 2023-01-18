@@ -1,12 +1,16 @@
 package com.elixr.poc.service;
 
+import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.common.exception.IdFormatException;
+import com.elixr.poc.common.exception.NotFoundException;
+import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.Purchase;
 import com.elixr.poc.constants.ApplicationConstants;
 import com.elixr.poc.exception.NoRecordFoundException;
 import com.elixr.poc.repository.PurchaseRepository;
-import com.elixr.poc.rest.response.PurchaseGetResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -25,6 +29,8 @@ public class PurchaseService {
     public void createPurchase(Purchase purchase)
     {
         savePurchase(purchase);
+        return  PurchaseResponse.purchaseBuilder().success(true).id(purchase.getId()).userName(purchase.getUserName())
+                .product(purchase.getProduct()).amount(purchase.getAmount()).date(purchase.getDate()).build();
     }
 
     /**
@@ -61,5 +67,7 @@ public class PurchaseService {
             throw new NoRecordFoundException(ApplicationConstants.ID_MISMATCH);
         }
         return success;
+        purchase = purchaseRepository.save(purchase);
+        return purchase;
     }
 }

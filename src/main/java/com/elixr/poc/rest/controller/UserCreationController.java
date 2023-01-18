@@ -12,16 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Controller class for UserRequest creation Operation
- */
 @RestController
 @Validated
 @RequestMapping("/application")
 public class UserCreationController {
 
     private final UserService userService;
-
     public UserCreationController(UserService userService) {
         this.userService = userService;
     }

@@ -7,13 +7,12 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class PurchaseGetResponse extends ErrorResponse {
-
-    private List<Purchase> purchase;
+public class PurchaseGetResponse extends AppResponse{
+    private List<Purchase> purchases;
 
     @Builder
-    public PurchaseGetResponse(boolean success, List<Purchase> purchase) {
-        setSuccess(success);
-        this.purchase = purchase;
+    public PurchaseGetResponse(boolean success, List<Purchase> purchases) {
+      setSuccess(success);
+        this.purchases = purchases;
     }
 }
