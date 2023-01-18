@@ -113,6 +113,7 @@ public class PurchaseService {
         }
         return purchase;
     }
+
     /**
      * Using UserName finding the purchaseDetails or else send UserName does not exist
      *
@@ -129,6 +130,22 @@ public class PurchaseService {
 
     public PurchaseGetResponse getAllPurchases() {
         return PurchaseGetResponse.builder().success(true).purchases(purchaseRepository.findAll()).build();
+    }
+
+    /**
+     * It checks if the user is preset in the userId
+     * or else it will throw an error
+     *
+     * @param userId
+     * @return
+     */
+    public PurchaseGetResponse getPurchaseByUserId(String userId) {
+        List<Purchase> existingUser = purchaseRepository.findPurchasesByUserName(userId);
+        if (existingUser.isEmpty()) {
+            throw new NotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
+                    MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_PURCHASE_ID.getKey())));
+        }
+        return PurchaseGetResponse.builder().success(true).purchases(existingUser).build();
     }
 
 }
