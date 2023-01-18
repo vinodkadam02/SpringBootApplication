@@ -17,13 +17,18 @@ public class UserCreationController {
     private final UserService userService;
 
     public UserCreationController(UserService userService) {
+
         this.userService = userService;
     }
 
+    /**
+     * Calling service class method to create new valid user
+     * @param userRequest
+     * @return
+     */
     @PostMapping("/user")
-    public ResponseEntity<?> createUser(@RequestBody @Valid UserRequest userRequest) {
-        User user = User.builder().userName(userRequest.getUserName()).firstName(userRequest.getFirstName())
-                .lastName(userRequest.getLastName()).build();
+    public ResponseEntity createUser(@RequestBody @Valid UserRequest userRequest) {
+        User user = User.builder().userName(userRequest.getUserName()).firstName(userRequest.getFirstName()).lastName(userRequest.getLastName()).build();
         return new ResponseEntity<>(userService.createValidUser(user), HttpStatus.OK);
     }
 }
