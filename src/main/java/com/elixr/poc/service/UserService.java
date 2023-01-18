@@ -9,11 +9,10 @@ import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.response.AppResponse;
 import com.elixr.poc.rest.response.PostErrorResponse;
 import com.elixr.poc.rest.response.UserResponse;
-import com.elixr.poc.rest.response.AppResponse;
-import com.elixr.poc.rest.response.GetAllResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,7 +26,6 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-
     }
 
     /**
@@ -79,6 +77,7 @@ public class UserService {
 
     /**
      * Calling the repository to store data
+     *
      * @param user
      * @return
      */
@@ -87,7 +86,15 @@ public class UserService {
         if (user.getId() == null || user.getId().toString().isEmpty()) {
             user.setId(UUID.randomUUID());
         }
-        user = this.userRepository.save(user);
+        userRepository.save(user);
+    }
+
+    /**
+     * Retrieving all the users
+     * @return
+     */
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     /**
@@ -115,13 +122,5 @@ public class UserService {
         }
         User existingUser = userRepository.findByUserName(userName);
         return existingUser;
-    }
-
-    /**
-     * Retriving all the users
-     * @return
-     */
-    public GetAllResponse getAllUsers() {
-        return GetAllResponse.builder().success(true).users(userRepository.findAll()).build();
     }
 }

@@ -23,20 +23,17 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
-            List<String> errorList = new ArrayList<>();
-            for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
-                errorList.add(error.getDefaultMessage());
-            }
-            PostErrorResponse errorResponse = PostErrorResponse.builder().errorMessage(errorList)
-                    .build();
-            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    private ResponseEntity<PostErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+        List<String> errorList = new ArrayList<>();
+        for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
+            errorList.add(error.getField() + " " + MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_MANDATORY_FIELD_MISSING.getKey()));
         }
-
+        PostErrorResponse postErrorResponse = PostErrorResponse.builder().errorMessage(errorList).build();
+        return new ResponseEntity<>(postErrorResponse, HttpStatus.BAD_REQUEST);
+    }
 
     /**
      * URL exceptions are handled.
-     *
      * @param notFoundException
      * @return
      */
@@ -72,4 +69,3 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(commonResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-

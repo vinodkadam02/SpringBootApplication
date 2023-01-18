@@ -2,6 +2,7 @@ package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.data.User;
 import com.elixr.poc.common.exception.NotFoundException;
+import com.elixr.poc.rest.response.GetAllResponse;
 import com.elixr.poc.rest.response.UserResponse;
 import com.elixr.poc.service.UserService;
 import jakarta.validation.Valid;
@@ -58,5 +59,18 @@ public class UserRetrievalController {
         return new ResponseEntity<>(UserResponse.builder().success(true).id(existingUser.getId()).userName(existingUser.getUserName())
                 .firstName(existingUser.getFirstName())
                 .lastName(existingUser.getLastName()).build(), HttpStatus.OK);
+    }
+
+    /**
+     * Retrieving all users
+     * calling the getAllUses() method of service class
+     * returning the response as list of all users through GetAllResponse object
+     * @return
+     */
+    @GetMapping("/users")
+    public ResponseEntity<GetAllResponse> getAllUser() {
+        GetAllResponse allUsers = GetAllResponse.builder().success(true)
+                .users(userService.getAllUsers()).build();
+        return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 }
