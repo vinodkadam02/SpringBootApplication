@@ -12,7 +12,7 @@ public class PurchaseGetResponse extends AppResponse{
 
     @Builder
     public PurchaseGetResponse(boolean success, List<Purchase> purchases) {
-      setSuccess(success);
+        setSuccess(success);
         this.purchases = purchases;
     }
 }
