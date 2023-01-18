@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MessagesUtil {
+ public class MessagesUtil {
 
     private static final String MESSAGE_PROPERTY_FILE_PREFIX = "messages";
 

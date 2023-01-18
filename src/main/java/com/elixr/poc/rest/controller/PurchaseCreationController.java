@@ -36,7 +36,7 @@ public class PurchaseCreationController {
     public ResponseEntity addPurchase(@RequestBody @Valid PurchaseRequest newPurchase) {
         User user = userService.getUserByName(newPurchase.getUserName());
         if (user != null) {
-            Purchase purchase = Purchase.builder().userName(user.getUserName()).userId(user.getId())
+            Purchase purchase = Purchase.builder().userName(user.getUserName())
                     .product(newPurchase.getProduct()).amount(newPurchase.getAmount()).date(newPurchase.getDate()).build();
             return new ResponseEntity<>(purchaseService.createPurchase(purchase), HttpStatus.OK);
         } else {

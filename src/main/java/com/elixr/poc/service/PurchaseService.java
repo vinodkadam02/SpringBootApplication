@@ -6,6 +6,7 @@ import com.elixr.poc.common.exception.IdNotFoundException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.Purchase;
 import com.elixr.poc.repository.PurchaseRepository;
+import com.elixr.poc.rest.response.PurchaseResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -56,7 +57,6 @@ public class PurchaseService {
         return purchase.orElseThrow(() -> new IdNotFoundException(MessagesUtil
                 .getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), "Purchase")));
 
-        this.purchaseRepository = purchaseRepository;
     }
 
     public PurchaseResponse createPurchase(Purchase purchase) {

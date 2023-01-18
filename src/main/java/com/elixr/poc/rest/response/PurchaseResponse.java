@@ -2,6 +2,7 @@ package com.elixr.poc.rest.response;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Data
 public class PurchaseResponse extends AppResponse {
 
+    @Id
     private UUID id;
     private String userName;
     private String product;
