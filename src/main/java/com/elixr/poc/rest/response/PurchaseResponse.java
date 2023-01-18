@@ -2,6 +2,7 @@ package com.elixr.poc.rest.response;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Data
 public class PurchaseResponse extends AppResponse {
 
+    @Id
     private UUID id;
     private String userName;
     private String product;
@@ -20,8 +22,8 @@ public class PurchaseResponse extends AppResponse {
     private String date;
 
     @Builder(builderMethodName = "purchaseBuilder")
-    public PurchaseResponse(boolean success, List<String> errorMessage, UUID id, String userName, String product, String amount, String date) {
-        super(success);
+    public PurchaseResponse(boolean success, UUID id, String userName, String product, String amount, String date) {
+        setSuccess(success);
         this.id = id;
         this.userName = userName;
         this.product = product;
