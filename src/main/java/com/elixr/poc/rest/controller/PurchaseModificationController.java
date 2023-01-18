@@ -30,7 +30,8 @@ public class PurchaseModificationController {
      * @throws IdNotFoundException
      */
     @PatchMapping("/purchase/{purchaseId}")
-    public ResponseEntity purchaseUpdate(@PathVariable("purchaseId") String purchaseId, @RequestBody @Valid PurchaseRequest purchaseDetails) throws IdNotFoundException {
+    public ResponseEntity purchaseUpdate(@PathVariable("purchaseId") String purchaseId, @RequestBody
+    @Valid PurchaseRequest purchaseDetails) throws IdNotFoundException {
         return new ResponseEntity<>(purchaseService.purchaseUpdate(purchaseId, purchaseDetails), HttpStatus.OK);
     }
 }

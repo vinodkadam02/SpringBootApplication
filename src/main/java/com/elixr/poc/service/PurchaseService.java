@@ -61,7 +61,9 @@ public class PurchaseService {
      */
     public Purchase purchaseUpdate(String purchaseId, PurchaseRequest purchaseDetails) {
         UUID uuid = uuidValidation(purchaseId);
-        Purchase purchase = purchaseRepository.findById(uuid).orElseThrow(() -> new IdNotFoundException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(), MessagesKeyEnum.ENTITY_PURCHASE_ID.getKey())));
+        Purchase purchase = purchaseRepository.findById(uuid).orElseThrow(() -> new IdNotFoundException
+                (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_ID_DOES_NOT_EXISTS.getKey(),
+                        MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_PURCHASE_ID.getKey()))));
         purchase.setUserName(purchaseDetails.getUserName());
         purchase.setProduct(purchaseDetails.getProduct());
         purchase.setAmount(purchaseDetails.getAmount());

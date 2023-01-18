@@ -24,10 +24,12 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    private ResponseEntity<PostErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+    private ResponseEntity<PostErrorResponse> handleMethodArgumentNotValidException
+    (MethodArgumentNotValidException methodArgumentNotValidException) {
         List<String> errorList = new ArrayList<>();
         for (final FieldError error : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
-            errorList.add(error.getField() + " " + MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_MANDATORY_FIELD_MISSING.getKey()));
+            errorList.add(error.getField() + " " + MessagesUtil.getMessage
+                    (MessagesKeyEnum.ENTITY_MANDATORY_FIELD_MISSING.getKey()));
         }
         PostErrorResponse postErrorResponse = PostErrorResponse.builder().errorMessage(errorList).build();
         return new ResponseEntity<>(postErrorResponse, HttpStatus.BAD_REQUEST);
@@ -41,7 +43,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(IdNotFoundException.class)
     public ResponseEntity<CommonResponse> handleIdNotFoundException(IdNotFoundException idNotFoundException) {
-        CommonResponse commonResponse = CommonResponse.builder().success(false).errorMessage(idNotFoundException.getMessage()).build();
+        CommonResponse commonResponse = CommonResponse.builder().success(false)
+                .errorMessage(idNotFoundException.getMessage()).build();
         return new ResponseEntity<>(commonResponse, HttpStatus.NOT_FOUND);
     }
 
@@ -65,7 +68,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CommonResponse> handleGenericException(Exception exception) {
-        CommonResponse commonResponse = CommonResponse.builder().success(false).errorMessage(exception.getLocalizedMessage()).build();
-        return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
+        CommonResponse commonResponse = CommonResponse.builder().success(false)
+                .errorMessage(exception.getLocalizedMessage()).build();
+        return new ResponseEntity<>(commonResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
