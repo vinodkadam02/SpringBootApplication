@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class PurchaseGetResponse extends AppResponse{
+public class PurchaseGetResponse extends AppResponse {
     private List<Purchase> purchases;
 
     @Builder

@@ -7,12 +7,17 @@ import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.Purchase;
 import com.elixr.poc.repository.PurchaseRepository;
 import com.elixr.poc.rest.request.PurchaseRequest;
+import com.elixr.poc.rest.response.PurchaseGetResponse;
 import com.elixr.poc.rest.response.PurchaseResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+/**
+ * service class to interact with controllers for all purchase related operations.
+ */
 
 @Service
 public class PurchaseService {
@@ -27,6 +32,7 @@ public class PurchaseService {
      *
      * @param purchaseId
      * @return
+     * @throws NotFoundException
      */
     private UUID uuidValidation(String purchaseId) {
         try {
@@ -79,7 +85,7 @@ public class PurchaseService {
      * Finding Purchase by purchaseId and returning the purchase.
      */
     public Purchase getPurchaseByPurchaseId(String purchaseId) {
-        UUID uuid = uuidValidation(purchaseId.toString());
+        UUID uuid = uuidValidation(purchaseId);
         Optional<Purchase> purchase = purchaseRepository.findById(uuid);
         return purchase.orElseThrow(() -> new NotFoundException(MessagesUtil
                 .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
@@ -120,4 +126,9 @@ public class PurchaseService {
         }
         return existingUser;
     }
+
+    public PurchaseGetResponse getAllPurchases() {
+        return PurchaseGetResponse.builder().success(true).purchases(purchaseRepository.findAll()).build();
+    }
+
 }
