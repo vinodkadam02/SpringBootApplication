@@ -22,7 +22,7 @@ public class PurchaseResponse extends AppResponse {
 
     @Builder(builderMethodName = "purchaseBuilder")
     public PurchaseResponse(boolean success, List<String> errorMessage, UUID id, String userName, String product, String amount, String date) {
-        super();
+        setSuccess(success);
         this.id = id;
         this.userName = userName;
         this.product = product;
