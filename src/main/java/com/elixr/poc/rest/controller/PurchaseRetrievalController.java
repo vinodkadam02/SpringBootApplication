@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -70,7 +69,7 @@ public class PurchaseRetrievalController {
      * Returning the response
      */
     @GetMapping("/Purchase/{userId}")
-    public ResponseEntity<PurchaseGetResponse> retrievePurchaseByUserId(@RequestBody @PathVariable("userId") String userId) {
+    public ResponseEntity<PurchaseGetResponse> retrievePurchaseByUserId(@PathVariable("userId") String userId) {
         User user = userService.getUserByUserId(userId);
         return new ResponseEntity<>(purchaseService.getPurchaseByUserId(user.getUserName()), HttpStatus.OK);
     }

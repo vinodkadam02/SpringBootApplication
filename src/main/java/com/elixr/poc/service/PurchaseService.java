@@ -39,7 +39,8 @@ public class PurchaseService {
             UUID uuid = UUID.fromString(purchaseId);
             return uuid;
         } catch (IllegalArgumentException illegalArgumentException) {
-            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey()));
+            throw new IdFormatException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_INVALID_ID_FORMAT.getKey(),
+                    MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_PURCHASE_ID.getKey())));
         }
     }
 
