@@ -31,7 +31,7 @@ public class PurchaseModificationController {
      */
     @PatchMapping("/purchase/{purchaseId}")
     public ResponseEntity purchaseUpdate(@PathVariable("purchaseId") String purchaseId, @RequestBody
-    @Valid PurchaseRequest purchaseDetails) throws NotFoundException {
+    @Valid PurchaseRequest purchaseDetails) {
         return new ResponseEntity<>(purchaseService.purchaseUpdate(purchaseId, purchaseDetails), HttpStatus.OK);
     }
 }
