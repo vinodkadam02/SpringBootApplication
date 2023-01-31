@@ -23,7 +23,7 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -150,7 +150,7 @@ public class UserService {
         user.setUserName(userDetails.getUserName());
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
-        final User updatedUser = userRepository.save(user);
+        User updatedUser = userRepository.save(user);
         return updatedUser;
     }
 }

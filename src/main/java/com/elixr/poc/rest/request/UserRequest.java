@@ -1,6 +1,7 @@
 package com.elixr.poc.rest.request;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Data;
 
 /**

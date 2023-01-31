@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -55,7 +56,7 @@ public class UserRetrievalController {
      * @return
      */
     @GetMapping("/User/{userName}")
-    public ResponseEntity<UserResponse> retrieveUserByName(@PathVariable("userName") @Valid String userName) {
+    public ResponseEntity<UserResponse> retrieveUserByName(@RequestParam @PathVariable("userName") @Valid String userName) {
         User existingUser = userService.getUserByName(userName);
         return new ResponseEntity<>(UserResponse.builder().success(true).id(existingUser.getId()).userName(existingUser.getUserName())
                 .firstName(existingUser.getFirstName())
