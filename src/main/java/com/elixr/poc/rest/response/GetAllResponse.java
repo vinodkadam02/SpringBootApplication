@@ -16,6 +16,6 @@ public class GetAllResponse extends AppResponse {
     @Builder
     public GetAllResponse(boolean success,List<User> users) {
        setSuccess(success);
-        this.users = this.users;
+        this.users = users;
     }
 }

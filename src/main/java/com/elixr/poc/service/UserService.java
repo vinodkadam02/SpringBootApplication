@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -114,10 +113,10 @@ public class UserService {
      */
     public User getUserByUserId(String userId) {
         UUID uuid = uuidValidation(userId);
-        Optional<User> user = userRepository.findById(uuid);
-        return user.orElseThrow(() -> new NotFoundException(MessagesUtil
+        User user = userRepository.findById(uuid).orElseThrow(() -> new NotFoundException(MessagesUtil
                 .getMessage(MessagesKeyEnum.ENTITY_DOES_NOT_EXIST.getKey(),
                         MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_ID.getKey()))));
+        return user;
     }
 
     /**
