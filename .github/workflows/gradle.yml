@@ -30,5 +30,3 @@ jobs:
         distribution: 'temurin'
     - name: Build with Gradle
       uses: ./gradlew build
-      with:
-        arguments: build
