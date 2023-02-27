@@ -22,7 +22,7 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -70,14 +70,11 @@ public class UserService {
      * @param user
      * @return
      */
-    public AppResponse createValidUser(User user) {
+    public User createValidUser(User user) {
         if (userRepository.existsByUserName(user.getUserName())) {
-            return PostErrorResponse.builder().errorMessage(Collections.singletonList(
-                    MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_USER_EXISTS.getKey()))).build();
+            return null;
         } else {
-            saveUser(user);
-            return UserResponse.builder().success(true).id(user.getId()).userName(
-                    user.getUserName()).firstName(user.getFirstName()).lastName(user.getLastName()).build();
+            return saveUser(user);
         }
     }
 
@@ -87,12 +84,12 @@ public class UserService {
      * @param user
      * @return
      */
-    private void saveUser(User user) {
+    private User saveUser(User user) {
 
         if (user.getId() == null || user.getId().toString().isEmpty()) {
             user.setId(UUID.randomUUID());
         }
-        userRepository.save(user);
+       return  userRepository.save(user);
     }
 
     /**
@@ -149,7 +146,7 @@ public class UserService {
         user.setUserName(userDetails.getUserName());
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
-        final User updatedUser = userRepository.save(user);
+        User updatedUser = userRepository.save(user);
         return updatedUser;
     }
 }
