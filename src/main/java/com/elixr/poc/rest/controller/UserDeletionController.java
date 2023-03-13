@@ -2,7 +2,7 @@ package com.elixr.poc.rest.controller;
 
 import com.elixr.poc.common.MessagesKeyEnum;
 import com.elixr.poc.common.util.MessagesUtil;
-import com.elixr.poc.rest.response.DeleteSuccessResponse;
+import com.elixr.poc.rest.response.SuccessResponse;
 import com.elixr.poc.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -30,10 +30,10 @@ public class UserDeletionController {
      * @return
      */
     @DeleteMapping("/user/{userId}")
-    public ResponseEntity<DeleteSuccessResponse> deleteUser(@PathVariable("userId") @Valid String userId) {
+    public ResponseEntity<SuccessResponse> deleteUser(@PathVariable("userId") @Valid String userId) {
         boolean success = userService.deleteUserDetails(userId);
-        DeleteSuccessResponse deleteSuccessResponse = DeleteSuccessResponse.builder().success(success)
+        SuccessResponse successResponse = SuccessResponse.builder().success(success)
                 .successMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DELETED_SUCCESSFULLY.getKey())).build();
-        return new ResponseEntity<>(deleteSuccessResponse, HttpStatus.OK);
+        return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 }

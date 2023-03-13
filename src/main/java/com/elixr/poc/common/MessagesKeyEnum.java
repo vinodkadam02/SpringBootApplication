@@ -14,7 +14,9 @@ public enum MessagesKeyEnum {
     ENTITY_PURCHASE_ID("entity.purchase.Id"),
     ENTITY_USER_EXISTS("entity.user.exists"),
     ENTITY_USER_DOES_NOT_EXISTS("entity.user.does.not.exists"),
-    ENTITY_USER_ID("entity.user.id");
+    ENTITY_USER_ID("entity.user.id"),
+    ENTITY_FILE_UPLOADED_SUCCESSFULLY("entity.file.uploaded.successfully"),
+    ENTITY_FILE_EXTENSION("entity.file.extension");
 
     private final String key;
 

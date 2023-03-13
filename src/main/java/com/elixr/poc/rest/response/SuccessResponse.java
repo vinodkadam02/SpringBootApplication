@@ -4,11 +4,11 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class DeleteSuccessResponse extends AppResponse {
+public class SuccessResponse extends AppResponse {
     private String successMessage;
 
     @Builder
-    public DeleteSuccessResponse(boolean success, String successMessage) {
+    public SuccessResponse(boolean success, String successMessage) {
         setSuccess(success);
         this.successMessage = successMessage;
     }
