@@ -59,6 +59,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<CommonResponse> handleExtensionException(ExtensionException extensionException){
+        CommonResponse commonResponse = CommonResponse.builder().errorMessage(extensionException.getMessage()).build();
+        return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
+    }
+
     /**
      * Generic exceptions are handled.
      *
