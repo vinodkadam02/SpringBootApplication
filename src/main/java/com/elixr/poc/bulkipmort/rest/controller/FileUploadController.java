@@ -1,4 +1,4 @@
-package com.elixr.poc.bulkipmort.controller;
+package com.elixr.poc.bulkipmort.rest.controller;
 
 import com.elixr.poc.bulkipmort.service.FileUploadService;
 import com.elixr.poc.common.MessagesKeyEnum;
@@ -29,8 +29,8 @@ public class FileUploadController {
      */
     @PostMapping("/uploadfile")
     public ResponseEntity uploadFile(@RequestParam("file") @Valid MultipartFile file) {
-        boolean success = fileUploadService.uploadFile(file);
-        SuccessResponse successResponse = SuccessResponse.builder().success(success)
+        fileUploadService.uploadFile(file);
+        SuccessResponse successResponse = SuccessResponse.builder().success(true)
                 .successMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_UPLOADED_SUCCESSFULLY.getKey())).build();
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }

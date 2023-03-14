@@ -15,10 +15,9 @@ public class FileUploadService {
      * @param file
      * @return
      */
-    public boolean uploadFile(MultipartFile file) {
+    public void uploadFile(MultipartFile file) {
         if (!file.getOriginalFilename().endsWith(".csv")) {
             throw new ExtensionException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION.getKey()));
         }
-        return true;
     }
 }

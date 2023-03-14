@@ -59,7 +59,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler
+    /**
+     * Invalid file extension for .csv file.
+     * @param extensionException
+     * @return
+     */
+    @ExceptionHandler(ExtensionException.class)
     public ResponseEntity<CommonResponse> handleExtensionException(ExtensionException extensionException){
         CommonResponse commonResponse = CommonResponse.builder().errorMessage(extensionException.getMessage()).build();
         return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
