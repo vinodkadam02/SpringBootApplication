@@ -1,6 +1,6 @@
 package com.elixr.poc.common.exception;
 
-import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.common.enums.MessagesKeyEnum;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.rest.response.CommonResponse;
 import com.elixr.poc.rest.response.PostErrorResponse;

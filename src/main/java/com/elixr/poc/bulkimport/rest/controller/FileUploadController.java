@@ -1,7 +1,8 @@
-package com.elixr.poc.bulkipmort.rest.controller;
+package com.elixr.poc.bulkimport.rest.controller;
 
-import com.elixr.poc.bulkipmort.service.FileUploadService;
-import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.bulkimport.service.FileUploadService;
+import com.elixr.poc.common.enums.MessagesKeyEnum;
+import com.elixr.poc.common.exception.ExtensionException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.rest.response.SuccessResponse;
 import jakarta.validation.Valid;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 public class FileUploadController {
@@ -24,12 +27,15 @@ public class FileUploadController {
     /**
      * Uploading a csv file and showing a message.
      *
-     * @param file
+     * @param multipartFile
      * @return
      */
     @PostMapping("/uploadfile")
-    public ResponseEntity uploadFile(@RequestParam("file") @Valid MultipartFile file) {
-        fileUploadService.uploadFile(file);
+    public ResponseEntity uploadFile(@RequestParam("file") @Valid MultipartFile multipartFile) throws IOException {
+        if (!multipartFile.getOriginalFilename().endsWith(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION.getKey()))) {
+            throw new ExtensionException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION_ERROR_MESSAGE.getKey()));
+        }
+        fileUploadService.readData(multipartFile);
         SuccessResponse successResponse = SuccessResponse.builder().success(true)
                 .successMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_UPLOADED_SUCCESSFULLY.getKey())).build();
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
