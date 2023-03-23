@@ -5,6 +5,8 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,5 +19,5 @@ public class Patient {
     private String patientLastName;
     private int patientAge;
     private String patientAddress;
-    private String doctorId;
+    private List<String> doctorId;
 }

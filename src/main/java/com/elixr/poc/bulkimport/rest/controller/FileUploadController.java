@@ -1,11 +1,10 @@
 package com.elixr.poc.bulkimport.rest.controller;
 
-import com.elixr.poc.bulkimport.service.FileUploadService;
+import com.elixr.poc.bulkimport.service.reader.FileReader;
 import com.elixr.poc.common.enums.MessagesKeyEnum;
 import com.elixr.poc.common.exception.ExtensionException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.rest.response.SuccessResponse;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +17,9 @@ import java.io.IOException;
 @RestController
 public class FileUploadController {
 
-    private final FileUploadService fileUploadService;
+    private final FileReader fileUploadService;
 
-    public FileUploadController(FileUploadService fileUploadService) {
+    public FileUploadController(FileReader fileUploadService) {
         this.fileUploadService = fileUploadService;
     }
 
@@ -31,7 +30,7 @@ public class FileUploadController {
      * @return
      */
     @PostMapping("/uploadfile")
-    public ResponseEntity uploadFile(@RequestParam("file") @Valid MultipartFile multipartFile) throws IOException {
+    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         if (!multipartFile.getOriginalFilename().endsWith(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION.getKey()))) {
             throw new ExtensionException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION_ERROR_MESSAGE.getKey()));
         }
