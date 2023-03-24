@@ -11,6 +11,7 @@ public enum MessagesKeyEnum {
     ENTITY_DELETED_SUCCESSFULLY("entity.deleted.successfully"),
     ENTITY_FILE_ADD_OPERATION("entity.file.add.operation"),
     ENTITY_FILE_ASSIGN_NEW_DOCTOR("entity.file.assign.new.doctor"),
+    ENTITY_FILE_DOES_NOT_EXIST("entity.file.does.not.exist"),
     ENTITY_FILE_DELETE_OPERATION("entity.file.delete.operation"),
     ENTITY_FILE_EXTENSION("entity.file.extension"),
     ENTITY_FILE_EXTENSION_ERROR_MESSAGE("entity.file.extension.error.message"),

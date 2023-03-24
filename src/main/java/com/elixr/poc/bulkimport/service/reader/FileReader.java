@@ -2,6 +2,7 @@ package com.elixr.poc.bulkimport.service.reader;
 
 import com.elixr.poc.bulkimport.dto.Patient;
 
+import com.elixr.poc.bulkimport.response.ErrorResponse;
 import com.elixr.poc.bulkimport.service.FileOperationService;
 import com.elixr.poc.common.enums.FileOperationEnum;
 import com.elixr.poc.common.enums.MessagesKeyEnum;
@@ -71,7 +72,8 @@ public class FileReader {
                     } else {
                         patient = buildPatient(columnHeader);
                     }
-                    performAction(patient, columnHeader);
+                    ErrorResponse errorResponse = new ErrorResponse();
+                    performAction(patient, columnHeader, row.getRowNum()+1, errorResponse);
                 }
             }
         } catch (Exception exception) {
@@ -133,22 +135,22 @@ public class FileReader {
      * @param patient
      * @param columnHeader
      */
-    private void performAction(Patient patient, HashMap<String, String> columnHeader) {
+    private void performAction(Patient patient, HashMap<String, String> columnHeader, int row, ErrorResponse errorResponse) {
         if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_ADD_OPERATION.getKey()).equals(columnHeader
                 .get(FileOperationEnum.ACTION.getFileKey()))) {
-            fileOperationService.performAddPatient(patient);
+            fileOperationService.performAddPatient(patient, row, errorResponse);
         } else if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_UPDATE_OPERATION.getKey()).equals(columnHeader
                 .get(FileOperationEnum.ACTION.getFileKey()))) {
-            fileOperationService.performUpdatePatient(patient);
+            fileOperationService.performUpdatePatient(patient, row, errorResponse);
         } else if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_DELETE_OPERATION.getKey()).equals(columnHeader
                 .get(FileOperationEnum.ACTION.getFileKey()))) {
-            fileOperationService.performDeletePatient(patient);
+            fileOperationService.performDeletePatient(patient, row, errorResponse);
         } else if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_ASSIGN_NEW_DOCTOR.getKey()).equals(columnHeader
                 .get(FileOperationEnum.ACTION.getFileKey()))) {
-            fileOperationService.performAssignNewDoctor(patient);
+            fileOperationService.performAssignNewDoctor(patient, row, errorResponse);
         } else if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_REMOVE_DOCTOR.getKey()).equals(columnHeader
                 .get(FileOperationEnum.ACTION.getFileKey()))) {
-            fileOperationService.performRemoveDoctor(patient);
+            fileOperationService.performRemoveDoctor(patient, row, errorResponse);
         }
     }
 }
