@@ -66,7 +66,7 @@ public class FileReader {
                         headerCount++;
                     }
                     Patient patient;
-                    if (StringUtils.isEmpty(columnHeader.get("PatientAge"))) {
+                    if (StringUtils.isEmpty(columnHeader.get(FileOperationEnum.PATIENT_AGE.getFileKey()))) {
                         patient = buildPatientWhenAgeIsEmpty(columnHeader);
                     } else {
                         patient = buildPatient(columnHeader);
@@ -96,7 +96,7 @@ public class FileReader {
      * @return
      */
     private Patient buildPatient(HashMap<String, String> columnHeader) {
-        String doctorId = columnHeader.get("DoctorId");
+        String doctorId = columnHeader.get(FileOperationEnum.DOCTOR_ID.getFileKey());
         List<String> doctorList = new ArrayList<>();
         doctorList.add(doctorId);
         return Patient.builder()
@@ -115,20 +115,21 @@ public class FileReader {
      * @return
      */
     private Patient buildPatientWhenAgeIsEmpty(HashMap<String, String> columnHeader) {
-        String doctorId = columnHeader.get("DoctorId");
+        String doctorId = columnHeader.get(FileOperationEnum.DOCTOR_ID.getFileKey());
         List<String> doctorList = new ArrayList<>();
         doctorList.add(doctorId);
         Patient patient = Patient.builder()
                 .patientId(columnHeader.get(FileOperationEnum.PATIENT_ID.getFileKey()))
                 .patientFirstName(columnHeader.get(FileOperationEnum.PATIENT_FIRSTNAME.getFileKey()))
                 .patientLastName(columnHeader.get(FileOperationEnum.PATIENT_LASTNAME.getFileKey()))
-                .patientAge(Integer.parseInt(columnHeader.get(FileOperationEnum.PATIENT_AGE.getFileKey())))
                 .patientAddress(columnHeader.get(FileOperationEnum.PATIENT_ADDRESS.getFileKey()))
                 .doctorId(doctorList).build();
         return patient;
     }
 
     /**
+     * Performing the Action Operation based on the excel actions.
+     *
      * @param patient
      * @param columnHeader
      */

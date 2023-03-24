@@ -55,7 +55,7 @@ public class FileOperationService {
      */
     public void performDeletePatient(Patient patient) {
         Patient patientObject = getPatientFromRepository(patient);
-        patientRepository.deleteById(patient.getPatientId());
+        patientRepository.deleteById(patientObject.getPatientId());
     }
 
     /**
@@ -91,7 +91,7 @@ public class FileOperationService {
 
     /**
      * Getting the patient from the DB.
-     * And checking if the fields are non-blank for updating the patient.
+     * And checking if the fields are non-blank for updating thepatient.
      *
      * @param patient
      * @return
@@ -116,8 +116,8 @@ public class FileOperationService {
     }
 
     /**
-     * Checking the patient object if the fields are non-blank.
-     * If the fields are blank the assigning the previous values to the fields for updating the patient.
+     *Checking if the patient fields are non-blank.
+     *If fields are blank, we are assigning the previous values to those fields.
      *
      * @param patient
      * @param patientObject
