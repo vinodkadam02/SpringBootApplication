@@ -30,6 +30,7 @@ import java.util.*;
 @Service
 public class FileReader {
     private final FileOperationService fileOperationService;
+
     public FileReader(FileOperationService fileOperationService) {
         this.fileOperationService = fileOperationService;
     }
@@ -75,7 +76,8 @@ public class FileReader {
                     }
                     rowResponse.add(performAction(patient, columnHeader, row.getRowNum() + 1));
                 }
-            }return GenericResponse.builder().status(FileOperationEnum.SUCCESS.getFileKey()).data(rowResponse).build();
+            }
+            return GenericResponse.builder().status(FileOperationEnum.SUCCESS.getFileKey()).data(rowResponse).build();
         } catch (Exception exception) {
             return GenericResponse.builder().status(FileOperationEnum.FAILURE.getFileKey()).data(null).build();
         }

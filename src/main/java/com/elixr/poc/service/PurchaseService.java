@@ -1,6 +1,6 @@
 package com.elixr.poc.service;
 
-import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.common.enums.MessagesKeyEnum;
 import com.elixr.poc.common.exception.IdFormatException;
 import com.elixr.poc.common.exception.NotFoundException;
 import com.elixr.poc.common.util.MessagesUtil;

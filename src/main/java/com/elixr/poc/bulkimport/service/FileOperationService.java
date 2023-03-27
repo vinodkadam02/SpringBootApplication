@@ -43,7 +43,7 @@ public class FileOperationService {
             patientRepository.save(patient);
             return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), FileOperationEnum.RECORD_CREATED.getFileKey());
         }
-        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(),FileOperationEnum.RECORD_CREATION_FAILED.getFileKey());
+        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.RECORD_CREATION_FAILED.getFileKey());
     }
 
     /**
@@ -89,9 +89,9 @@ public class FileOperationService {
             Doctor doctor = checkDoctorIsPresentInDatabase(patient.getDoctorId(), row);
             if (doctor != null) {
                 List<String> doctorIds = patientObject.getDoctorId();
-                if(doctorIds.contains(doctor.getId())){
+                if (doctorIds.contains(doctor.getId())) {
                     return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.DOCTOR_ALREADY_EXIST.getFileKey());
-                }else{
+                } else {
                     patientObject.setDoctorId(Collections.singletonList(doctor.getId()));
                 }
             }
@@ -149,7 +149,6 @@ public class FileOperationService {
     /**
      * Checking if the patient fields are non-blank.
      * If fields are blank, we are assigning the previous values to those fields.
-     *
      */
     private Patient validatePatientForBlank(Patient patient, Patient patientObject) {
         patientObject.setPatientFirstName(StringUtils.isNotBlank(patient.getPatientFirstName()) ?
@@ -166,6 +165,7 @@ public class FileOperationService {
 
     /**
      * Success Response with Status
+     *
      * @param status
      * @param message
      * @return
@@ -176,6 +176,7 @@ public class FileOperationService {
 
     /**
      * Error Response with Status
+     *
      * @param status
      * @param message
      * @return

@@ -25,7 +25,6 @@ public class FileUploadController {
 
     /**
      * Uploading a csv file and showing a message.
-     *
      */
     @PostMapping("/uploadfile")
     public ResponseEntity uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
