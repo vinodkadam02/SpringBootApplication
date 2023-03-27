@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DoctorRepository extends MongoRepository<Doctor, String> {
+    Doctor getById(String doctorId);
 }

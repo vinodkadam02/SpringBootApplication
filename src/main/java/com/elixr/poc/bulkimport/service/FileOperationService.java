@@ -4,15 +4,14 @@ import com.elixr.poc.bulkimport.dto.Doctor;
 import com.elixr.poc.bulkimport.dto.Patient;
 import com.elixr.poc.bulkimport.repository.DoctorRepository;
 import com.elixr.poc.bulkimport.repository.PatientRepository;
-import com.elixr.poc.bulkimport.response.ErrorResponse;
-import com.elixr.poc.common.enums.MessagesKeyEnum;
+import com.elixr.poc.bulkimport.response.RowResponse;
+import com.elixr.poc.common.enums.FileOperationEnum;
 import com.elixr.poc.common.exception.NotFoundException;
-import com.elixr.poc.common.util.MessagesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Row;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,51 +34,71 @@ public class FileOperationService {
      *
      * @param patient
      */
-    public void performAddPatient(Patient patient, int row, ErrorResponse errorResponse) {
-        checkDoctorIsPresentInDatabase(patient, row, errorResponse);
-        if (patient.getPatientId() == null || patient.getPatientId().isEmpty()) {
-            patient.setPatientId(String.valueOf(UUID.randomUUID()));
+    public RowResponse performAddPatient(Patient patient, int row) {
+        Doctor doctor = checkDoctorIsPresentInDatabase(patient.getDoctorId(), row);
+        if (doctor != null) {
+            if (patient.getPatientId() == null || patient.getPatientId().isEmpty()) {
+                patient.setPatientId(String.valueOf(UUID.randomUUID()));
+            }
+            patientRepository.save(patient);
+            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), FileOperationEnum.RECORD_CREATED.getFileKey());
         }
-        patientRepository.save(patient);
+        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(),FileOperationEnum.RECORD_CREATION_FAILED.getFileKey());
     }
 
     /**
      * Updating the patient if existing.
      *
      * @param patientDetails
+     * @return
      */
-    public void performUpdatePatient(Patient patientDetails, int row, ErrorResponse errorResponse) {
-        Patient patient = getPatientFromRepository(patientDetails, row, errorResponse);
+    public RowResponse performUpdatePatient(Patient patientDetails, int row) {
+        Patient patient = getPatientFromRepository(patientDetails.getPatientId());
         if (patient != null) {
-            patientRepository.save(patient);
+            Patient patientObject = validatePatientForBlank(patientDetails, patient);
+            patientRepository.save(patientObject);
+            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), FileOperationEnum.RECORD_UPDATED.getFileKey());
         }
+        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.RECORD_UPDATE_FAILED.getFileKey());
     }
 
     /**
      * Deleting the Patient.
      *
      * @param
+     * @return
      */
-    public void performDeletePatient(Patient patient, int row, ErrorResponse errorResponse) {
-        Patient patientObject = getPatientFromRepository(patient, row, errorResponse);
-        if(patientObject != null) {
+    public RowResponse performDeletePatient(Patient patient, int row) {
+        Patient patientObject = getPatientFromRepository(patient.getPatientId());
+        if (patientObject != null) {
             patientRepository.deleteById(patientObject.getPatientId());
+            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), FileOperationEnum.RECORD_DELETED.getFileKey());
         }
+        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.RECORD_DELETE_FAILED.getFileKey());
     }
 
     /**
      * Assigning new doctor to existing patient.
      *
      * @param patient
+     * @return
      */
-    public void performAssignNewDoctor(Patient patient, int row, ErrorResponse errorResponse) {
-        Patient patientObject = getPatientFromRepository(patient, row, errorResponse);
+    public RowResponse performAssignNewDoctor(Patient patient, int row) {
+        Patient patientObject = getPatientFromRepository(patient.getPatientId());
         if (patientObject != null) {
-            checkDoctorIsPresentInDatabase(patient, row, errorResponse);
-            patientObject.setDoctorId(patient.getDoctorId());
+            Doctor doctor = checkDoctorIsPresentInDatabase(patient.getDoctorId(), row);
+            if (doctor != null) {
+                List<String> doctorIds = patientObject.getDoctorId();
+                if(doctorIds.contains(doctor.getId())){
+                    return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.DOCTOR_ALREADY_EXIST.getFileKey());
+                }else{
+                    patientObject.setDoctorId(Collections.singletonList(doctor.getId()));
+                }
+            }
             patientRepository.save(patientObject);
+            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), FileOperationEnum.ASSIGNED_NEW_DOCTOR.getFileKey());
         }
-
+        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.ASSIGN_NEW_DOCTOR_FAILED.getFileKey());
     }
 
     /**
@@ -87,70 +106,50 @@ public class FileOperationService {
      * But minimum one doctor is required for a patient.
      *
      * @param patient
+     * @return
      */
-    public void performRemoveDoctor(Patient patient, int row, ErrorResponse errorResponse) {
-        Patient patientObject = getPatientFromRepository(patient, row, errorResponse);
-        if(patientObject != null){
+    public RowResponse performRemoveDoctor(Patient patient, int row) {
+        Patient patientObject = getPatientFromRepository(patient.getPatientId());
+        if (patientObject != null) {
             List<String> doctorList = patientObject.getDoctorId();
             if (doctorList.size() > 1) {
-                Doctor doctor = checkDoctorIsPresentInDatabase(patient, row, errorResponse);
+                Doctor doctor = checkDoctorIsPresentInDatabase(patient.getDoctorId(), row);
                 if (doctorList.contains(doctor.getId())) {
                     doctorList.remove(String.valueOf(doctor.getId()));
                 }
             }
             patientObject.setDoctorId(doctorList);
             patientRepository.save(patientObject);
+            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), FileOperationEnum.REMOVE_DOCTOR.getFileKey());
         }
+        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.REMOVE_DOCTOR_FAILED.getFileKey());
     }
 
     /**
      * Getting the patient from the DB.
-     * And checking if the fields are non-blank for updating thepatient.
+     * And checking if the fields are non-blank for updating the patient.
      *
-     * @param patient
      * @return
      */
-    private Patient getPatientFromRepository(Patient patient, int row, ErrorResponse errorResponse) {
-//        ErrorResponse errorResponse = new ErrorResponse();
-        String message = MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_DOES_NOT_EXIST.getKey(), "PatientId", row);
-        try {
-            Patient patientObject = patientRepository.findById(patient.getPatientId()).orElseThrow(() -> new NotFoundException(message));
-            return validatePatientForBlank(patient, patientObject);
-        } catch (NotFoundException notFoundException) {
-            errorResponse.addErrors(message);
-            log.error(String.valueOf(errorResponse.getErrorList()));
-        }
-        return null;
+    private Patient getPatientFromRepository(String patientId) throws NotFoundException {
+        return patientRepository.getByPatientId(patientId);
     }
 
     /**
      * Checking if the doctor is present in DB.
      *
-     * @param patient
+     * @param
      * @return
      */
-    private Doctor checkDoctorIsPresentInDatabase(Patient patient, int row, ErrorResponse errorResponse) {
-//        ErrorResponse errorResponse = new ErrorResponse();
-        List<String> doctorIdList = patient.getDoctorId();
-        String doctorId = doctorIdList.get(0);
-        String message = MessagesUtil.getMessage(
-                MessagesKeyEnum.ENTITY_FILE_DOES_NOT_EXIST.getKey(), "DoctorId", row);
-        try {
-            return doctorRepository.findById(doctorId).orElseThrow(() -> new NotFoundException(message));
-        } catch (NotFoundException notFoundException) {
-            errorResponse.addErrors(message);
-            log.error(String.valueOf(errorResponse.getErrorList()));
-        }
-        return null;
+    private Doctor checkDoctorIsPresentInDatabase(List<String> doctorIdList, int row) {
+        String doctorId2 = doctorIdList.get(0);
+        return doctorRepository.getById(doctorId2);
     }
 
     /**
      * Checking if the patient fields are non-blank.
      * If fields are blank, we are assigning the previous values to those fields.
      *
-     * @param patient
-     * @param patientObject
-     * @return
      */
     private Patient validatePatientForBlank(Patient patient, Patient patientObject) {
         patientObject.setPatientFirstName(StringUtils.isNotBlank(patient.getPatientFirstName()) ?
@@ -163,5 +162,25 @@ public class FileOperationService {
                 patient.getPatientAddress() : patientObject.getPatientAddress());
         patientObject.setDoctorId(patientObject.getDoctorId());
         return patientObject;
+    }
+
+    /**
+     * Success Response with Status
+     * @param status
+     * @param message
+     * @return
+     */
+    private RowResponse successResponseBuilder(String status, String message) {
+        return RowResponse.builder().status(status).successMessage(message).build();
+    }
+
+    /**
+     * Error Response with Status
+     * @param status
+     * @param message
+     * @return
+     */
+    private RowResponse errorResponseBuilder(String status, String message) {
+        return RowResponse.builder().status(status).errorMessage(message).build();
     }
 }

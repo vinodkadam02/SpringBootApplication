@@ -1,5 +1,6 @@
 package com.elixr.poc.bulkimport.rest.controller;
 
+import com.elixr.poc.bulkimport.response.GenericResponse;
 import com.elixr.poc.bulkimport.service.reader.FileReader;
 import com.elixr.poc.common.enums.MessagesKeyEnum;
 import com.elixr.poc.common.exception.ExtensionException;
@@ -16,27 +17,24 @@ import java.io.IOException;
 
 @RestController
 public class FileUploadController {
+    private final FileReader fileReader;
 
-    private final FileReader fileUploadService;
-
-    public FileUploadController(FileReader fileUploadService) {
-        this.fileUploadService = fileUploadService;
+    public FileUploadController(FileReader fileReader) {
+        this.fileReader = fileReader;
     }
 
     /**
      * Uploading a csv file and showing a message.
      *
-     * @param multipartFile
-     * @return
      */
     @PostMapping("/uploadfile")
     public ResponseEntity uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         if (!multipartFile.getOriginalFilename().endsWith(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION.getKey()))) {
             throw new ExtensionException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION_ERROR_MESSAGE.getKey()));
         }
-        fileUploadService.readData(multipartFile);
+        GenericResponse genericResponse = fileReader.readData(multipartFile);
         SuccessResponse successResponse = SuccessResponse.builder().success(true)
                 .successMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_UPLOADED_SUCCESSFULLY.getKey())).build();
-        return new ResponseEntity<>(successResponse, HttpStatus.OK);
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 }

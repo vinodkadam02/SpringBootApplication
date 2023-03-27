@@ -2,7 +2,8 @@ package com.elixr.poc.bulkimport.service.reader;
 
 import com.elixr.poc.bulkimport.dto.Patient;
 
-import com.elixr.poc.bulkimport.response.ErrorResponse;
+import com.elixr.poc.bulkimport.response.GenericResponse;
+import com.elixr.poc.bulkimport.response.RowResponse;
 import com.elixr.poc.bulkimport.service.FileOperationService;
 import com.elixr.poc.common.enums.FileOperationEnum;
 import com.elixr.poc.common.enums.MessagesKeyEnum;
@@ -29,7 +30,6 @@ import java.util.*;
 @Service
 public class FileReader {
     private final FileOperationService fileOperationService;
-
     public FileReader(FileOperationService fileOperationService) {
         this.fileOperationService = fileOperationService;
     }
@@ -43,7 +43,7 @@ public class FileReader {
      * @return
      * @throws IOException
      */
-    public void readData(MultipartFile multipartFile) throws IOException {
+    public GenericResponse readData(MultipartFile multipartFile) throws IOException {
         InputStream inputStream = multipartFile.getInputStream();
         String[] patientKey = {FileOperationEnum.ACTION.getFileKey(), FileOperationEnum.PATIENT_ID.getFileKey(),
                 FileOperationEnum.PATIENT_FIRSTNAME.getFileKey(), FileOperationEnum.PATIENT_LASTNAME.getFileKey(),
@@ -55,6 +55,7 @@ public class FileReader {
             XSSFSheet sheet = workbook.getSheetAt(0);
             Row row;
             Cell cell;
+            List<RowResponse> rowResponse = new ArrayList<>();
             Iterator rowIterator = sheet.rowIterator();
             while (rowIterator.hasNext()) {
                 row = (XSSFRow) rowIterator.next();
@@ -72,12 +73,11 @@ public class FileReader {
                     } else {
                         patient = buildPatient(columnHeader);
                     }
-                    ErrorResponse errorResponse = new ErrorResponse();
-                    performAction(patient, columnHeader, row.getRowNum()+1, errorResponse);
+                    rowResponse.add(performAction(patient, columnHeader, row.getRowNum() + 1));
                 }
-            }
+            }return GenericResponse.builder().status(FileOperationEnum.SUCCESS.getFileKey()).data(rowResponse).build();
         } catch (Exception exception) {
-            log.error(exception.getLocalizedMessage());
+            return GenericResponse.builder().status(FileOperationEnum.FAILURE.getFileKey()).data(null).build();
         }
     }
 
@@ -130,27 +130,29 @@ public class FileReader {
     }
 
     /**
-     * Performing the Action Operation based on the excel actions.
+     * Performing the Action Operation based on the Excel actions.
      *
      * @param patient
      * @param columnHeader
+     * @return
      */
-    private void performAction(Patient patient, HashMap<String, String> columnHeader, int row, ErrorResponse errorResponse) {
+    private RowResponse performAction(Patient patient, HashMap<String, String> columnHeader, int row) {
         if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_ADD_OPERATION.getKey()).equals(columnHeader
                 .get(FileOperationEnum.ACTION.getFileKey()))) {
-            fileOperationService.performAddPatient(patient, row, errorResponse);
+            return fileOperationService.performAddPatient(patient, row);
         } else if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_UPDATE_OPERATION.getKey()).equals(columnHeader
                 .get(FileOperationEnum.ACTION.getFileKey()))) {
-            fileOperationService.performUpdatePatient(patient, row, errorResponse);
+            return fileOperationService.performUpdatePatient(patient, row);
         } else if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_DELETE_OPERATION.getKey()).equals(columnHeader
                 .get(FileOperationEnum.ACTION.getFileKey()))) {
-            fileOperationService.performDeletePatient(patient, row, errorResponse);
+            return fileOperationService.performDeletePatient(patient, row);
         } else if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_ASSIGN_NEW_DOCTOR.getKey()).equals(columnHeader
                 .get(FileOperationEnum.ACTION.getFileKey()))) {
-            fileOperationService.performAssignNewDoctor(patient, row, errorResponse);
+            return fileOperationService.performAssignNewDoctor(patient, row);
         } else if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_REMOVE_DOCTOR.getKey()).equals(columnHeader
                 .get(FileOperationEnum.ACTION.getFileKey()))) {
-            fileOperationService.performRemoveDoctor(patient, row, errorResponse);
+            return fileOperationService.performRemoveDoctor(patient, row);
         }
+        return null;
     }
 }
