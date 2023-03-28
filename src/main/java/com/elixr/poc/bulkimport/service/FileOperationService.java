@@ -35,15 +35,15 @@ public class FileOperationService {
      * @param patient
      */
     public RowResponse performAddPatient(Patient patient, int row) {
-        Doctor doctor = checkDoctorIsPresentInDatabase(patient.getDoctorId(), row);
+        Doctor doctor = checkDoctorIsPresentInDatabase(patient.getDoctorId());
         if (doctor != null) {
             if (patient.getPatientId() == null || patient.getPatientId().isEmpty()) {
                 patient.setPatientId(String.valueOf(UUID.randomUUID()));
             }
             patientRepository.save(patient);
-            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), FileOperationEnum.RECORD_CREATED.getFileKey());
+            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), row, FileOperationEnum.RECORD_CREATED.getFileKey());
         }
-        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.RECORD_CREATION_FAILED.getFileKey());
+        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), row, FileOperationEnum.RECORD_CREATION_FAILED.getFileKey());
     }
 
     /**
@@ -57,9 +57,9 @@ public class FileOperationService {
         if (patient != null) {
             Patient patientObject = validatePatientForBlank(patientDetails, patient);
             patientRepository.save(patientObject);
-            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), FileOperationEnum.RECORD_UPDATED.getFileKey());
+            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), row, FileOperationEnum.RECORD_UPDATED.getFileKey());
         }
-        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.RECORD_UPDATE_FAILED.getFileKey());
+        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), row, FileOperationEnum.RECORD_UPDATE_FAILED.getFileKey());
     }
 
     /**
@@ -72,9 +72,9 @@ public class FileOperationService {
         Patient patientObject = getPatientFromRepository(patient.getPatientId());
         if (patientObject != null) {
             patientRepository.deleteById(patientObject.getPatientId());
-            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), FileOperationEnum.RECORD_DELETED.getFileKey());
+            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), row, FileOperationEnum.RECORD_DELETED.getFileKey());
         }
-        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.RECORD_DELETE_FAILED.getFileKey());
+        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), row, FileOperationEnum.RECORD_DELETE_FAILED.getFileKey());
     }
 
     /**
@@ -86,19 +86,20 @@ public class FileOperationService {
     public RowResponse performAssignNewDoctor(Patient patient, int row) {
         Patient patientObject = getPatientFromRepository(patient.getPatientId());
         if (patientObject != null) {
-            Doctor doctor = checkDoctorIsPresentInDatabase(patient.getDoctorId(), row);
+            Doctor doctor = checkDoctorIsPresentInDatabase(patient.getDoctorId());
             if (doctor != null) {
                 List<String> doctorIds = patientObject.getDoctorId();
                 if (doctorIds.contains(doctor.getId())) {
-                    return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.DOCTOR_ALREADY_EXIST.getFileKey());
+                    return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), row, FileOperationEnum.DOCTOR_ALREADY_EXIST.getFileKey());
                 } else {
                     patientObject.setDoctorId(Collections.singletonList(doctor.getId()));
+                    patientRepository.save(patientObject);
+                    return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), row, FileOperationEnum.ASSIGNED_NEW_DOCTOR.getFileKey());
                 }
             }
-            patientRepository.save(patientObject);
-            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), FileOperationEnum.ASSIGNED_NEW_DOCTOR.getFileKey());
+            return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), row, FileOperationEnum.DOCTOR_NOT_EXIST.getFileKey());
         }
-        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.ASSIGN_NEW_DOCTOR_FAILED.getFileKey());
+        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), row, FileOperationEnum.ASSIGN_NEW_DOCTOR_FAILED.getFileKey());
     }
 
     /**
@@ -113,16 +114,16 @@ public class FileOperationService {
         if (patientObject != null) {
             List<String> doctorList = patientObject.getDoctorId();
             if (doctorList.size() > 1) {
-                Doctor doctor = checkDoctorIsPresentInDatabase(patient.getDoctorId(), row);
+                Doctor doctor = checkDoctorIsPresentInDatabase(patient.getDoctorId());
                 if (doctorList.contains(doctor.getId())) {
                     doctorList.remove(String.valueOf(doctor.getId()));
                 }
             }
             patientObject.setDoctorId(doctorList);
             patientRepository.save(patientObject);
-            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), FileOperationEnum.REMOVE_DOCTOR.getFileKey());
+            return successResponseBuilder(FileOperationEnum.SUCCESS.getFileKey(), row, FileOperationEnum.REMOVE_DOCTOR.getFileKey());
         }
-        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), FileOperationEnum.REMOVE_DOCTOR_FAILED.getFileKey());
+        return errorResponseBuilder(FileOperationEnum.FAILURE.getFileKey(), row, FileOperationEnum.REMOVE_DOCTOR_FAILED.getFileKey());
     }
 
     /**
@@ -141,7 +142,7 @@ public class FileOperationService {
      * @param
      * @return
      */
-    private Doctor checkDoctorIsPresentInDatabase(List<String> doctorIdList, int row) {
+    private Doctor checkDoctorIsPresentInDatabase(List<String> doctorIdList) {
         String doctorId2 = doctorIdList.get(0);
         return doctorRepository.getById(doctorId2);
     }
@@ -170,8 +171,8 @@ public class FileOperationService {
      * @param message
      * @return
      */
-    private RowResponse successResponseBuilder(String status, String message) {
-        return RowResponse.builder().status(status).successMessage(message).build();
+    private RowResponse successResponseBuilder(String status, int row, String message) {
+        return RowResponse.builder().status(status).row(row).successMessage(message).build();
     }
 
     /**
@@ -181,7 +182,7 @@ public class FileOperationService {
      * @param message
      * @return
      */
-    private RowResponse errorResponseBuilder(String status, String message) {
-        return RowResponse.builder().status(status).errorMessage(message).build();
+    private RowResponse errorResponseBuilder(String status, int row, String message) {
+        return RowResponse.builder().status(status).row(row).errorMessage(message).build();
     }
 }

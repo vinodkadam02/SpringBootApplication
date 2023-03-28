@@ -9,6 +9,7 @@ public enum FileOperationEnum {
     ASSIGN_NEW_DOCTOR_FAILED("Assigning New Doctor failed Due to Patient does not exist in DB"),
     DOCTOR_ID("DoctorId"),
     DOCTOR_ALREADY_EXIST("Doctor Already Exist to this Patient"),
+    DOCTOR_NOT_EXIST("Doctor does not exist in db"),
     FAILURE("Fail"),
     PATIENT_ADDRESS("PatientAddress"),
     PATIENT_AGE("PatientAge"),

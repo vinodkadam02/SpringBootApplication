@@ -9,6 +9,8 @@ import lombok.Data;
 public class RowResponse {
     private String status;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private int row;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String successMessage;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String errorMessage;
