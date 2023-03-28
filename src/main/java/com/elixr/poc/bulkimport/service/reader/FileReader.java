@@ -62,8 +62,8 @@ public class FileReader {
                 row = (XSSFRow) rowIterator.next();
                 if (row.getRowNum() != 0) {
                     int headerCount = 0;
-                    for (int i = 0; i < row.getLastCellNum(); i++) {
-                        cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                    for (int cellNumber = 0; cellNumber < row.getLastCellNum(); cellNumber++) {
+                        cell = row.getCell(cellNumber, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                         stringValue = checkCellType(cell);
                         columnHeader.put(Arrays.stream(patientKey).toList().get(headerCount), stringValue);
                         headerCount++;
@@ -83,6 +83,11 @@ public class FileReader {
         }
     }
 
+    /**
+     * Check cell type like is it String or Numeric.
+     * @param cell
+     * @return
+     */
     private String checkCellType(Cell cell) {
         if (CellType.STRING == cell.getCellType() || CellType.BLANK == cell.getCellType()) {
             stringValue = cell.getStringCellValue();

@@ -5,7 +5,6 @@ import com.elixr.poc.bulkimport.service.reader.FileReader;
 import com.elixr.poc.common.enums.MessagesKeyEnum;
 import com.elixr.poc.common.exception.ExtensionException;
 import com.elixr.poc.common.util.MessagesUtil;
-import com.elixr.poc.rest.response.SuccessResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
