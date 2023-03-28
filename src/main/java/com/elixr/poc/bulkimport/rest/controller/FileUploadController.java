@@ -27,13 +27,11 @@ public class FileUploadController {
      * Uploading a csv file and showing a message.
      */
     @PostMapping("/uploadfile")
-    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<GenericResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         if (!multipartFile.getOriginalFilename().endsWith(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION.getKey()))) {
             throw new ExtensionException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION_ERROR_MESSAGE.getKey()));
         }
         GenericResponse genericResponse = fileReader.readData(multipartFile);
-        SuccessResponse successResponse = SuccessResponse.builder().success(true)
-                .successMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_UPLOADED_SUCCESSFULLY.getKey())).build();
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 }
