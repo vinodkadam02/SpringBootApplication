@@ -8,7 +8,7 @@ import lombok.Data;
 @Builder
 public class RowResponse {
     private String status;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonInclude(value = JsonInclude.Include.NON_DEFAULT)
     private int row;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String successMessage;
