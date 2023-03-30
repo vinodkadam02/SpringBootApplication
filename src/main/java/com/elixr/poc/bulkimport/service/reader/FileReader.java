@@ -4,15 +4,14 @@ import com.elixr.poc.bulkimport.dto.Patient;
 
 import com.elixr.poc.bulkimport.response.GenericResponse;
 import com.elixr.poc.bulkimport.response.RowResponse;
-import com.elixr.poc.bulkimport.service.FileOperationService;
-import com.elixr.poc.common.enums.FileOperationEnum;
-import com.elixr.poc.common.enums.MessagesKeyEnum;
-import com.elixr.poc.common.util.MessagesUtil;
+import com.elixr.poc.bulkimport.service.PatientOperations;
+import com.elixr.poc.common.enums.FileHeadersEnum;
+import com.elixr.poc.common.enums.FileMessageEnum;
 import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -29,10 +27,10 @@ import java.util.*;
 @Slf4j
 @Service
 public class FileReader {
-    private final FileOperationService fileOperationService;
+    private final PatientOperations patientOperations;
 
-    public FileReader(FileOperationService fileOperationService) {
-        this.fileOperationService = fileOperationService;
+    public FileReader(PatientOperations patientOperations) {
+        this.patientOperations = patientOperations;
     }
 
     String stringValue = null;
@@ -44,57 +42,52 @@ public class FileReader {
      * @return
      * @throws IOException
      */
-    public GenericResponse readData(MultipartFile multipartFile) throws IOException {
-        InputStream inputStream = multipartFile.getInputStream();
-        String[] patientKey = {FileOperationEnum.ACTION.getFileKey(), FileOperationEnum.PATIENT_ID.getFileKey(),
-                FileOperationEnum.PATIENT_FIRSTNAME.getFileKey(), FileOperationEnum.PATIENT_LASTNAME.getFileKey(),
-                FileOperationEnum.PATIENT_AGE.getFileKey(), FileOperationEnum.PATIENT_ADDRESS.getFileKey(),
-                FileOperationEnum.DOCTOR_ID.getFileKey()};
-        HashMap<String, String> columnHeader = new HashMap<>();
+    public GenericResponse readExcelFileData(MultipartFile multipartFile) {
+        HashMap<String, String> headerValues = new HashMap<>();
         try {
-            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-            XSSFSheet sheet = workbook.getSheetAt(0);
+            Sheet sheet = creatWorkBook(multipartFile);
             Row row;
-            Cell cell;
             List<RowResponse> rowResponse = new ArrayList<>();
             Iterator rowIterator = sheet.rowIterator();
             while (rowIterator.hasNext()) {
                 row = (XSSFRow) rowIterator.next();
                 if (row.getRowNum() != 0) {
-                    int headerCount = 0;
-                    for (int cellNumber = 0; cellNumber < row.getLastCellNum(); cellNumber++) {
-                        cell = row.getCell(cellNumber, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                        stringValue = checkCellType(cell);
-                        columnHeader.put(Arrays.stream(patientKey).toList().get(headerCount), stringValue);
-                        headerCount++;
-                    }
+                    iterateThroughCell(headerValues, row);
                     Patient patient;
-                    if (StringUtils.isEmpty(columnHeader.get(FileOperationEnum.PATIENT_AGE.getFileKey()))) {
-                        patient = buildPatientWhenAgeIsEmpty(columnHeader);
+                    if (StringUtils.isEmpty(headerValues.get(FileHeadersEnum.PATIENT_AGE.getKey()))) {
+                        patient = buildPatientWhenAgeIsEmpty(headerValues);
                     } else {
-                        patient = buildPatient(columnHeader);
+                        patient = buildPatient(headerValues);
                     }
-                    rowResponse.add(performAction(patient, columnHeader, row.getRowNum() + 1));
+                    rowResponse.add(patientOperations.performAction(patient, headerValues));
                 }
+                headerValues.put(FileHeadersEnum.ACTION.getKey(), "");
             }
-            return GenericResponse.builder().status(FileOperationEnum.SUCCESS.getFileKey()).data(rowResponse).build();
+            return GenericResponse.builder().status(FileMessageEnum.SUCCESS.getFileKey()).data(rowResponse).build();
         } catch (Exception exception) {
-            return GenericResponse.builder().status(FileOperationEnum.FAILURE.getFileKey()).data(null).build();
+            return GenericResponse.builder().status(FileMessageEnum.FAILURE.getFileKey()).data(null).build();
         }
     }
 
-    /**
-     * Check cell type like is it String or Numeric.
-     * @param cell
-     * @return
-     */
-    private String checkCellType(Cell cell) {
-        if (CellType.STRING == cell.getCellType() || CellType.BLANK == cell.getCellType()) {
-            stringValue = cell.getStringCellValue();
-        } else if (CellType.NUMERIC == cell.getCellType() || CellType.BLANK == cell.getCellType()) {
-            stringValue = String.valueOf((int) cell.getNumericCellValue());
+    private XSSFSheet creatWorkBook(MultipartFile multipartFile) throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook(multipartFile.getInputStream());
+        return workbook.getSheetAt(0);
+    }
+
+    private void iterateThroughCell(HashMap<String, String> headerValues, Row row) {
+        FileHeadersEnum[] enums = FileHeadersEnum.values();
+        int currentHeaderIndex = 0;
+        for (int cellNumber = 0; cellNumber < row.getLastCellNum(); cellNumber++) {
+            stringValue = getCellValue(row, cellNumber);
+            headerValues.put(Arrays.stream(enums).map(m -> m.getKey()).toList().get(currentHeaderIndex), stringValue);
+            currentHeaderIndex++;
         }
-        return stringValue;
+    }
+
+    private String getCellValue(Row row, int columnIndex) {
+        DataFormatter df = new DataFormatter();
+        String cellValue = df.formatCellValue(row.getCell(columnIndex, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
+        return StringUtils.isNotBlank(cellValue) ? cellValue : null;
     }
 
     /**
@@ -105,16 +98,16 @@ public class FileReader {
      * @return
      */
     private Patient buildPatient(HashMap<String, String> columnHeader) {
-        String doctorId = columnHeader.get(FileOperationEnum.DOCTOR_ID.getFileKey());
+        String doctorId = columnHeader.get(FileHeadersEnum.DOCTOR_ID.getKey());
         List<String> doctorList = new ArrayList<>();
         doctorList.add(doctorId);
         return Patient.builder()
-                .patientId(columnHeader.get(FileOperationEnum.PATIENT_ID.getFileKey()))
-                .patientFirstName(columnHeader.get(FileOperationEnum.PATIENT_FIRSTNAME.getFileKey()))
-                .patientLastName(columnHeader.get(FileOperationEnum.PATIENT_LASTNAME.getFileKey()))
-                .patientAge(Integer.parseInt(columnHeader.get(FileOperationEnum.PATIENT_AGE.getFileKey())))
-                .patientAddress(columnHeader.get(FileOperationEnum.PATIENT_ADDRESS.getFileKey()))
-                .doctorId(doctorList).build();
+                .patientId(columnHeader.get(FileHeadersEnum.PATIENT_ID.getKey()))
+                .patientFirstName(columnHeader.get(FileHeadersEnum.PATIENT_FIRSTNAME.getKey()))
+                .patientLastName(columnHeader.get(FileHeadersEnum.PATIENT_LASTNAME.getKey()))
+                .patientAge(columnHeader.get(FileHeadersEnum.PATIENT_AGE.getKey()))
+                .patientAddress(columnHeader.get(FileHeadersEnum.PATIENT_ADDRESS.getKey()))
+                .doctorList(doctorList).build();
     }
 
     /**
@@ -124,42 +117,14 @@ public class FileReader {
      * @return
      */
     private Patient buildPatientWhenAgeIsEmpty(HashMap<String, String> columnHeader) {
-        String doctorId = columnHeader.get(FileOperationEnum.DOCTOR_ID.getFileKey());
+        String doctorId = columnHeader.get(FileHeadersEnum.DOCTOR_ID.getKey());
         List<String> doctorList = new ArrayList<>();
         doctorList.add(doctorId);
-        Patient patient = Patient.builder()
-                .patientId(columnHeader.get(FileOperationEnum.PATIENT_ID.getFileKey()))
-                .patientFirstName(columnHeader.get(FileOperationEnum.PATIENT_FIRSTNAME.getFileKey()))
-                .patientLastName(columnHeader.get(FileOperationEnum.PATIENT_LASTNAME.getFileKey()))
-                .patientAddress(columnHeader.get(FileOperationEnum.PATIENT_ADDRESS.getFileKey()))
-                .doctorId(doctorList).build();
-        return patient;
-    }
-
-    /**
-     * Performing the Action Operation based on the Excel actions.
-     *
-     * @param patient
-     * @param columnHeader
-     * @return
-     */
-    private RowResponse performAction(Patient patient, HashMap<String, String> columnHeader, int row) {
-        if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_ADD_OPERATION.getKey()).equals(columnHeader
-                .get(FileOperationEnum.ACTION.getFileKey()))) {
-            return fileOperationService.performAddPatient(patient, row);
-        } else if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_UPDATE_OPERATION.getKey()).equals(columnHeader
-                .get(FileOperationEnum.ACTION.getFileKey()))) {
-            return fileOperationService.performUpdatePatient(patient, row);
-        } else if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_DELETE_OPERATION.getKey()).equals(columnHeader
-                .get(FileOperationEnum.ACTION.getFileKey()))) {
-            return fileOperationService.performDeletePatient(patient, row);
-        } else if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_ASSIGN_NEW_DOCTOR.getKey()).equals(columnHeader
-                .get(FileOperationEnum.ACTION.getFileKey()))) {
-            return fileOperationService.performAssignNewDoctor(patient, row);
-        } else if (MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_REMOVE_DOCTOR.getKey()).equals(columnHeader
-                .get(FileOperationEnum.ACTION.getFileKey()))) {
-            return fileOperationService.performRemoveDoctor(patient, row);
-        }
-        return null;
+        return Patient.builder()
+                .patientId(columnHeader.get(FileHeadersEnum.PATIENT_ID.getKey()))
+                .patientFirstName(columnHeader.get(FileHeadersEnum.PATIENT_FIRSTNAME.getKey()))
+                .patientLastName(columnHeader.get(FileHeadersEnum.PATIENT_LASTNAME.getKey()))
+                .patientAddress(columnHeader.get(FileHeadersEnum.PATIENT_ADDRESS.getKey()))
+                .doctorList(doctorList).build();
     }
 }

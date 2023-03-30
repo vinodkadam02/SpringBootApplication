@@ -17,7 +17,7 @@ public class Patient {
     private String patientId;
     private String patientFirstName;
     private String patientLastName;
-    private int patientAge;
+    private String patientAge;
     private String patientAddress;
-    private List<String> doctorId;
+    private List<String> doctorList;
 }

@@ -1,6 +1,6 @@
 package com.elixr.poc.bulkimport.rest.controller;
 
-import com.elixr.poc.bulkimport.dto.Doctor;
+import com.elixr.poc.bulkimport.rest.data.DoctorData;
 import com.elixr.poc.bulkimport.service.DoctorService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -19,8 +19,8 @@ public class DoctorCreateController {
     }
 
     @PostMapping("doctor")
-    public ResponseEntity createDoctor(@RequestBody @Valid Doctor doctor) {
-        doctorService.createNewDoctor(doctor);
-        return new ResponseEntity(doctor, HttpStatus.OK);
+    public ResponseEntity<DoctorData> createDoctor(@RequestBody @Valid DoctorData doctorData) {
+        doctorService.createNewDoctor(doctorData);
+        return new ResponseEntity<>(doctorData, HttpStatus.OK);
     }
 }

@@ -1,10 +1,7 @@
 package com.elixr.poc.bulkimport.rest.controller;
 
 import com.elixr.poc.bulkimport.response.GenericResponse;
-import com.elixr.poc.bulkimport.service.reader.FileReader;
-import com.elixr.poc.common.enums.MessagesKeyEnum;
-import com.elixr.poc.common.exception.ExtensionException;
-import com.elixr.poc.common.util.MessagesUtil;
+import com.elixr.poc.bulkimport.service.PatientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +13,10 @@ import java.io.IOException;
 
 @RestController
 public class FileUploadController {
-    private final FileReader fileReader;
+    private final PatientService patientService;
 
-    public FileUploadController(FileReader fileReader) {
-        this.fileReader = fileReader;
+    public FileUploadController(PatientService patientService) {
+        this.patientService = patientService;
     }
 
     /**
@@ -27,10 +24,7 @@ public class FileUploadController {
      */
     @PostMapping("/uploadfile")
     public ResponseEntity<GenericResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        if (!multipartFile.getOriginalFilename().endsWith(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION.getKey()))) {
-            throw new ExtensionException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION_ERROR_MESSAGE.getKey()));
-        }
-        GenericResponse genericResponse = fileReader.readData(multipartFile);
+        GenericResponse genericResponse = patientService.readFile(multipartFile);
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 }
