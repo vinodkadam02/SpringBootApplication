@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @RestController
 public class FileUploadController {
     private final PatientService patientService;
@@ -23,7 +21,7 @@ public class FileUploadController {
      * Uploading a csv file and showing a message.
      */
     @PostMapping("/uploadfile")
-    public ResponseEntity<GenericResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<GenericResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) {
         GenericResponse genericResponse = patientService.readFile(multipartFile);
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }

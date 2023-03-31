@@ -9,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 /**
  * Service Class for performing actions.
  */
@@ -23,7 +21,7 @@ public class PatientService {
         this.fileReader = fileReader;
     }
 
-    public GenericResponse readFile(MultipartFile multipartFile) throws IOException {
+    public GenericResponse readFile(MultipartFile multipartFile){
         if (!multipartFile.getOriginalFilename().endsWith(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION.getKey()))) {
             throw new ExtensionException(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_FILE_EXTENSION_ERROR_MESSAGE.getKey()));
         }

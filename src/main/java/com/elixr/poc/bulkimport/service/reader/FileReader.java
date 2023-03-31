@@ -66,6 +66,8 @@ public class FileReader {
             return GenericResponse.builder().status(FileMessageEnum.SUCCESS.getFileKey()).data(rowResponse).build();
         } catch (Exception exception) {
             return GenericResponse.builder().status(FileMessageEnum.FAILURE.getFileKey()).data(null).build();
+        }finally {
+
         }
     }
 
