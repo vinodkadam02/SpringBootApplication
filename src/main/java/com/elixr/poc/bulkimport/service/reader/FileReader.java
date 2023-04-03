@@ -53,12 +53,7 @@ public class FileReader {
                 row = (XSSFRow) rowIterator.next();
                 if (row.getRowNum() != 0) {
                     iterateThroughCell(headerValues, row);
-                    Patient patient;
-                    if (StringUtils.isEmpty(headerValues.get(FileHeadersEnum.PATIENT_AGE.getKey()))) {
-                        patient = buildPatientWhenAgeIsEmpty(headerValues);
-                    } else {
-                        patient = buildPatient(headerValues);
-                    }
+                    Patient patient = buildPatient(headerValues);
                     rowResponse.add(patientOperations.performAction(patient, headerValues));
                 }
                 headerValues.put(FileHeadersEnum.ACTION.getKey(), "");
@@ -66,16 +61,27 @@ public class FileReader {
             return GenericResponse.builder().status(FileMessageEnum.SUCCESS.getFileKey()).data(rowResponse).build();
         } catch (Exception exception) {
             return GenericResponse.builder().status(FileMessageEnum.FAILURE.getFileKey()).data(null).build();
-        }finally {
-
         }
     }
 
+    /**
+     * Creating a workbook of a multipartFile.
+     *
+     * @param multipartFile
+     * @return
+     * @throws IOException
+     */
     private XSSFSheet creatWorkBook(MultipartFile multipartFile) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook(multipartFile.getInputStream());
         return workbook.getSheetAt(0);
     }
 
+    /**
+     * Iterating through cell and adding the values to the hashmap.
+     *
+     * @param headerValues
+     * @param row
+     */
     private void iterateThroughCell(HashMap<String, String> headerValues, Row row) {
         FileHeadersEnum[] enums = FileHeadersEnum.values();
         int currentHeaderIndex = 0;
@@ -86,6 +92,14 @@ public class FileReader {
         }
     }
 
+    /**
+     * Getting cell values
+     * Returning Null if cell is empty.
+     *
+     * @param row
+     * @param columnIndex
+     * @return
+     */
     private String getCellValue(Row row, int columnIndex) {
         DataFormatter df = new DataFormatter();
         String cellValue = df.formatCellValue(row.getCell(columnIndex, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
@@ -108,24 +122,6 @@ public class FileReader {
                 .patientFirstName(columnHeader.get(FileHeadersEnum.PATIENT_FIRSTNAME.getKey()))
                 .patientLastName(columnHeader.get(FileHeadersEnum.PATIENT_LASTNAME.getKey()))
                 .patientAge(columnHeader.get(FileHeadersEnum.PATIENT_AGE.getKey()))
-                .patientAddress(columnHeader.get(FileHeadersEnum.PATIENT_ADDRESS.getKey()))
-                .doctorList(doctorList).build();
-    }
-
-    /**
-     * Building the Patient object when age is not provided in Excel.
-     *
-     * @param columnHeader
-     * @return
-     */
-    private Patient buildPatientWhenAgeIsEmpty(HashMap<String, String> columnHeader) {
-        String doctorId = columnHeader.get(FileHeadersEnum.DOCTOR_ID.getKey());
-        List<String> doctorList = new ArrayList<>();
-        doctorList.add(doctorId);
-        return Patient.builder()
-                .patientId(columnHeader.get(FileHeadersEnum.PATIENT_ID.getKey()))
-                .patientFirstName(columnHeader.get(FileHeadersEnum.PATIENT_FIRSTNAME.getKey()))
-                .patientLastName(columnHeader.get(FileHeadersEnum.PATIENT_LASTNAME.getKey()))
                 .patientAddress(columnHeader.get(FileHeadersEnum.PATIENT_ADDRESS.getKey()))
                 .doctorList(doctorList).build();
     }
