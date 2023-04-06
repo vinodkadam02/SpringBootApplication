@@ -10,14 +10,13 @@ import com.elixr.poc.common.enums.FileMessageEnum;
 import com.elixr.poc.common.enums.MessagesKeyEnum;
 import com.elixr.poc.common.exception.NotFoundException;
 import com.elixr.poc.common.util.MessagesUtil;
-import org.apache.commons.lang3.StringUtils;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
 
 @Service
 public class PatientOperations {

@@ -33,8 +33,6 @@ public class FileReader {
         this.patientOperations = patientOperations;
     }
 
-    String stringValue = null;
-
     /**
      * Reading the Excel file and performing the Operation based on Action.
      *
@@ -86,8 +84,8 @@ public class FileReader {
         FileHeadersEnum[] enums = FileHeadersEnum.values();
         int currentHeaderIndex = 0;
         for (int cellNumber = 0; cellNumber < row.getLastCellNum(); cellNumber++) {
-            stringValue = getCellValue(row, cellNumber);
-            headerValues.put(Arrays.stream(enums).map(m -> m.getKey()).toList().get(currentHeaderIndex), stringValue);
+            String cellValue = getCellValue(row, cellNumber);
+            headerValues.put(Arrays.stream(enums).map(m -> m.getKey()).toList().get(currentHeaderIndex), cellValue);
             currentHeaderIndex++;
         }
     }
