@@ -1,6 +1,6 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.common.enums.MessagesKeyEnum;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.Purchase;
 import com.elixr.poc.data.User;

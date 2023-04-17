@@ -1,18 +1,14 @@
 package com.elixr.poc.service;
 
-import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.common.enums.MessagesKeyEnum;
 import com.elixr.poc.common.exception.IdFormatException;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.data.User;
 import com.elixr.poc.common.exception.NotFoundException;
 import com.elixr.poc.repository.UserRepository;
 import com.elixr.poc.rest.request.UserRequest;
-import com.elixr.poc.rest.response.AppResponse;
-import com.elixr.poc.rest.response.PostErrorResponse;
-import com.elixr.poc.rest.response.UserResponse;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 

@@ -1,6 +1,6 @@
 package com.elixr.poc.common.exception;
 
-import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.common.enums.MessagesKeyEnum;
 import com.elixr.poc.common.util.MessagesUtil;
 import com.elixr.poc.rest.response.CommonResponse;
 import com.elixr.poc.rest.response.PostErrorResponse;
@@ -56,6 +56,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IdFormatException.class)
     public ResponseEntity<CommonResponse> handleIdFormatException(IdFormatException idFormatException) {
         CommonResponse commonResponse = CommonResponse.builder().errorMessage(idFormatException.getMessage()).build();
+        return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Invalid file extension for .csv file.
+     * @param extensionException
+     * @return
+     */
+    @ExceptionHandler(ExtensionException.class)
+    public ResponseEntity<CommonResponse> handleExtensionException(ExtensionException extensionException){
+        CommonResponse commonResponse = CommonResponse.builder().errorMessage(extensionException.getMessage()).build();
         return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
     }
 

@@ -1,8 +1,8 @@
 package com.elixr.poc.rest.controller;
 
-import com.elixr.poc.common.MessagesKeyEnum;
+import com.elixr.poc.common.enums.MessagesKeyEnum;
 import com.elixr.poc.common.util.MessagesUtil;
-import com.elixr.poc.rest.response.DeleteSuccessResponse;
+import com.elixr.poc.rest.response.SuccessResponse;
 import com.elixr.poc.service.PurchaseService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -31,9 +31,9 @@ public class PurchaseDeletionController {
      * @return
      */
     @DeleteMapping("/purchase/{purchaseId}")
-    public ResponseEntity<DeleteSuccessResponse> deletePurchase(@PathVariable("purchaseId") @Valid String purchaseId) {
+    public ResponseEntity<SuccessResponse> deletePurchase(@PathVariable("purchaseId") @Valid String purchaseId) {
         boolean success = purchaseService.deletePurchaseDetails(purchaseId);
-        DeleteSuccessResponse deleteSuccessResponse = DeleteSuccessResponse.builder().success(success)
+        SuccessResponse deleteSuccessResponse = SuccessResponse.builder().success(success)
                 .successMessage(MessagesUtil.getMessage(MessagesKeyEnum.ENTITY_DELETED_SUCCESSFULLY.getKey())).build();
         return new ResponseEntity<>(deleteSuccessResponse, HttpStatus.OK);
     }
