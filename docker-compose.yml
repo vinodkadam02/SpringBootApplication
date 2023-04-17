@@ -6,7 +6,7 @@ services:
     ports:
       - "27017:27017"
   springboot-application:
-    image: spring_boot_application
+    image: vinodkadam/spring_boot_application
     container_name: springboot_application
     ports:
       - "8080:8080"
